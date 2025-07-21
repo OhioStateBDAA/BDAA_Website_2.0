@@ -9,7 +9,7 @@ interface ContainerProps {
 export function Container({ children, className = '', size = 'contained' }: ContainerProps) {
   return (
     <div
-      className={`container-padding mx-auto ${size === 'full' ? 'w-full' : 'max-w-7xl'} ${className}`}
+      className={`px-1 md:px-10 mx-auto ${size === 'full' ? 'w-full' : 'max-w-screen-2xl'} ${className}`}
     >
       {children}
     </div>
