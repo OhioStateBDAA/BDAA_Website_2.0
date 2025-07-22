@@ -149,7 +149,7 @@ export default function PartnersPage() {
               Become a Partner
             </h2>
             <p className="text-lg text-white leading-relaxed mb-8">
-              Interested in partnering with BDAA? We're always looking for organizations 
+              Interested in partnering with BDAA? We&apos;re always looking for organizations 
               that share our passion for data analytics and student development.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -8,7 +8,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   className?: string;
   showArrow?: boolean;
-  size?: 'md' | 'sm';
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -18,8 +17,6 @@ export const Button: React.FC<ButtonProps> = ({
   href,
   className = '',
   showArrow = true,
-  size = 'md',
-  ...props
 }) => {
   const content = (
     <div className={`relative group ${className}`}>
@@ -30,7 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
 
       {/* Main button - lifts up and to the right on hover */}
       <div
-        className={`relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-2 group-hover:-translate-y-2 flex items-center justify-center border border-black`}
+        className={`relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-2 group-hover:-translate-y-2 flex items-center justify-center border border-black px-6 py-3 min-h-[48px]`}
         style={{ backgroundColor: color, color: '#fff' }}
       >
         <div className="flex items-center justify-center">

@@ -75,7 +75,7 @@ export function SponsorsCarousel() {
   const handleSponsorClick = useCallback((sponsor: Sponsor) => {
     // Stop autoplay temporarily on click
     if (emblaApi) {
-      const autoplay = emblaApi.plugins().autoplay as any
+      const autoplay = emblaApi.plugins().autoplay as { stop: () => void; play: () => void }
       if (autoplay) {
         autoplay.stop()
         // Restart autoplay after 3 seconds

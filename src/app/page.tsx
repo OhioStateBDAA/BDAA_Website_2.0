@@ -3,6 +3,8 @@ import React from 'react';
 import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/layout/Section';
 import { ActivitiesSection } from '@/components/sections/ActivitiesSection';
+import { AlumniSection } from '@/components/sections/AlumniSection';
+import { SocialFeedSection } from '@/components/sections/SocialFeedSection';
 import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { SponsorsCarousel as SponsorsCarouselComponent } from '@/components/sections/SponsorsCarousel';
@@ -35,26 +37,10 @@ export default function Home() {
       <ActivitiesSection />
 
       {/* Alumni Section */}
-      <Section background="highlight" padding="lg">
-        <Container>
-          <div className="h-8 w-40 bg-gray-200 rounded mb-6" /> {/* Alumni Title */}
-          <div className="flex flex-wrap gap-4 justify-center items-center">
-            {[...Array(15)].map((_, i) => (
-              <div key={i} className="rounded-full bg-gray-200 w-12 h-12 md:w-20 md:h-20" />
-            ))}
-          </div>
-        </Container>
-      </Section>
+      <AlumniSection />
 
       {/* Social Feed Section */}
-      <Section padding="lg">
-        <Container>
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="flex-1 bg-gray-200 rounded-lg min-h-[200px]" /> {/* Instagram Feed */}
-            <div className="flex-1 bg-gray-100 rounded-lg min-h-[200px]" /> {/* Join Us Card */}
-          </div>
-        </Container>
-      </Section>
+      <SocialFeedSection />
 
       {/* Resources Section */}
       <Section background="highlight" padding="lg">
