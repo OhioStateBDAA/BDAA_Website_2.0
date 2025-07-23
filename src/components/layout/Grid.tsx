@@ -4,7 +4,6 @@ interface GridProps {
   children: React.ReactNode;
   pattern?: 'auto-fit' | 'auto-fill' | '2-3' | 'equal';
   gap?: 'sm' | 'md' | 'lg';
-  minItemWidth?: string;
   className?: string;
 }
 
@@ -14,7 +13,7 @@ const gapMap = {
   lg: 'gap-8',
 };
 
-export function Grid({ children, pattern = 'auto-fit', gap = 'md', minItemWidth = '280px', className = '' }: GridProps) {
+export function Grid({ children, pattern = 'auto-fit', gap = 'md', className = '' }: GridProps) {
   let gridClass = '';
   if (pattern === 'auto-fit') {
     gridClass = `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5`;

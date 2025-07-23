@@ -1,87 +1,92 @@
 import React from 'react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
+import { ActivityCard } from '../cards/ActivityCard';
+import { Button } from '../ui/Button';
 
 const activities = [
   {
-    title: 'Activity Title',
-    desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam enim, eget facilisis massa.',
-    color: 'bg-[var(--highlight)]',
+    title: 'Tech talks',
+    description: 'Industry experts share insights on cutting-edge technologies, career paths, and emerging trends in data analytics. Learn from professionals working at top companies and expand your technical knowledge.',
+    colorVar: '--activity-bookclub',
   },
   {
-    title: 'Activity Title',
-    desc: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.',
-    color: 'bg-blue-200',
+    title: 'Career fair',
+    description: 'Connect with leading companies actively recruiting data analysts and data scientists. Network with recruiters, learn about opportunities, and discover your next career move in the analytics field.',
+    colorVar: '--activity-newsletter',
   },
   {
-    title: 'Activity Title',
-    desc: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    color: 'bg-yellow-200',
+    title: 'Hackathons',
+    description: 'Collaborate on real-world data challenges and build innovative solutions over intensive weekends. Work with teammates to solve problems using analytics tools and present your findings to judges.',
+    colorVar: '--activity-events',
   },
   {
-    title: 'Activity Title',
-    desc: 'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    color: 'bg-pink-200',
+    title: 'Social events',
+    description: 'Build meaningful connections with fellow data enthusiasts in a relaxed atmosphere. From game nights to study sessions, these events foster community and lasting friendships within our organization.',
+    colorVar: '--activity-discord',
   },
   {
-    title: 'Activity Title',
-    desc: 'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Nulla porttitor accumsan tincidunt.',
-    color: 'bg-purple-200',
+    title: 'Project series',
+    description: 'Hands-on workshops where you build portfolio projects using real datasets. Develop practical skills in Python, R, SQL, and visualization tools while creating work to showcase to potential employers.',
+    colorVar: '--activity-coffee',
   },
 ];
 
-function ActivityCard({ activity }: { activity: typeof activities[0] }) {
-  return (
-    <div className="activity-card bg-white border border-[var(--border)] rounded-xl shadow p-6 flex flex-col gap-4 h-full">
-      <div className="font-display text-xl font-bold mb-2">{activity.title}</div>
-      <div className="text-base text-[var(--text-secondary)] mb-2">{activity.desc}</div>
-      <div className={`w-full h-40 rounded-lg ${activity.color} flex items-center justify-center`}>
-        <span className="text-4xl text-white/60 font-bold">Illustration</span>
-      </div>
-    </div>
-  );
-}
-
 export function ActivitiesSection() {
   return (
-    <Section>
+    <Section background="default" padding="lg">
       <Container>
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
-          {/* Left: Title, description, button */}
-          <div className="lg:w-1/3 w-full flex flex-col gap-6 flex-shrink-0 lg:sticky lg:top-8">
-            <div className="font-display text-4xl lg:text-5xl font-bold text-[var(--text-secondary)] leading-tight">
+        {/* Single 3x2 grid with text section in first position */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          
+          {/* Text section - takes first grid position */}
+          <div className="p-6 flex flex-col justify-center h-full min-h-[550px]">
+            <div className="font-display text-4xl font-bold text-black leading-tight mb-4">
               Activities
             </div>
-            <div className="text-lg text-[var(--text-primary)] leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur.
+            <div className="text-sm text-gray-600 leading-relaxed mb-6">
+              Read about all the activities we offer.
             </div>
-            <button className="w-fit border-2 border-[var(--text-secondary)] rounded-lg px-6 py-3 text-base font-medium bg-white hover:bg-[var(--background)] transition-all duration-200 hover:shadow-md">
-              See All Activities →
-            </button>
+            <Button 
+              label="Activity calendar" 
+              color="var(--text-secondary)" 
+              showArrow={true}
+            />
           </div>
 
-          {/* Right: Two separate horizontal grids */}
-          <div className="lg:w-2/3 w-full flex flex-col gap-6">
-            {/* First row: 2 cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ActivityCard activity={activities[0]} />
-              <ActivityCard activity={activities[1]} />
-            </div>
-            {/* Second row: 3 cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <ActivityCard activity={activities[2]} />
-              <ActivityCard activity={activities[3]} />
-              <ActivityCard activity={activities[4]} />
-            </div>
-          </div>
+          {/* Activity cards - fill remaining 5 positions */}
+          <ActivityCard 
+            title={activities[0].title}
+            description={activities[0].description}
+            colorVar={activities[0].colorVar}
+          />
+          
+          <ActivityCard 
+            title={activities[1].title}
+            description={activities[1].description}
+            colorVar={activities[1].colorVar}
+          />
+          
+          <ActivityCard 
+            title={activities[2].title}
+            description={activities[2].description}
+            colorVar={activities[2].colorVar}
+          />
+          
+          <ActivityCard 
+            title={activities[3].title}
+            description={activities[3].description}
+            colorVar={activities[3].colorVar}
+          />
+          
+          <ActivityCard 
+            title={activities[4].title}
+            description={activities[4].description}
+            colorVar={activities[4].colorVar}
+          />
+          
         </div>
-        <style jsx global>{`
-          .activity-card {
-            display: inline-block;
-            width: 100%;
-          }
-        `}</style>
       </Container>
     </Section>
   );
-} 
+}

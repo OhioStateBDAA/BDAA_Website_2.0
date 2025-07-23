@@ -18,7 +18,7 @@ export function HeroSection() {
               <div className="flex flex-col">
                 <div className="hero-title text-black">Welcome to BDAA</div>
                 <div className="text-base text-black leading-relaxed">
-                  BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State's central hub for involvement in data analytics.
+                  BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s central hub for involvement in data analytics.
                 </div>
               </div>
               <div className="flex-1"></div>

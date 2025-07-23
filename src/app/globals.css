@@ -29,6 +29,13 @@
   --navbar-border-radius: 12px;
   --navbar-padding-x: 16px;
   --navbar-padding-y: 16px;
+  
+  /* Activity Card Colors */
+  --activity-bookclub: #B8A9E0;
+  --activity-newsletter: #FF9DB4;
+  --activity-events: #FF6B6B;
+  --activity-discord: #FFB347;
+  --activity-coffee: #87CEEB;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -143,5 +150,84 @@ body {
   .container-padding {
     padding-left: 40px;
     padding-right: 40px;
+  }
+}
+
+/* Activity Cards */
+.activity-card {
+  @apply bg-white border-2 border-gray-300 rounded-xl overflow-hidden h-full flex flex-col shadow-sm min-h-[550px];
+  transition: all 0.2s ease;
+}
+
+.activity-card:hover {
+  @apply shadow-md;
+}
+
+.activity-card-header {
+  @apply p-4 pb-2 mb-8;
+}
+
+.activity-card-title {
+  font-family: var(--font-display);
+  @apply text-lg font-bold text-black mb-3;
+}
+
+.activity-card-description {
+  @apply text-xs text-gray-700 leading-relaxed;
+}
+
+.activity-card-illustration {
+  @apply flex-1 min-h-[200px] flex items-center justify-center m-4 mt-2 rounded-xl;
+}
+
+/* Company Logo Containers */
+.company-logo-circle {
+  @apply rounded-full bg-white border border-black flex items-center justify-center transition-all duration-300 relative overflow-hidden;
+  @apply w-20 h-20 md:w-24 md:h-24 lg:w-26 lg:h-26;
+}
+
+.company-logo-fallback {
+  @apply text-2xl font-bold text-gray-600;
+}
+
+.company-name-tooltip {
+  @apply absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-xs font-medium text-center px-3 py-1 rounded-full whitespace-nowrap transition-all duration-300;
+}
+
+.company-name-tooltip.visible {
+  @apply opacity-100 translate-y-0;
+}
+
+.company-name-tooltip.hidden {
+  @apply opacity-0 translate-y-2;
+}
+
+/* Grid Layouts */
+.company-grid {
+  @apply grid gap-4 relative max-w-6xl mx-auto pb-6;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (min-width: 640px) {
+  .company-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .company-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .company-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .company-grid {
+    grid-template-columns: repeat(9, 1fr);
   }
 }
