@@ -5,8 +5,9 @@ import { Navbar } from '@/components/layout/Navbar';
 import { SponsorsCarousel } from '@/components/sections/SponsorsCarousel';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar, MapPin, Users } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, MapPin, Users, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import emailjs from '@emailjs/browser';
 
 interface Partner {
   id: string;
@@ -94,6 +95,9 @@ const events: Event[] = [
 
 export default function PartnersPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => 
@@ -111,13 +115,55 @@ export default function PartnersPage() {
     setCurrentIndex(index);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    // Handle form submission logic here
-    console.log('Form submitted:', data);
-    // You would typically send this to your backend or email service
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+      
+      // Convert FormData to regular object for EmailJS
+      const templateParams = {
+        company_name: formData.get('companyName'),
+        contact_name: formData.get('contactName'),
+        email: formData.get('email'),
+        phone: formData.get('phone') || 'Not provided',
+        website: formData.get('website') || 'Not provided',
+        partnership_type: formData.get('partnershipType'),
+        message: formData.get('message'),
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString()
+      };
+
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!, // Your EmailJS service ID
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, // Your EmailJS template ID
+        templateParams,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY! // Your EmailJS public key
+      );
+
+      if (result.status === 200) {
+        setSubmitStatus('success');
+        setSubmitMessage('Thank you! Your partnership application has been submitted successfully. We\'ll get back to you soon.');
+        form.reset();
+      } else {
+        throw new Error('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus('error');
+      setSubmitMessage('Sorry, there was an error submitting your application. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+      // Clear status message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+        setSubmitMessage('');
+      }, 5000);
+    }
   };
 
   return (
@@ -157,58 +203,7 @@ export default function PartnersPage() {
       {/* Partners Carousel */}
       <SponsorsCarousel />
 
-      {/* Partner Details */}
-      <Section padding="lg" background="alt">
-        <Container>
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-display font-bold text-white text-center mb-12">
-              Partnership Details
-            </h2>
-            
-            <div className="grid gap-8">
-              {partners.map((partner, index) => (
-                <div 
-                  key={partner.id}
-                  className={`bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)] flex flex-col md:flex-row gap-6 items-center ${
-                    index % 2 === 1 ? 'md:flex-row-reverse' : ''
-                  }`}
-                >
-                  <div className="flex-shrink-0">
-                    <div className="relative w-32 h-20 md:w-40 md:h-24">
-                      <Image
-                        src={partner.logo}
-                        alt={`${partner.name} logo`}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 text-center md:text-left">
-                    <h3 className="text-xl font-display font-bold text-black mb-2">
-                      {partner.name}
-                    </h3>
-                    <p className="text-black leading-relaxed mb-3">
-                      {partner.description}
-                    </p>
-                    <div className="text-sm text-[var(--highlight)] font-primary font-bold mb-3">
-                      Partnership: {partner.partnership}
-                    </div>
-                    <a 
-                      href={partner.website}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[var(--highlight)] hover:underline font-primary font-bold"
-                    >
-                      Visit Website →
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </Section>
+      
 
       {/* Events Carousel Section */}
       <Section padding="lg" background="highlight">
@@ -260,12 +255,6 @@ export default function PartnersPage() {
                           <p className="text-gray-300 mb-6 leading-relaxed">
                             {event.description}
                           </p>
-
-                          {/* Event Details */}
-                         
-
-                          {/* Action Button */}
-                         
                         </div>
                       </div>
                     </div>
@@ -312,8 +301,31 @@ export default function PartnersPage() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
-              <div className="grid md:grid-cols-2 gap-6">
+            {/* Status Messages */}
+            <AnimatePresence>
+              {submitStatus !== 'idle' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${
+                    submitStatus === 'success'
+                      ? 'bg-green-50 border-green-200 text-green-800'
+                      : 'bg-red-50 border-red-200 text-red-800'
+                  }`}
+                >
+                  {submitStatus === 'success' ? (
+                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                  )}
+                  <p className="font-medium">{submitMessage}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <form onSubmit={handleSubmit} className="bg-[var(--background-white)] text-black p-8 rounded-xl border border-[var(--border-black)]">
+              <div className="text-black grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="companyName" className="block text-sm font-primary font-bold text-black mb-2">
                     Company Name *
@@ -323,7 +335,8 @@ export default function PartnersPage() {
                     id="companyName"
                     name="companyName"
                     required
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full  px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -336,7 +349,8 @@ export default function PartnersPage() {
                     id="contactName"
                     name="contactName"
                     required
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -349,7 +363,8 @@ export default function PartnersPage() {
                     id="email"
                     name="email"
                     required
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -361,7 +376,8 @@ export default function PartnersPage() {
                     type="tel"
                     id="phone"
                     name="phone"
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -374,7 +390,8 @@ export default function PartnersPage() {
                     id="website"
                     name="website"
                     placeholder="https://"
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
@@ -386,7 +403,8 @@ export default function PartnersPage() {
                     id="partnershipType"
                     name="partnershipType"
                     required
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent"
+                    disabled={isSubmitting}
+                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <option value="">Select Partnership Type</option>
                     <option value="event-sponsor">Event Sponsorship</option>
@@ -407,8 +425,9 @@ export default function PartnersPage() {
                     name="message"
                     required
                     rows={6}
+                    disabled={isSubmitting}
                     placeholder="Tell us about your organization, partnership goals, and how you'd like to collaborate with BDAA..."
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent resize-vertical"
+                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -416,9 +435,20 @@ export default function PartnersPage() {
               <div className="mt-8 text-center">
                 <button
                   type="submit"
-                  className="bg-[var(--highlight)] text-white px-8 py-3 rounded-lg font-primary font-bold hover:bg-[var(--highlight)]/90 transition-colors"
+                  disabled={isSubmitting}
+                  className="bg-[var(--highlight)] text-white px-8 py-3 rounded-lg font-primary font-bold hover:bg-[var(--highlight)]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
                 >
-                  Submit Partnership Application
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Submit Partnership Application
+                    </>
+                  )}
                 </button>
                 <p className="text-sm text-gray-600 mt-4">
                   We'll review your application and get back to you ASAP.
