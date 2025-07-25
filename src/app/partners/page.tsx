@@ -324,8 +324,8 @@ export default function PartnersPage() {
               )}
             </AnimatePresence>
 
-            <form onSubmit={handleSubmit} className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
-              <div className="grid md:grid-cols-2 gap-6">
+            <form onSubmit={handleSubmit} className="bg-[var(--background-white)] text-black p-8 rounded-xl border border-[var(--border-black)]">
+              <div className="text-black grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="companyName" className="block text-sm font-primary font-bold text-black mb-2">
                     Company Name *
@@ -336,7 +336,7 @@ export default function PartnersPage() {
                     name="companyName"
                     required
                     disabled={isSubmitting}
-                    className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full  px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
 
