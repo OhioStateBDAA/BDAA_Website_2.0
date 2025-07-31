@@ -3,7 +3,6 @@ import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/layout/Section';
 import { Navbar } from '@/components/layout/Navbar';
 import { SponsorsCarousel } from '@/components/sections/SponsorsCarousel';
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, MapPin, Users, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -23,57 +22,6 @@ interface Event {
   title: string;
   description: string;
 }
-
-const partners: Partner[] = [
-  {
-    id: 'accenture',
-    name: 'Accenture',
-    logo: '/sponsors/logos/accenture.png',
-    description: 'Global professional services company providing strategy, consulting, digital, technology and operations services.',
-    website: 'https://www.accenture.com',
-    partnership: 'Technology Consulting & Career Development'
-  },
-  {
-    id: 'aws',
-    name: 'Amazon Web Services',
-    logo: '/sponsors/logos/aws-color.svg',
-    description: 'Leading cloud computing platform providing comprehensive cloud infrastructure and services.',
-    website: 'https://aws.amazon.com',
-    partnership: 'Cloud Computing & Data Analytics Training'
-  },
-  {
-    id: 'ernst-young',
-    name: 'Ernst & Young',
-    logo: '/sponsors/logos/ernst-young.svg',
-    description: 'Global leader in assurance, consulting, strategy and transactions, and tax services.',
-    website: 'https://www.ey.com',
-    partnership: 'Data Analytics Consulting & Internship Opportunities'
-  },
-  {
-    id: 'fifth-third-bank',
-    name: 'Fifth Third Bank',
-    logo: '/sponsors/logos/fifth-third-bank.svg',
-    description: 'Regional banking corporation providing commercial banking, consumer banking and investment advisory services.',
-    website: 'https://www.53.com',
-    partnership: 'Financial Analytics & Risk Management Training'
-  },
-  {
-    id: 'honda',
-    name: 'Honda',
-    logo: '/sponsors/logos/honda.png',
-    description: 'Multinational automotive manufacturer known for innovation in mobility and clean energy.',
-    website: 'https://www.honda.com',
-    partnership: 'Automotive Analytics & Manufacturing Innovation'
-  },
-  {
-    id: 'osu',
-    name: 'The Ohio State University',
-    logo: '/sponsors/logos/osulogo.png',
-    description: 'Leading public research university providing world-class education and research opportunities.',
-    website: 'https://www.osu.edu',
-    partnership: 'Academic Support & Research Collaboration'
-  }
-];
 
 const events: Event[] = [
   {
@@ -203,8 +151,6 @@ export default function PartnersPage() {
       {/* Partners Carousel */}
       <SponsorsCarousel />
 
-      
-
       {/* Events Carousel Section */}
       <Section padding="lg" background="highlight">
         <Container>
@@ -240,13 +186,6 @@ export default function PartnersPage() {
                       className="w-full flex-shrink-0 px-4"
                     >
                       <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-8 hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                        {/* Event Icon */}
-                        <div className="text-center mb-6">
-                          <span className="bg-gradient-to-r from-pink-500 to-violet-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                          </span>
-                        </div>
-
-                        {/* Event Content */}
                         <div className="text-center">
                           <h3 className="text-2xl font-bold text-white mb-4">
                             {event.title}
@@ -289,7 +228,7 @@ export default function PartnersPage() {
       </Section>
 
       {/* Sponsorship Application Form */}
-      <Section padding="lg" background="default">
+      <Section padding="lg" background="default" id="sponsorship-application">
         <Container>
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">

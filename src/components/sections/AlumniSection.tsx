@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
-import { Button } from '../ui/Button';
 import { AnimatedCompanyGrid } from '../cards/AnimatedCompanyGrid';
 
 export function AlumniSection() {
@@ -14,14 +13,8 @@ export function AlumniSection() {
             Where our alumni work
           </h2>
           <p className="text-base text-white/90 leading-relaxed mb-4">
-            Our graduates have landed roles at top companies across the tech industry
+            We focus on professional development through our alumni network. Our graduates work across data science, machine learning, software engineering, and product management at top companies. This network becomes your pathway to explore and grow in these spaces.
           </p>
-          <Button 
-            label="Become a partner" 
-            color="var(--background-white)" 
-            showArrow={true}
-            className="w-fit"
-          />
         </div>
 
         {/* Animated Company Grid */}

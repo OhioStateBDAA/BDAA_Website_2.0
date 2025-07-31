@@ -5,6 +5,7 @@ interface SectionProps {
   background?: 'default' | 'highlight' | 'alt';
   padding?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
+  id?: string;
 }
 
 const bgMap = {
@@ -20,9 +21,9 @@ const padMap = {
   xl: 'py-24',
 };
 
-export function Section({ children, background = 'default', padding = 'md', className = '' }: SectionProps) {
+export function Section({ children, background = 'default', padding = 'md', className = '', id }: SectionProps) {
   return (
-    <section className={`${bgMap[background]} ${padMap[padding]} ${className}`}>
+    <section id={id} className={`${bgMap[background]} ${padMap[padding]} ${className}`}>
       {children}
     </section>
   );
