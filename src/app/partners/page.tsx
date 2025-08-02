@@ -150,7 +150,7 @@ export default function PartnersPage() {
 
       {/* Partners Carousel */}
       <SponsorsCarousel />
-
+     
       {/* Events Carousel Section */}
       <Section padding="lg" background="highlight">
         <Container>
@@ -171,8 +171,10 @@ export default function PartnersPage() {
                 <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
               </button>
 
+
+             
               {/* Cards Container */}
-              <div className="overflow-hidden mx-12">
+              <div className="overflow-hidden mb-10 mx-12">
               <p className='flex-1 text-center font-bold text-5xl mb-4 text-white'>Why sponsor us?</p>
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
@@ -226,7 +228,16 @@ export default function PartnersPage() {
           </div>
         </Container>
       </Section>
+      <Section>
+      <div className="overflow-hidden mx-12 mb-10 mt-10">
+            <p className='flex-1 text-center font-bold text-5xl mb-10 text-black'>Want more information?</p>
 
+
+<iframe src="/FILE_7307.pdf" width="100%" height="500px"> <p>Your browser does not support iframes. </p> </iframe>
+
+  
+</div>
+</Section>
       {/* Sponsorship Application Form */}
       <Section padding="lg" background="default" id="sponsorship-application">
         <Container>
@@ -262,6 +273,14 @@ export default function PartnersPage() {
                 </motion.div>
               )}
             </AnimatePresence>
+        
+
+
+
+
+
+
+
 
             <form onSubmit={handleSubmit} className="bg-[var(--background-white)] text-black p-8 rounded-xl border border-[var(--border-black)]">
               <div className="text-black grid md:grid-cols-2 gap-6">
