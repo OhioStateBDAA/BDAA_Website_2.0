@@ -3,6 +3,7 @@ import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
 import Image from 'next/image';
 import { Button } from '../ui/Button';
+import Link from 'next/link';
 
 import heroImage from '../../../public/group-photo.jpg';
 
@@ -31,12 +32,16 @@ export function HeroSection() {
                 showArrow={false} 
                 className="hero-button" 
               />
-              <Button 
-                label="Partner With Us" 
-                color="var(--text-secondary)" 
-                showArrow={false} 
-                className="hero-button" 
-              />
+              <Link href="/partners#sponsorship-application" passHref legacyBehavior>
+                <a>
+                  <Button 
+                    label="Partner With Us" 
+                    color="var(--text-secondary)" 
+                    showArrow={false} 
+                    className="hero-button"
+                  />
+                </a>
+              </Link>
             </div>
           </div>
           {/* Right: Image - bigger horizontally */}

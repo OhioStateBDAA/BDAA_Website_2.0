@@ -21,6 +21,15 @@ const companies = [
   { name: 'Oracle', logo: 'https://logo.clearbit.com/oracle.com' },
   { name: 'Cisco', logo: 'https://logo.clearbit.com/cisco.com' },
   { name: 'Dropbox', logo: 'https://logo.clearbit.com/dropbox.com' },
+  { name: 'Huntington Bank', logo: 'https://logo.clearbit.com/huntington.com' },
+  { name: 'Nationwide', logo: 'https://logo.clearbit.com/nationwide.com' },
+  { name: 'JPMorgan Chase', logo: 'https://logo.clearbit.com/jpmorganchase.com' },
+  { name: 'Progressive', logo: 'https://logo.clearbit.com/progressive.com' },
+  { name: 'Fifth Third Bank', logo: 'https://logo.clearbit.com/53.com' },
+  { name: 'Honda', logo: 'https://logo.clearbit.com/honda.com' },
+  { name: 'Accenture', logo: 'https://logo.clearbit.com/accenture.com' },
+  { name: 'Capital One', logo: 'https://logo.clearbit.com/capitalone.com' },
+  { name: 'Stripe', logo: 'https://logo.clearbit.com/stripe.com' },
 ];
 
 interface CompanyCardProps {
@@ -31,34 +40,35 @@ interface CompanyCardProps {
 }
 
 function CompanyCard({ company, index, onMouseEnter, onMouseLeave }: CompanyCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const handleMouseEnter = useCallback(() => {
-    setIsHovered(true);
     onMouseEnter(index);
   }, [index, onMouseEnter]);
 
   const handleMouseLeave = useCallback(() => {
-    setIsHovered(false);
     onMouseLeave();
   }, [onMouseLeave]);
 
   return (
     <div
-      className="aspect-square w-full flex items-center justify-center transition-all duration-300 ease-out cursor-pointer group relative"
+      className="aspect-square w-full flex items-center justify-center cursor-pointer group relative"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       role="article"
       aria-label={`${company.name} company`}
     >
-      <div className="company-logo-circle">
+      {/* Shadow copy - always visible black background */}
+      <div className="absolute top-0 left-0 w-full h-full rounded-xl bg-black z-0" />
+      
+      {/* Main logo circle - lifts up and to the right on hover */}
+      <div className="company-logo-circle relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ease-out">
         {!imageError ? (
           <Image
             src={company.logo}
             alt={`${company.name} logo`}
             fill
-            className="object-cover rounded-full p-3"
+            className="object-contain p-2"
             onError={() => setImageError(true)}
             unoptimized
           />
@@ -67,10 +77,6 @@ function CompanyCard({ company, index, onMouseEnter, onMouseLeave }: CompanyCard
             {company.name.charAt(0)}
           </div>
         )}
-      </div>
-      
-      <div className={`company-name-tooltip ${isHovered ? 'visible' : 'hidden'}`}>
-        {company.name}
       </div>
     </div>
   );
