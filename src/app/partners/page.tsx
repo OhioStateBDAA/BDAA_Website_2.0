@@ -23,6 +23,15 @@ interface Event {
   description: string;
 }
 
+interface EventImage {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  date?: string;
+  location?: string;
+}
+
 const events: Event[] = [
   {
     id: 1,
@@ -41,8 +50,38 @@ const events: Event[] = [
   }
 ];
 
+// Sample event images - replace with your actual event images
+const eventImages: EventImage[] = [
+  {
+    id: 1,
+    title: "Data I/O Hackathon 2025",
+    description: "Our flagship hackathon brought together 100+ students to solve real-world data challenges.",
+    imageUrl: "img/events/dataio.JPG", // Replace with actual image path
+    date: "February 08, 2025",
+    location: "Keenan Center for Entrepreneurship"
+  },
+  {
+    id: 2,
+    title: "BDAA Research Gala",
+    description: "Members spent the semester working on innovative data science projects and presented their work infront of industry professionals.",
+    imageUrl: "img/events/gala.JPG", // Replace with actual image path
+    date: "April 20, 2025",
+    location: "Student Union"
+  },
+  {
+    id: 3,
+    title: "Bank of America Tech Talk",
+    description: "BDAA is proud to partner with and host weekly tech talks with professionals from a variety of prestigious backgrounds.",
+    imageUrl: "img/events/BOA.JPG", // Replace with actual image path
+    date: "March 2025",
+    location: "Pomerane Hall"
+  },
+  
+];
+
 export default function PartnersPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
@@ -61,6 +100,23 @@ export default function PartnersPage() {
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  // Image carousel navigation functions
+  const nextImageSlide = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === eventImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevImageSlide = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === 0 ? eventImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  const goToImageSlide = (index: number) => {
+    setCurrentImageIndex(index);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -171,11 +227,9 @@ export default function PartnersPage() {
                 <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
               </button>
 
-
-             
               {/* Cards Container */}
               <div className="overflow-hidden mb-10 mx-12">
-              <p className='flex-1 text-center font-bold text-5xl mb-4 text-white'>Why sponsor us?</p>
+                <p className='flex-1 text-center font-bold text-5xl mb-4 text-white'>Why sponsor us?</p>
                 <div 
                   className="flex transition-transform duration-500 ease-in-out"
                   style={{ 
@@ -228,16 +282,122 @@ export default function PartnersPage() {
           </div>
         </Container>
       </Section>
+
+      {/* Event Images Carousel Section */}
+      <Section padding="lg" background="highlight">
+        <Container>
+          <div>
+            <div className="relative">
+              {/* Navigation Buttons */}
+              <button
+                onClick={prevImageSlide}
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-full p-3 transition-all duration-300 group"
+              >
+                <ChevronLeft className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              </button>
+
+              <button
+                onClick={nextImageSlide}
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-full p-3 transition-all duration-300 group"
+              >
+                <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              </button>
+
+              {/* Images Container */}
+              <div className="overflow-hidden mb-10 mx-12">
+                <p className='flex-1 text-center font-bold text-5xl mb-8 text-white'>Our Events in Action</p>
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ 
+                    transform: `translateX(-${currentImageIndex * 100}%)` 
+                  }}
+                >
+                  {eventImages.map((eventImage) => (
+                    <div
+                      key={eventImage.id}
+                      className="w-full flex-shrink-0 px-4"
+                    >
+                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+                        {/* Event Image */}
+                        <div className="relative h-100 overflow-hidden">
+                          <img
+                            src={eventImage.imageUrl}
+                            alt={eventImage.title}
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                            onError={(e) => {
+                              // Fallback for missing images
+                              const target = e.target as HTMLImageElement;
+                              target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkV2ZW50IEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                          
+                          {/* Event metadata overlay */}
+                          <div className="absolute bottom-4 left-4 text-white">
+                            {eventImage.date && (
+                              <div className="flex items-center gap-2 mb-2">
+                                <Calendar className="w-4 h-4" />
+                                <span className="text-sm font-medium">{eventImage.date}</span>
+                              </div>
+                            )}
+                            {eventImage.location && (
+                              <div className="flex items-center gap-2">
+                                <MapPin className="w-4 h-4" />
+                                <span className="text-sm font-medium">{eventImage.location}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        {/* Event Details */}
+                        <div className="p-5">
+                          <h3 className="text-2xl font-bold text-white mb-3">
+                            {eventImage.title}
+                          </h3>
+                          <p className="text-gray-300 leading-relaxed">
+                            {eventImage.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dot Indicators */}
+              <div className="flex justify-center mt-12 space-x-3">
+                {eventImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToImageSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentImageIndex 
+                        ? 'bg-white scale-125' 
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Event Counter */}
+              <div className="text-center mt-8">
+                <span className="text-white/70 text-lg">
+                  {currentImageIndex + 1} of {eventImages.length}
+                </span>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       <Section>
-      <div className="overflow-hidden mx-12 mb-10 mt-10">
-            <p className='flex-1 text-center font-bold text-5xl mb-10 text-black'>Want more information?</p>
+        <div className="overflow-hidden mx-12 mb-10 mt-10">
+          <p className='flex-1 text-center font-bold text-5xl mb-10 text-black'>Want more information?</p>
+          <iframe src="/FILE_7307.pdf" width="100%" height="500px"> 
+          </iframe>
+        </div>
+      </Section>
 
-
-<iframe src="/FILE_7307.pdf" width="100%" height="500px"> <p>Your browser does not support iframes. </p> </iframe>
-
-  
-</div>
-</Section>
       {/* Sponsorship Application Form */}
       <Section padding="lg" background="default" id="sponsorship-application">
         <Container>
@@ -273,14 +433,6 @@ export default function PartnersPage() {
                 </motion.div>
               )}
             </AnimatePresence>
-        
-
-
-
-
-
-
-
 
             <form onSubmit={handleSubmit} className="bg-[var(--background-white)] text-black p-8 rounded-xl border border-[var(--border-black)]">
               <div className="text-black grid md:grid-cols-2 gap-6">
