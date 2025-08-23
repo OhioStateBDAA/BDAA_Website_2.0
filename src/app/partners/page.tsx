@@ -71,7 +71,7 @@ const eventImages: EventImage[] = [
   {
     id: 3,
     title: "Bank of America Tech Talk",
-    description: "BDAA is proud to partner with and host weekly tech talks with professionals from a variety of prestigious backgrounds.",
+    description: "BDAA is proud to host weekly tech talks led by professionals making a difference in industry.",
     imageUrl: "img/events/BOA.JPG", // Replace with actual image path
     date: "March 2025",
     location: "Pomerane Hall"

@@ -24,7 +24,7 @@ export function Navbar() {
         <div className="navbar-links">
           <Link href="/about" className="hover:underline">About Us</Link>
           <Link href="/partners" className="hover:underline">Partners</Link>
-          <Link href="#" className="hover:underline">Blog</Link>
+          <Link href="/blog" className="hover:underline">Blog</Link>
         </div>
         {/* CTA Button */}
         <div className="mr-2">
