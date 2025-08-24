@@ -27,7 +27,7 @@ export function TeamMember({ member, onClick }: TeamMemberProps) {
   }
 
   return (
-    <div 
+    <div
       className="group cursor-pointer transition-all duration-300 hover:scale-[1.02]"
       onClick={handleClick}
     >
@@ -54,10 +54,10 @@ export function TeamMember({ member, onClick }: TeamMemberProps) {
             <span className="text-gray-400 text-sm font-primary">Photo not available</span>
           </div>
         )}
-        
+
         {/* LinkedIn overlay */}
         {member.linkedIn && (
-          <div 
+          <div
             className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             onClick={handleLinkedInClick}
           >

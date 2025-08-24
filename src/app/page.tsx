@@ -26,7 +26,7 @@ export default function Home() {
           <div className="h-8 w-64 bg-gray-200 rounded mb-4" /> {/* Events Title */}
           <div className="h-8 w-32 bg-gray-300 rounded mb-6" /> {/* All Events Button */}
           <div className="flex flex-wrap gap-6 justify-center">
-            {[1,2,3].map((i) => (
+            {[1, 2, 3].map((i) => (
               <div key={i} className="w-48 h-64 bg-gray-300 rounded-lg" />
             ))}
           </div>
@@ -48,7 +48,7 @@ export default function Home() {
           <div className="h-8 w-40 bg-gray-200 rounded mb-4" /> {/* Resources Title */}
           <div className="h-8 w-32 bg-gray-300 rounded mb-6" /> {/* Read Blog Button */}
           <div className="flex flex-wrap gap-6 justify-center">
-            {[1,2,3].map((i) => (
+            {[1, 2, 3].map((i) => (
               <div key={i} className="w-40 h-40 bg-gray-300 rounded-lg" />
             ))}
           </div>

@@ -39,7 +39,7 @@ export default function AboutPage() {
   return (
     <main className="min-h-screen w-full bg-bd-background">
       <Navbar />
-      
+
       {/* Mission Section */}
       <Section padding="lg" background="default">
         <Container>
@@ -50,18 +50,18 @@ export default function AboutPage() {
             <p className="text-lg text-black leading-relaxed mb-8">
               The Big Data Analytics Association at The Ohio State University
             </p>
-            
+
             <div className="grid md:grid-cols-2 gap-8 mt-12">
               <div className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
                 <h2 className="text-2xl font-display font-bold text-black mb-4">Our Mission</h2>
                 <p className="text-black leading-relaxed">
-                  BDAA aims to inspire students to think analytically, empower them through hands-on training, 
-                  and connect them to potential employers. Winner of the Outstanding Overall Organization Award 
-                  two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s 
+                  BDAA aims to inspire students to think analytically, empower them through hands-on training,
+                  and connect them to potential employers. Winner of the Outstanding Overall Organization Award
+                  two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s
                   central hub for involvement in data analytics.
                 </p>
               </div>
-              
+
               <div className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
                 <h2 className="text-2xl font-display font-bold text-black mb-4">What We Offer</h2>
                 <div className="space-y-3 text-black">
@@ -90,7 +90,7 @@ export default function AboutPage() {
                   Meet the dedicated officers who make BDAA possible
                 </p>
               </div>
-              
+
               {/* Year Selection Dropdown */}
               <div className="w-full md:w-48">
                 <Dropdown
@@ -103,8 +103,8 @@ export default function AboutPage() {
             </div>
 
             {/* Team Grid */}
-            <TeamGrid 
-              board={selectedBoard} 
+            <TeamGrid
+              board={selectedBoard}
               onMemberClick={handleMemberClick}
             />
           </div>

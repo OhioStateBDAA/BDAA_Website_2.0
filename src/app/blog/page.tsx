@@ -53,37 +53,37 @@ async function getMediumPosts(username: string): Promise<MediumPost[]> {
   try {
     const response = await fetch(
       `https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@${username}`,
-      { 
+      {
         next: { revalidate: 3600 }, // Cache for 1 hour
         headers: {
           'User-Agent': 'Mozilla/5.0 (compatible; BlogFetcher/1.0)',
         }
       }
     );
-    
+
     if (!response.ok) {
       console.error(`HTTP Error: ${response.status} - ${response.statusText}`);
       // Try alternative approach or return empty array
       return [];
     }
-    
+
     const data: MediumResponse = await response.json();
-    
+
     if (data.status !== 'ok') {
       console.error('Medium API returned error status:', data);
       return [];
     }
-    
+
     // Validate that we have items
     if (!data.items || !Array.isArray(data.items)) {
       console.warn('No items found in Medium feed');
       return [];
     }
-    
+
     return data.items;
   } catch (error) {
     console.error('Error fetching Medium posts:', error);
-    
+
     // If RSS2JSON fails, try direct RSS parsing (fallback)
     try {
       return await fetchDirectRSS(username);
@@ -103,11 +103,11 @@ async function fetchDirectRSS(username: string): Promise<MediumPost[]> {
         'Accept': 'application/rss+xml, application/xml, text/xml',
       }
     });
-    
+
     if (!response.ok) {
       throw new Error(`RSS fetch failed: ${response.status}`);
     }
-    
+
     // For now, return empty array - RSS parsing would require XML parser
     // You could add xml2js or similar library for full RSS parsing
     console.log('Direct RSS fetch successful, but XML parsing not implemented');
@@ -129,7 +129,7 @@ function MediumPostCard({ post }: { post: MediumPost }) {
   return (
     <article className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
       <h2 className="text-2xl font-bold mb-3">
-        <Link 
+        <Link
           href={post.link}
           target="_blank"
           rel="noopener noreferrer"
@@ -138,15 +138,15 @@ function MediumPostCard({ post }: { post: MediumPost }) {
           {post.title}
         </Link>
       </h2>
-      
+
       <p className="text-gray-600 mb-4 leading-relaxed">
         {cleanDescription}...
       </p>
-      
+
       {post.categories.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-4">
           {post.categories.slice(0, 3).map((category, index) => (
-            <span 
+            <span
               key={index}
               className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full"
             >
@@ -155,7 +155,7 @@ function MediumPostCard({ post }: { post: MediumPost }) {
           ))}
         </div>
       )}
-      
+
       <div className="flex items-center justify-between pt-4 border-t border-gray-200">
         <span className="text-sm font-medium text-gray-700">
           {post.author}
@@ -175,7 +175,7 @@ function LoadingSkeleton() {
       <div className="text-center mb-12">
         <div className="h-8 bg-gray-300 rounded w-64 mx-auto animate-pulse"></div>
       </div>
-      
+
       <div className="max-w-6xl mx-auto grid gap-6 md:gap-8 lg:grid-cols-2">
         {[...Array(4)].map((_, index) => (
           <div key={index} className="bg-white rounded-lg shadow-lg p-6">
@@ -211,16 +211,16 @@ export default async function BlogPage() {
 
   return (
     <main className="min-h-screen bg-gray-50">
-            <Navbar />
-      
+      <Navbar />
+
       <div className="container mx-auto py-12 px-4">
         <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
           BDAA's Medium Blog
         </h1>
         <h2 className="text-2xl  text-center mb-12 text-gray-800">
-         Find tips and insights about the project series, recent BDAA events, and our initatives.
+          Find tips and insights about the project series, recent BDAA events, and our initatives.
         </h2>
-        
+
         {posts.length > 0 ? (
           <div className="max-w-6xl mx-auto grid gap-6 md:gap-8 lg:grid-cols-2">
             {posts.map((post, index) => (
@@ -230,20 +230,20 @@ export default async function BlogPage() {
         ) : (
           <EmptyState />
         )}
-        
+
         {posts.length > 0 && (
           <div className="text-center mt-12">
             <p className="text-gray-600 mb-4">
               Showing {posts.length} {posts.length === 1 ? 'post' : 'posts'}
             </p>
-            <Link 
+            <Link
               href={`https://medium.com/@${MEDIUM_USERNAME}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+                <path d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
               </svg>
               View on Medium
             </Link>

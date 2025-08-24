@@ -76,7 +76,7 @@ const eventImages: EventImage[] = [
     date: "March 2025",
     location: "Pomerane Hall"
   },
-  
+
 ];
 
 export default function PartnersPage() {
@@ -87,13 +87,13 @@ export default function PartnersPage() {
   const [submitMessage, setSubmitMessage] = useState('');
 
   const nextSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === events.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? events.length - 1 : prevIndex - 1
     );
   };
@@ -104,13 +104,13 @@ export default function PartnersPage() {
 
   // Image carousel navigation functions
   const nextImageSlide = () => {
-    setCurrentImageIndex((prevIndex) => 
+    setCurrentImageIndex((prevIndex) =>
       prevIndex === eventImages.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevImageSlide = () => {
-    setCurrentImageIndex((prevIndex) => 
+    setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? eventImages.length - 1 : prevIndex - 1
     );
   };
@@ -127,7 +127,7 @@ export default function PartnersPage() {
     try {
       const form = e.currentTarget;
       const formData = new FormData(form);
-      
+
       // Convert FormData to regular object for EmailJS
       const templateParams = {
         company_name: formData.get('companyName'),
@@ -173,17 +173,17 @@ export default function PartnersPage() {
   return (
     <main className="min-h-screen w-full bg-bd-background">
       <Navbar />
-      
+
       {/* Hero Section */}
       <Section padding="lg" background="default">
         <Container>
-          <motion.div 
+          <motion.div
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <motion.h1 
+            <motion.h1
               className="text-4xl md:text-5xl font-display font-bold text-black mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -191,13 +191,13 @@ export default function PartnersPage() {
             >
               Our Partners
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-lg text-black leading-relaxed mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              BDAA is proud to collaborate with industry leaders and academic institutions 
+              BDAA is proud to collaborate with industry leaders and academic institutions
               to provide our members with exceptional opportunities and resources.
             </motion.p>
           </motion.div>
@@ -206,9 +206,9 @@ export default function PartnersPage() {
 
       {/* Partners Carousel */}
       <SponsorsCarousel />
-     
+
       {/* Events Carousel Section */}
- 
+
 
       {/* Event Images Carousel Section */}
       <Section padding="lg" background="highlight">
@@ -233,10 +233,10 @@ export default function PartnersPage() {
               {/* Images Container */}
               <div className="overflow-hidden mb-10 mx-12">
                 <p className='flex-1 text-center font-bold text-5xl mb-8 text-white'>Our Events in Action</p>
-                <div 
+                <div
                   className="flex transition-transform duration-500 ease-in-out"
-                  style={{ 
-                    transform: `translateX(-${currentImageIndex * 100}%)` 
+                  style={{
+                    transform: `translateX(-${currentImageIndex * 100}%)`
                   }}
                 >
                   {eventImages.map((eventImage) => (
@@ -258,7 +258,7 @@ export default function PartnersPage() {
                             }}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                          
+
                           {/* Event metadata overlay */}
                           <div className="absolute bottom-4 left-4 text-white">
                             {eventImage.date && (
@@ -275,7 +275,7 @@ export default function PartnersPage() {
                             )}
                           </div>
                         </div>
-                        
+
                         {/* Event Details */}
                         <div className="p-5">
                           <h3 className="text-2xl font-bold text-white mb-3">
@@ -297,11 +297,10 @@ export default function PartnersPage() {
                   <button
                     key={index}
                     onClick={() => goToImageSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentImageIndex 
-                        ? 'bg-white scale-125' 
-                        : 'bg-white/30 hover:bg-white/50'
-                    }`}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentImageIndex
+                      ? 'bg-white scale-125'
+                      : 'bg-white/30 hover:bg-white/50'
+                      }`}
                   />
                 ))}
               </div>
@@ -320,7 +319,7 @@ export default function PartnersPage() {
       <Section>
         <div className="overflow-hidden mx-12 mb-10 mt-10">
           <p className='flex-1 text-center font-bold text-5xl mb-10 text-black'>Want more information?</p>
-          <iframe src="/FILE_7307.pdf" width="100%" height="500px"> 
+          <iframe src="/FILE_7307.pdf" width="100%" height="500px">
           </iframe>
         </div>
       </Section>
@@ -345,11 +344,10 @@ export default function PartnersPage() {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${
-                    submitStatus === 'success'
-                      ? 'bg-green-50 border-green-200 text-green-800'
-                      : 'bg-red-50 border-red-200 text-red-800'
-                  }`}
+                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${submitStatus === 'success'
+                    ? 'bg-green-50 border-green-200 text-green-800'
+                    : 'bg-red-50 border-red-200 text-red-800'
+                    }`}
                 >
                   {submitStatus === 'success' ? (
                     <CheckCircle className="w-5 h-5 flex-shrink-0" />

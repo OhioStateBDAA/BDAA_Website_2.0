@@ -3,33 +3,36 @@
 :root {
   --text-primary: #BCB8B1;
   --text-secondary: #1F2421;
-  --text-black: #000000; /* Universal black text */
+  --text-black: #000000;
+  /* Universal black text */
   --background: #F4F3EE;
   --highlight: #7A1400;
   --background-alt: #FFFFFF;
-  --background-white: #FFFFFF; /* Universal white background */
+  --background-white: #FFFFFF;
+  /* Universal white background */
   --border: #1F2421;
-  --border-black: #000000; /* Universal black border */
+  --border-black: #000000;
+  /* Universal black border */
   --shadow: rgba(31, 36, 33, 0.1);
 
   --font-primary: 'Anaheim', 'Anaheim Fallback', sans-serif;
   --font-display: 'Courier Prime', 'Courier', monospace;
-  
+
   /* Hero Section Heights */
   --hero-min-height: 520px;
   --hero-card-height: 400px;
   --hero-button-height: 80px;
-  
+
   /* Hero Section Responsive Max Width */
   --hero-text-max-width: 600px;
   --hero-image-flex: 1.5;
-  
+
   /* Navbar Variables */
   --navbar-min-height: 56px;
   --navbar-border-radius: 12px;
   --navbar-padding-x: 16px;
   --navbar-padding-y: 16px;
-  
+
   /* Activity Card Colors */
   --activity-bookclub: #B8A9E0;
   --activity-newsletter: #FF9DB4;
@@ -59,9 +62,11 @@ body {
 /* Reusable utility classes */
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.25rem, 6vw, 3rem); /* responsive text-4xl to text-5xl - bigger */
+  font-size: clamp(2.25rem, 6vw, 3rem);
+  /* responsive text-4xl to text-5xl - bigger */
   font-weight: bold;
-  color: #000000; /* black color */
+  color: #000000;
+  /* black color */
   margin-bottom: 1rem;
 }
 
@@ -107,7 +112,8 @@ body {
   gap: 2rem;
   color: var(--text-black);
   font-family: var(--font-primary);
-  font-size: 1.125rem; /* 18px - bigger text */
+  font-size: 1.125rem;
+  /* 18px - bigger text */
 }
 
 @media (min-width: 768px) {
@@ -146,6 +152,7 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
 @media (min-width: 768px) {
   .container-padding {
     padding-left: 40px;
@@ -230,4 +237,28 @@ body {
   .company-grid {
     grid-template-columns: repeat(9, 1fr);
   }
+}
+
+/* Footer Styles */
+footer {
+  margin-top: auto;
+}
+
+footer a {
+  transition: all 0.2s ease;
+}
+
+footer a:hover {
+  transform: translateY(-1px);
+}
+
+/* Ensure footer stays at bottom */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
