@@ -1,3 +1,5 @@
+import { MediumPost, MediumResponse } from '../src/types/medium';
+
 export async function getMediumPosts(username: string): Promise<MediumPost[]> {
     try {
       const response = await fetch(
@@ -20,4 +22,5 @@ export async function getMediumPosts(username: string): Promise<MediumPost[]> {
       console.error('Error fetching Medium posts:', error);
       return [];
     }
+  }
   

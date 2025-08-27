@@ -64,7 +64,7 @@ export function SponsorsCarousel() {
     },
     [
       Autoplay({ 
-        delay: 4000, // 4 second delay - slow and non-distracting
+        delay: 3000, // 4 second delay - slow and non-distracting
         stopOnInteraction: false, // Keep auto-scrolling even after user interaction
         stopOnMouseEnter: true, // Pause on hover
         playOnInit: true

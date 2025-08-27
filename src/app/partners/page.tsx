@@ -4,24 +4,13 @@ import { Section } from '@/components/layout/Section';
 import { Navbar } from '@/components/layout/Navbar';
 import { SponsorsCarousel } from '@/components/sections/SponsorsCarousel';
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar, MapPin, Users, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 
-interface Partner {
-  id: string;
-  name: string;
-  logo: string;
-  description: string;
-  website: string;
-  partnership: string;
-}
 
-interface Event {
-  id: number;
-  title: string;
-  description: string;
-}
+
+
 
 interface EventImage {
   id: number;
@@ -32,23 +21,7 @@ interface EventImage {
   location?: string;
 }
 
-const events: Event[] = [
-  {
-    id: 1,
-    title: "Largest Tech-Oriented Club on Campus",
-    description: "We have 200+ members coming from majors all across the university, from STEM to the Arts. We consistently partner with innovative companies and organizations to cater to our diverse member demographic.",
-  },
-  {
-    id: 2,
-    title: "Leadership Excellence",
-    description: "BDAA was awarded the Student Organization Excellence in Membership Award at the 2025 Leadership Awards, highlighting  our commitment to fostering a strong, inclusive, and engaged community of students passionate about data and analytics",
-  },
-  {
-    id: 3,
-    title: "Countless Initiatives designed to empower our supporters",
-    description: "From our Data I/O hackathon to involvement in the BDAA project series, we offer various opportunities for companies to involve themseleves in the future of innovation at Ohio State .",
-  }
-];
+
 
 // Sample event images - replace with your actual event images
 const eventImages: EventImage[] = [
@@ -76,41 +49,24 @@ const eventImages: EventImage[] = [
     date: "March 2025",
     location: "Pomerane Hall"
   },
-
+  
 ];
 
 export default function PartnersPage() {
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
 
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === events.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? events.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
-
   // Image carousel navigation functions
   const nextImageSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
+    setCurrentImageIndex((prevIndex) => 
       prevIndex === eventImages.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevImageSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
+    setCurrentImageIndex((prevIndex) => 
       prevIndex === 0 ? eventImages.length - 1 : prevIndex - 1
     );
   };
@@ -127,7 +83,7 @@ export default function PartnersPage() {
     try {
       const form = e.currentTarget;
       const formData = new FormData(form);
-
+      
       // Convert FormData to regular object for EmailJS
       const templateParams = {
         company_name: formData.get('companyName'),
@@ -151,7 +107,7 @@ export default function PartnersPage() {
 
       if (result.status === 200) {
         setSubmitStatus('success');
-        setSubmitMessage('Thank you! Your partnership application has been submitted successfully. We\'ll get back to you soon.');
+        setSubmitMessage('Thank you! Your partnership application has been submitted successfully. We&apos;ll get back to you soon.');
         form.reset();
       } else {
         throw new Error('Failed to send email');
@@ -173,42 +129,47 @@ export default function PartnersPage() {
   return (
     <main className="min-h-screen w-full bg-bd-background">
       <Navbar />
-
+      
       {/* Hero Section */}
       <Section padding="lg" background="default">
         <Container>
-          <motion.div
+          <motion.div 
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <motion.h1
-              className="text-4xl md:text-5xl font-display font-bold text-black mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-            >
-              Our Partners
-            </motion.h1>
-            <motion.p
-              className="text-lg text-black leading-relaxed mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-            >
-              BDAA is proud to collaborate with industry leaders and academic institutions
-              to provide our members with exceptional opportunities and resources.
-            </motion.p>
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-black mb-6">
+              Become a partner of BDAA
+            </h1>
+            <p className="text-lg text-black leading-relaxed mb-8">
+              We partner with companies to host tech talks and various events that enable our students to gain valuable industry experience and learn about best practices. This collaborative approach allows our members to network and grow in a supportive environment where they have access to professional guidance. Beyond networking events, we also provide comprehensive professional support including resume reviews, LinkedIn headshots, and other career development resources to help our students succeed in the data and analytics industry.
+            </p>
+            <div className="mt-8">
+              <button
+                onClick={() => document.getElementById('sponsorship-application')?.scrollIntoView({ behavior: 'smooth' })}
+                className="relative group"
+              >
+                {/* Shadow copy - always visible black background */}
+                <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
+                
+                {/* Main button - lifts up and to the right on hover */}
+                <div
+                  className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-2 group-hover:-translate-y-2 flex items-center justify-center border border-black px-8 py-3 min-h-[48px] bg-[var(--background-white)] text-black"
+                >
+                  <span className="leading-tight">Become a partner</span>
+                </div>
+              </button>
+            </div>
           </motion.div>
         </Container>
       </Section>
 
       {/* Partners Carousel */}
       <SponsorsCarousel />
-
+     
       {/* Events Carousel Section */}
-
+ 
 
       {/* Event Images Carousel Section */}
       <Section padding="lg" background="highlight">
@@ -230,64 +191,56 @@ export default function PartnersPage() {
                 <ChevronRight className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
               </button>
 
-              {/* Images Container */}
-              <div className="overflow-hidden mb-10 mx-12">
+              {/* Single Event Card Container */}
+              <div className="mb-10">
                 <p className='flex-1 text-center font-bold text-5xl mb-8 text-white'>Our Events in Action</p>
-                <div
-                  className="flex transition-transform duration-500 ease-in-out"
-                  style={{
-                    transform: `translateX(-${currentImageIndex * 100}%)`
-                  }}
-                >
-                  {eventImages.map((eventImage) => (
-                    <div
-                      key={eventImage.id}
-                      className="w-full flex-shrink-0 px-4"
-                    >
-                      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden hover:bg-white/15 transition-all duration-300 hover:scale-105 hover:shadow-2xl">
-                        {/* Event Image */}
-                        <div className="relative h-100 overflow-hidden">
-                          <img
-                            src={eventImage.imageUrl}
-                            alt={eventImage.title}
-                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                            onError={(e) => {
-                              // Fallback for missing images
-                              const target = e.target as HTMLImageElement;
-                              target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkV2ZW50IEltYWdlPC90ZXh0Pjwvc3ZnPg==';
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-
-                          {/* Event metadata overlay */}
-                          <div className="absolute bottom-4 left-4 text-white">
-                            {eventImage.date && (
-                              <div className="flex items-center gap-2 mb-2">
-                                <Calendar className="w-4 h-4" />
-                                <span className="text-sm font-medium">{eventImage.date}</span>
-                              </div>
-                            )}
-                            {eventImage.location && (
-                              <div className="flex items-center gap-2">
-                                <MapPin className="w-4 h-4" />
-                                <span className="text-sm font-medium">{eventImage.location}</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Event Details */}
-                        <div className="p-5">
-                          <h3 className="text-2xl font-bold text-white mb-3">
-                            {eventImage.title}
-                          </h3>
-                          <p className="text-gray-300 leading-relaxed">
-                            {eventImage.description}
-                          </p>
+                
+                {/* Single Event Card */}
+                <div className="flex justify-center px-4">
+                  <div className="w-full max-w-4xl">
+                    <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden">
+                      {/* Event Image */}
+                      <div className="relative overflow-hidden" style={{ height: '600px' }}>
+                        <img
+                          src={eventImages[currentImageIndex].imageUrl}
+                          alt={eventImages[currentImageIndex].title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // Fallback for missing images
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkV2ZW50IEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                        
+                        {/* Event metadata overlay */}
+                        <div className="absolute bottom-4 left-4 text-white">
+                          {eventImages[currentImageIndex].date && (
+                            <div className="flex items-center gap-2 mb-2">
+                              <Calendar className="w-4 h-4" />
+                              <span className="text-sm font-medium">{eventImages[currentImageIndex].date}</span>
+                            </div>
+                          )}
+                          {eventImages[currentImageIndex].location && (
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4" />
+                              <span className="text-sm font-medium">{eventImages[currentImageIndex].location}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
+                      
+                      {/* Event Details */}
+                      <div className="event-details-section">
+                        <h3 className="event-title">
+                          {eventImages[currentImageIndex].title}
+                        </h3>
+                        <p className="event-description">
+                          {eventImages[currentImageIndex].description}
+                        </p>
+                      </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
 
@@ -297,10 +250,11 @@ export default function PartnersPage() {
                   <button
                     key={index}
                     onClick={() => goToImageSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentImageIndex
-                      ? 'bg-white scale-125'
-                      : 'bg-white/30 hover:bg-white/50'
-                      }`}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentImageIndex 
+                        ? 'bg-white scale-125' 
+                        : 'bg-white/30 hover:bg-white/50'
+                    }`}
                   />
                 ))}
               </div>
@@ -316,12 +270,23 @@ export default function PartnersPage() {
         </Container>
       </Section>
 
-      <Section>
-        <div className="overflow-hidden mx-12 mb-10 mt-10">
-          <p className='flex-1 text-center font-bold text-5xl mb-10 text-black'>Want more information?</p>
-          <iframe src="/FILE_7307.pdf" width="100%" height="500px">
-          </iframe>
-        </div>
+      <Section padding="lg" background="default">
+        <Container>
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-display font-bold text-black mb-6">Want more information?</h2>
+            </div>
+            <div className="bg-[var(--background-white)] p-4 rounded-xl border border-[var(--border-black)]">
+              <iframe 
+                src="/FILE_7307.pdf" 
+                width="100%" 
+                height="800px"
+                className="rounded-lg"
+              > 
+              </iframe>
+            </div>
+          </div>
+        </Container>
       </Section>
 
       {/* Sponsorship Application Form */}
@@ -333,7 +298,7 @@ export default function PartnersPage() {
                 Sponsorship Application
               </h2>
               <p className="text-lg text-black leading-relaxed">
-                Ready to support our mission? Fill out the form below and we'll get back to you.
+                Ready to support our mission? Fill out the form below and we&apos;ll get back to you.
               </p>
             </div>
 
@@ -344,10 +309,11 @@ export default function PartnersPage() {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${submitStatus === 'success'
-                    ? 'bg-green-50 border-green-200 text-green-800'
-                    : 'bg-red-50 border-red-200 text-red-800'
-                    }`}
+                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${
+                    submitStatus === 'success'
+                      ? 'bg-green-50 border-green-200 text-green-800'
+                      : 'bg-red-50 border-red-200 text-red-800'
+                  }`}
                 >
                   {submitStatus === 'success' ? (
                     <CheckCircle className="w-5 h-5 flex-shrink-0" />
@@ -461,7 +427,7 @@ export default function PartnersPage() {
                     required
                     rows={6}
                     disabled={isSubmitting}
-                    placeholder="Tell us about your organization, partnership goals, and how you'd like to collaborate with BDAA..."
+                    placeholder="Tell us about your organization, partnership goals, and how you&apos;d like to collaborate with BDAA..."
                     className="w-full px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent resize-vertical disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
@@ -486,7 +452,7 @@ export default function PartnersPage() {
                   )}
                 </button>
                 <p className="text-sm text-gray-600 mt-4">
-                  We'll review your application and get back to you ASAP.
+                  We&apos;ll review your application and get back to you ASAP.
                 </p>
               </div>
             </form>
