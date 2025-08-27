@@ -52,32 +52,26 @@ function CompanyCard({ company, index, onMouseEnter, onMouseLeave }: CompanyCard
 
   return (
     <div
-      className="aspect-square w-full flex items-center justify-center cursor-pointer group relative"
+      className="company-logo-square aspect-square cursor-pointer"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       role="article"
       aria-label={`${company.name} company`}
     >
-      {/* Shadow copy - always visible black background */}
-      <div className="absolute top-0 left-0 w-full h-full rounded-xl bg-black z-0" />
-      
-      {/* Main logo circle - lifts up and to the right on hover */}
-      <div className="company-logo-circle relative z-10 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ease-out">
-        {!imageError ? (
-          <Image
-            src={company.logo}
-            alt={`${company.name} logo`}
-            fill
-            className="object-contain p-2"
-            onError={() => setImageError(true)}
-            unoptimized
-          />
-        ) : (
-          <div className="company-logo-fallback">
-            {company.name.charAt(0)}
-          </div>
-        )}
-      </div>
+      {!imageError ? (
+        <Image
+          src={company.logo}
+          alt={`${company.name} logo`}
+          fill
+          className="object-contain p-3"
+          onError={() => setImageError(true)}
+          unoptimized
+        />
+      ) : (
+        <div className="company-logo-fallback">
+          {company.name.charAt(0)}
+        </div>
+      )}
     </div>
   );
 }

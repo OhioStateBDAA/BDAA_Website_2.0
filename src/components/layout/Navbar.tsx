@@ -9,7 +9,7 @@ export function Navbar() {
     <Container size="contained">
       <nav className="navbar">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2" legacyBehavior>
+        <Link href="/" className="flex items-center gap-2">
           <div className="relative h-12 w-40">
             <Image
               src="/BDAALogo.png"
