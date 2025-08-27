@@ -205,6 +205,23 @@ body {
   @apply opacity-0 translate-y-2;
 }
 
+/* Event Card Styles */
+.event-details-section {
+  background-color: var(--background-white);
+  color: var(--text-black);
+  @apply p-5 rounded-b-3xl;
+}
+
+.event-title {
+  @apply text-2xl font-bold mb-3;
+  color: var(--text-black);
+}
+
+.event-description {
+  @apply leading-relaxed;
+  color: var(--text-black);
+}
+
 /* Grid Layouts */
 .company-grid {
   @apply grid gap-4 relative max-w-6xl mx-auto pb-6;

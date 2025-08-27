@@ -168,27 +168,7 @@ function MediumPostCard({ post }: { post: MediumPost }) {
   );
 }
 
-// Loading Component
-function LoadingSkeleton() {
-  return (
-    <div className="container mx-auto py-12 px-4">
-      <div className="text-center mb-12">
-        <div className="h-8 bg-gray-300 rounded w-64 mx-auto animate-pulse"></div>
-      </div>
-      
-      <div className="max-w-6xl mx-auto grid gap-6 md:gap-8 lg:grid-cols-2">
-        {[...Array(4)].map((_, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-lg p-6">
-            <div className="h-6 bg-gray-300 rounded mb-4 animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded mb-2 animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+
 
 // Empty State Component
 function EmptyState() {
@@ -215,7 +195,7 @@ export default async function BlogPage() {
       
       <div className="container mx-auto py-12 px-4">
         <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
-          BDAA's Medium Blog
+          BDAA&apos;s Medium Blog
         </h1>
         <h2 className="text-2xl  text-center mb-12 text-gray-800">
          Find tips and insights about the project series, recent BDAA events, and our initatives.
