@@ -197,6 +197,12 @@ body {
   @apply text-2xl font-bold text-gray-600;
 }
 
+.company-logo-square {
+  @apply aspect-square bg-white border border-black rounded-lg flex items-center justify-center transition-all duration-300 relative overflow-hidden;
+  width: 100%;
+  height: auto;
+}
+
 .company-name-tooltip {
   @apply absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white text-xs font-medium text-center px-3 py-1 rounded-full whitespace-nowrap transition-all duration-300;
 }
@@ -261,4 +267,91 @@ body {
 
 main {
   flex: 1;
+}
+
+/* Event Card Styles */
+.event-details-section {
+  background-color: var(--background-white);
+  color: var(--text-black);
+  @apply p-5 rounded-b-3xl;
+}
+
+.event-title {
+  @apply text-2xl font-bold mb-3;
+  color: var(--text-black);
+}
+
+.event-description {
+  @apply leading-relaxed;
+  color: var(--text-black);
+}
+
+/* Footer CTA Cards */
+.footer-cta-card {
+  @apply p-6 rounded-3xl relative overflow-hidden transition-all duration-300;
+}
+
+.footer-cta-card-orange {
+  @apply bg-orange-400 text-black;
+}
+
+.footer-cta-card-blue {
+  @apply bg-blue-400 text-white;
+}
+
+.footer-cta-card-red {
+  @apply bg-red-400 text-black;
+}
+
+.footer-cta-card-gray {
+  @apply bg-gray-100 text-black border border-gray-300;
+}
+
+/* Instagram Section Styles - Discord Style Layout */
+.discord-style-card {
+  @apply rounded-2xl p-6 text-white max-w-6xl shadow-xl;
+  background: var(--highlight);
+}
+
+.discord-style-content {
+  @apply flex flex-col lg:flex-row gap-16 items-stretch;
+}
+
+.discord-style-left {
+  @apply w-[600px] flex-shrink-0;
+}
+
+.discord-style-right {
+  @apply flex-[1] flex flex-col justify-center px-6 py-4 max-w-xs;
+}
+
+.instagram-chat-mockup {
+  @apply relative w-full h-full min-h-[500px] lg:min-h-[600px];
+}
+
+.instagram-chat-container {
+  @apply relative w-full h-full bg-white rounded-2xl overflow-hidden shadow-lg;
+}
+
+.instagram-icon-container {
+  @apply flex items-center justify-center w-16 h-16 bg-gradient-to-br from-pink-500 to-yellow-400 rounded-xl mb-6;
+}
+
+.instagram-icon {
+  @apply w-8 h-8 text-white;
+}
+
+.community-title {
+  @apply text-3xl lg:text-4xl font-bold mb-4 text-white;
+  font-family: var(--font-display);
+}
+
+.community-description {
+  @apply text-base mb-6 text-white/90 leading-relaxed;
+  font-family: var(--font-primary);
+}
+
+.join-button {
+  @apply bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center gap-2;
+  font-family: var(--font-primary);
 }
