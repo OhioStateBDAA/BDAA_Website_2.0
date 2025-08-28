@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
-import Image from 'next/image';
 
 export function PhotoGallerySection() {
   // Masonry items with varying heights

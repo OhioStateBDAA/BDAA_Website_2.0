@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import emailjs from '@emailjs/browser';
 
 
@@ -199,15 +200,12 @@ export default function PartnersPage() {
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden">
                       {/* Event Image */}
                       <div className="relative overflow-hidden" style={{ height: '600px' }}>
-                        <img
+                        <Image
                           src={eventImages[currentImageIndex].imageUrl}
                           alt={eventImages[currentImageIndex].title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback for missing images
-                            const target = e.target as HTMLImageElement;
-                            target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkV2ZW50IEltYWdlPC90ZXh0Pjwvc3ZnPg==';
-                          }}
+                          fill
+                          className="object-cover"
+                          unoptimized
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                         
