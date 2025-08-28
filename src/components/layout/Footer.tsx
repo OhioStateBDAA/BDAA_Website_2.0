@@ -1,177 +1,193 @@
-import React from 'react';
+'use client'
+import React, { useState } from 'react';
 import { Container } from './Container';
 import { Section } from './Section';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Mail, MapPin, Calendar, ExternalLink, Github, Linkedin, Twitter } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle newsletter subscription
+    setIsSubscribed(true);
+    setEmail('');
+    setTimeout(() => setIsSubscribed(false), 3000);
+  };
 
   return (
-    <footer className="bg-black text-white">
-      <Section padding="lg" background="default" className="bg-black">
+    <footer className="bg-[var(--background)] text-[var(--text-black)]">
+      {/* CTA Section */}
+      <Section padding="lg" background="default">
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Logo and Mission */}
-            <div className="lg:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="relative h-12 w-32">
-                  <Image
-                    src="/BDAALogo.png"
-                    alt="BDAA Logo"
-                    fill
-                    className="object-contain object-left filter brightness-0 invert"
-                  />
-                </div>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
+              {/* Left text */}
+              <div className="lg:w-1/3">
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-[var(--text-black)] mb-4 leading-tight">
+                  A community of students in data analytics
+                </h2>
               </div>
-              <p className="text-gray-200 leading-relaxed mb-6 max-w-md">
-                BDAA aims to inspire students to think analytically, empower them through hands-on training,
-                and connect them to potential employers at The Ohio State University.
-              </p>
-              <div className="flex space-x-4">
-                <Link
-                  href="mailto:bdaa@osu.edu"
-                  className="text-gray-200 hover:text-white transition-colors"
-                  aria-label="Email BDAA"
-                >
-                  <Mail className="w-5 h-5" />
-                </Link>
-                <Link
-                  href="https://github.com/bdaa-osu"
-                  className="text-gray-200 hover:text-white transition-colors"
-                  aria-label="BDAA GitHub"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Github className="w-5 h-5" />
-                </Link>
-                <Link
-                  href="https://linkedin.com/company/bdaa-osu"
-                  className="text-gray-200 hover:text-white transition-colors"
-                  aria-label="BDAA LinkedIn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Linkedin className="w-5 h-5" />
-                </Link>
-                <Link
-                  href="https://twitter.com/bdaa_osu"
-                  className="text-gray-200 hover:text-white transition-colors"
-                  aria-label="BDAA Twitter"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Twitter className="w-5 h-5" />
-                </Link>
-              </div>
-            </div>
+              
+              {/* Right CTA Cards */}
+              <div className="lg:w-2/3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* GroupMe CTA */}
+                  <Link href="https://groupme.com/join_group/88947141/lqUnX8rW" className="relative group">
+                    {/* Shadow copy - always visible black background */}
+                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
+                    
+                    {/* Main card - lifts up and to the right on hover */}
+                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col border border-black p-6 min-h-[140px] bg-orange-400 text-black">
+                      <h3 className="text-xl font-bold mb-2">Join the GroupMe</h3>
+                      <p className="text-sm mb-4 opacity-90 flex-1">
+                        A safe space for exchanging ideas, events, job opportunities and opportunities for personal and career development.
+                      </p>
+                      <div className="self-end">
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </Link>
 
-            {/* Quick Links */}
-            <div>
-              <h3 className="font-display font-bold text-lg mb-4 text-white">Quick Links</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link
-                    href="/about"
-                    className="text-gray-200 hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    About Us
+                  {/* Partner CTA */}
+                  <Link href="/partners#sponsorship-application" className="relative group">
+                    {/* Shadow copy - always visible black background */}
+                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
+                    
+                    {/* Main card - lifts up and to the right on hover */}
+                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col justify-between border border-black p-6 min-h-[140px] bg-blue-400 text-white">
+                      <h3 className="text-xl font-bold mb-2">Become a partner</h3>
+                      <div className="self-end">
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
+                    </div>
                   </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/partners"
-                    className="text-gray-200 hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    Partners
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    className="text-gray-200 hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/partners#sponsorship-application"
-                    className="text-gray-200 hover:text-white transition-colors flex items-center gap-2"
-                  >
-                    Partner With Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="https://osu.edu"
-                    className="text-gray-200 hover:text-white transition-colors flex items-center gap-2"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ohio State University
-                    <ExternalLink className="w-3 h-3" />
-                  </Link>
-                </li>
-              </ul>
-            </div>
 
-            {/* Contact & Location */}
-            <div>
-              <h3 className="font-display font-bold text-lg mb-4 text-white">Contact Info</h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 mt-1 text-gray-300 flex-shrink-0" />
-                  <div>
-                    <p className="text-gray-200 text-sm">
-                      The Ohio State University<br />
-                      Columbus, OH 43210
-                    </p>
+                  {/* Event CTA */}
+                  <Link href="/events" className="relative group">
+                    {/* Shadow copy - always visible black background */}
+                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
+                    
+                    {/* Main card - lifts up and to the right on hover */}
+                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col justify-between border border-black p-6 min-h-[140px] bg-red-400 text-black">
+                      <h3 className="text-xl font-bold mb-2">Join an event</h3>
+                      <div className="self-end">
+                        <ArrowRight className="w-5 h-5" />
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Newsletter CTA */}
+                  <div className="relative group">
+                    {/* Shadow copy - always visible black background */}
+                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
+                    
+                    {/* Main card - static (no hover lift since it's a form) */}
+                    <div className="relative z-10 w-full h-full rounded-2xl border border-black p-6 min-h-[140px] bg-gray-100 text-black">
+                      <h3 className="text-xl font-bold mb-4">Subscribe to newsletter</h3>
+                      <form onSubmit={handleSubscribe} className="space-y-3">
+                        <input
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder="Enter your email address"
+                          className="w-full px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] text-sm"
+                          required
+                        />
+                        <div className="flex items-start gap-2 mb-3">
+                          <input
+                            type="checkbox"
+                            id="newsletter-consent"
+                            required
+                            className="mt-1"
+                          />
+                          <label htmlFor="newsletter-consent" className="text-xs text-gray-600">
+                            I agree that BDAA may send me newsletters and other notifications via email.
+                          </label>
+                        </div>
+                        <button
+                          type="submit"
+                          disabled={isSubscribed}
+                          className="relative group"
+                        >
+                          {/* Shadow copy for subscribe button */}
+                          <div className="absolute top-0 left-0 w-full h-full rounded-lg bg-black z-0" />
+                          
+                          {/* Main button */}
+                          <div className="relative z-10 w-full h-full rounded-lg font-medium transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-4 py-2 text-sm bg-red-400 text-white disabled:opacity-50">
+                            {isSubscribed ? 'Subscribed!' : 'Subscribe'}
+                          </div>
+                        </button>
+                      </form>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-gray-300 flex-shrink-0" />
-                  <Link
-                    href="mailto:bdaa@osu.edu"
-                    className="text-gray-200 hover:text-white transition-colors text-sm"
-                  >
-                    ohiostatebdaa@gmail.com
-                  </Link>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Calendar className="w-4 h-4 text-gray-300 flex-shrink-0" />
-                  <p className="text-gray-200 text-sm">
-                    Founded 2014
-                  </p>
                 </div>
               </div>
             </div>
           </div>
+        </Container>
+      </Section>
 
-          {/* Bottom Bar */}
-          <div className="border-t border-gray-600 mt-8 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-gray-300 text-sm">
+      {/* Footer Links */}
+      <Section padding="md" background="default" className="border-t border-gray-200">
+        <Container>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row justify-between gap-8">
+              {/* Logo and Contact */}
+              <div className="lg:w-1/3">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="relative h-12 w-32">
+                    <Image
+                      src="/BDAALogo.png"
+                      alt="BDAA Logo"
+                      fill
+                      className="object-contain object-left"
+                    />
+                  </div>
+                </div>
+                <p className="text-gray-600 text-sm mb-4">info@bdaa-osu.edu</p>
+              </div>
+
+              {/* Links Grid */}
+              <div className="lg:w-2/3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+                  <div>
+                    <h4 className="font-bold text-[var(--text-black)] mb-3">About us</h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li><Link href="/about" className="hover:text-[var(--text-black)] transition-colors">Meet BDAA</Link></li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-bold text-[var(--text-black)] mb-3">Activities</h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li><Link href="/events" className="hover:text-[var(--text-black)] transition-colors">Events</Link></li>
+                      <li><Link href="/blog" className="hover:text-[var(--text-black)] transition-colors">Blog</Link></li>
+                      <li><Link href="/partners" className="hover:text-[var(--text-black)] transition-colors">Partnerships</Link></li>
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-bold text-[var(--text-black)] mb-3">Join us</h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li><Link href="https://groupme.com/join_group/88947141/lqUnX8rW" className="hover:text-[var(--text-black)] transition-colors">GroupMe</Link></li>
+                      <li><Link href="https://linkedin.com/company/bdaa-osu" className="hover:text-[var(--text-black)] transition-colors">LinkedIn</Link></li>
+                      <li><Link href="https://instagram.com/bdaa_osu" className="hover:text-[var(--text-black)] transition-colors">Instagram</Link></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Bottom Copyright */}
+            <div className="border-t border-gray-200 mt-8 pt-6">
+              <p className="text-gray-500 text-sm text-center">
                 © {currentYear} Big Data Analytics Association. All rights reserved.
               </p>
-              <div className="flex items-center gap-6 text-sm">
-                <Link
-                  href="/privacy"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                </Link>
-                <Link
-                  href="/terms"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                </Link>
-                <Link
-                  href="/accessibility"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                </Link>
-              </div>
             </div>
           </div>
         </Container>

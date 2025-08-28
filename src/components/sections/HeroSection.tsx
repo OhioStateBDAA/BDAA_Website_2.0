@@ -32,15 +32,13 @@ export function HeroSection() {
                 showArrow={false} 
                 className="hero-button" 
               />
-              <Link href="/partners#sponsorship-application" passHref legacyBehavior>
-                <a>
-                  <Button 
-                    label="Partner With Us" 
-                    color="var(--text-secondary)" 
-                    showArrow={false} 
-                    className="hero-button"
-                  />
-                </a>
+              <Link href="/partners#sponsorship-application">
+                <Button 
+                  label="Partner With Us" 
+                  color="var(--text-secondary)" 
+                  showArrow={false} 
+                  className="hero-button"
+                />
               </Link>
             </div>
           </div>

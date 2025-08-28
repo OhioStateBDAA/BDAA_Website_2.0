@@ -2,9 +2,9 @@
 import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/layout/Section';
 import { Navbar } from '@/components/layout/Navbar';
-import { SponsorsCarousel } from '@/components/sections/SponsorsCarousel';
+import { Button } from '@/components/ui/Button';
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Calendar, MapPin, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import emailjs from '@emailjs/browser';
 
@@ -155,7 +155,7 @@ export default function PartnersPage() {
                 
                 {/* Main button - lifts up and to the right on hover */}
                 <div
-                  className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-2 group-hover:-translate-y-2 flex items-center justify-center border border-black px-8 py-3 min-h-[48px] bg-[var(--background-white)] text-black"
+                  className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-8 py-3 min-h-[48px] bg-[var(--background-white)] text-black"
                 >
                   <span className="leading-tight">Become a partner</span>
                 </div>
@@ -165,8 +165,6 @@ export default function PartnersPage() {
         </Container>
       </Section>
 
-      {/* Partners Carousel */}
-      <SponsorsCarousel />
      
       {/* Events Carousel Section */}
  
@@ -434,23 +432,14 @@ export default function PartnersPage() {
               </div>
 
               <div className="mt-8 text-center">
-                <button
+                <Button
+                  label={isSubmitting ? "Submitting..." : "Submit Partnership Application"}
+                  color="var(--highlight)"
+                  showArrow={!isSubmitting}
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-[var(--highlight)] text-white px-8 py-3 rounded-lg font-primary font-bold hover:bg-[var(--highlight)]/90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Submit Partnership Application
-                    </>
-                  )}
-                </button>
+                  className={isSubmitting ? "opacity-50 cursor-not-allowed" : ""}
+                />
                 <p className="text-sm text-gray-600 mt-4">
                   We&apos;ll review your application and get back to you ASAP.
                 </p>
