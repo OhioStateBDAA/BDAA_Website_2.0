@@ -29,7 +29,7 @@ interface MediumResponse {
 }
 
 // Replace with your Medium username
-const MEDIUM_USERNAME = 'agastyamishra2006';
+const MEDIUM_USERNAME = 'BigData&AnalyticsAssociation';
 
 // Metadata for SEO
 export const metadata: Metadata = {
@@ -127,8 +127,8 @@ function MediumPostCard({ post }: { post: MediumPost }) {
   });
 
   return (
-    <article className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
-      <h2 className="text-2xl font-bold mb-3">
+    <article className="bg-white rounded-lg border border-black p-6 duration-300">      
+    <h2 className="text-2xl font-bold mb-3">
         <Link 
           href={post.link}
           target="_blank"
@@ -190,7 +190,7 @@ export default async function BlogPage() {
   const posts = await getMediumPosts(MEDIUM_USERNAME);
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-bd-background">
             <Navbar />
       
       <div className="container mx-auto py-12 px-4">
