@@ -7,20 +7,29 @@ import { Navbar } from '@/components/layout/Navbar';
 import { TeamGrid } from '@/components/team/TeamGrid';
 import { TeamMemberModal } from '@/components/team/TeamMemberModal';
 import { Dropdown } from '@/components/ui/Dropdown';
-import { BoardHistory, getCurrentBoard, getBoardByKey, TeamMember } from '@/data/officerData';
+import { TeamMember } from '@/data/officerData';
+import { useOfficers } from '@/hooks/useOfficers';
 
 export default function AboutPage() {
-  const [selectedBoard, setSelectedBoard] = useState(getCurrentBoard());
+  const { boardHistory, currentBoard, loading, error } = useOfficers();
+  const [selectedBoard, setSelectedBoard] = useState(currentBoard);
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const dropdownOptions = BoardHistory.map(board => ({
+  // Update selectedBoard when currentBoard changes
+  React.useEffect(() => {
+    if (currentBoard && !selectedBoard) {
+      setSelectedBoard(currentBoard);
+    }
+  }, [currentBoard, selectedBoard]);
+
+  const dropdownOptions = boardHistory.map(board => ({
     value: `${board.semester}${board.year}`,
     label: board.displayName
   }));
 
   const handleBoardChange = (value: string) => {
-    const board = getBoardByKey(value);
+    const board = boardHistory.find(board => `${board.semester}${board.year}` === value);
     if (board) {
       setSelectedBoard(board);
     }
@@ -35,6 +44,51 @@ export default function AboutPage() {
     setIsModalOpen(false);
     setSelectedMember(null);
   };
+
+  // Show loading state
+  if (loading) {
+    return (
+      <main className="min-h-screen w-full bg-bd-background">
+        <Navbar />
+        <Section padding="lg" background="default">
+          <Container>
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl font-display font-bold text-black mb-6">
+                About BDAA
+              </h1>
+              <div className="text-lg text-black">Loading officer data...</div>
+            </div>
+          </Container>
+        </Section>
+      </main>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <main className="min-h-screen w-full bg-bd-background">
+        <Navbar />
+        <Section padding="lg" background="default">
+          <Container>
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl font-display font-bold text-black mb-6">
+                About BDAA
+              </h1>
+              <div className="text-lg text-red-600">
+                Error loading officer data: {error}
+              </div>
+            </div>
+          </Container>
+        </Section>
+      </main>
+    );
+  }
+
+  // Don't render if no selectedBoard yet
+  if (!selectedBoard) {
+    return null;
+  }
 
   return (
     <main className="min-h-screen w-full bg-bd-background">

@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BDAA Website
+
+This is the official website for the Big Data Analytics Association at The Ohio State University, built with [Next.js](https://nextjs.org).
 
 ## Getting Started
 
@@ -16,21 +18,97 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app/` - Next.js App Router pages
+- `src/components/` - Reusable React components
+- `src/data/` - Static data and type definitions
+- `src/hooks/` - Custom React hooks
+- `src/services/` - API services and integrations
 
-## Learn More
+## Design System
 
-To learn more about Next.js, take a look at the following resources:
+The website follows a consistent design system defined in `src/app/globals.css`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Colors**: Cream background (#F4F3EE), red highlight (#7A1400), black text
+- **Typography**: Anaheim (primary), Courier Prime (display/headings)
+- **Layout**: Container/Section components for consistent spacing
+- **Components**: Reusable card patterns with shadow/border styling
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Events Page Development Plan
+
+### Overview
+Creating a dedicated Events page that will be accessible via the "All Events" button and other event links throughout the site. The page will showcase upcoming BDAA events and provide access to historical Project Series content.
+
+### Requirements
+1. **Regular Meetings Display**
+   - Weekly general meetings: Tuesdays 7:30 PM at Palm Reen Hall
+   - Project Series: Thursdays at Palm Reen Hall (concurrent program)
+
+2. **Upcoming Events Section**
+   - Card-based layout (no calendar interface)
+   - Display major upcoming events
+   - Follow existing design system styling
+
+3. **Project Series Archive**
+   - Link to Notion hub containing historical content
+   - Previous year's project tracks:
+     - Charted Data Visualization
+     - Data Science  
+     - Machine Learning
+   - Student projects and lecture materials
+
+### Technical Implementation Plan
+
+#### Phase 1: Page Structure
+- Create `/src/app/events/page.tsx`
+- Implement standard layout with Navbar, Container, Section components
+- Add page title and introductory content
+
+#### Phase 2: Event Components
+- Create `EventCard` component for individual events
+- Design `UpcomingEvents` section component
+- Implement `RegularMeetings` information component
+
+#### Phase 3: Project Series Integration
+- Create `ProjectSeriesArchive` component
+- Add external link to Notion hub
+- Include track descriptions and call-to-action
+
+#### Phase 4: Data Integration
+- Create event data structure
+- Consider future database integration
+- Implement responsive design patterns
+
+### File Structure
+```
+src/
+├── app/
+│   └── events/
+│       └── page.tsx
+├── components/
+│   ├── events/
+│   │   ├── EventCard.tsx
+│   │   ├── UpcomingEvents.tsx
+│   │   ├── RegularMeetings.tsx
+│   │   └── ProjectSeriesArchive.tsx
+└── data/
+    └── events.ts
+```
+
+### Design Specifications
+- Follow existing color scheme and typography
+- Use consistent card patterns from current components
+- Maintain responsive design principles
+- Include hover effects and transitions
+- Ensure accessibility standards
+
+### Future Enhancements
+- Dynamic event loading from database/CMS
+- Event registration functionality
+- Integration with calendar systems
+- Image galleries for past events
 
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
