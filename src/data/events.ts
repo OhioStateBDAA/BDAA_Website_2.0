@@ -1,23 +1,4 @@
-export interface Event {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  type: 'workshop' | 'meeting' | 'social' | 'competition' | 'guest-speaker';
-  image?: string;
-  registrationLink?: string;
-  featured?: boolean;
-}
-
-export interface ProjectTrack {
-  id: string;
-  name: string;
-  description: string;
-  color: string;
-  icon?: string;
-}
+import { Event, EventType, ProjectTrack, RegularMeetings, NotionHub } from '@/types/events';
 
 export const projectTracks: ProjectTrack[] = [
   {
@@ -94,7 +75,7 @@ export const upcomingEvents: Event[] = [
 ];
 
 // Regular meeting information
-export const regularMeetings = {
+export const regularMeetings: RegularMeetings = {
   general: {
     day: 'Tuesday',
     time: '7:30 PM',
@@ -110,7 +91,7 @@ export const regularMeetings = {
 };
 
 // Notion hub information
-export const notionHub = {
+export const notionHub: NotionHub = {
   url: 'https://notion.so/bdaa-projects', // Placeholder URL
   title: 'BDAA Project Hub',
   description: 'Access all project materials, student work, lecture slides, and resources from our comprehensive Notion workspace.',

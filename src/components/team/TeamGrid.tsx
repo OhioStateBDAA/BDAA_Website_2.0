@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { TeamMember } from './TeamMember'
-import { TeamMember as TeamMemberType, YearBoard } from '@/data/officerData'
+import { TeamMember as TeamMemberType, YearBoard } from '@/types/events'
 
 interface TeamGridProps {
   board: YearBoard

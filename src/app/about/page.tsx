@@ -7,7 +7,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { TeamGrid } from '@/components/team/TeamGrid';
 import { TeamMemberModal } from '@/components/team/TeamMemberModal';
 import { Dropdown } from '@/components/ui/Dropdown';
-import { TeamMember } from '@/data/officerData';
+import { TeamMember } from '@/types/events';
 import { useOfficers } from '@/hooks/useOfficers';
 
 export default function AboutPage() {

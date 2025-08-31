@@ -15,26 +15,21 @@ export function Footer() {
     e.preventDefault();
     
     try {
-      // Create a form data object
       const formData = new FormData();
       formData.append('email', email);
       
-      // Submit to Beehiiv using the embed form endpoint
       await fetch('https://embeds.beehiiv.com/v2/newsletter/e9316834-df94-4218-9f11-1d6f602917aa/subscribe', {
         method: 'POST',
         body: formData,
-        mode: 'no-cors' // This allows the request to go through despite CORS
+        mode: 'no-cors'
       });
       
-      // Since we're using no-cors, we can't check response status
-      // But we'll assume success and show confirmation
       setIsSubscribed(true);
       setEmail('');
       setTimeout(() => setIsSubscribed(false), 3000);
       
     } catch (error) {
       console.error('Subscription error:', error);
-      // Still show success since no-cors mode doesn't give us error details
       setIsSubscribed(true);
       setEmail('');
       setTimeout(() => setIsSubscribed(false), 3000);
@@ -43,27 +38,20 @@ export function Footer() {
 
   return (
     <footer className="bg-[var(--background)] text-[var(--text-black)]">
-      {/* CTA Section */}
       <Section padding="lg" background="default">
         <Container>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row gap-8 items-start">
-              {/* Left text */}
               <div className="lg:w-1/3">
                 <h2 className="text-4xl md:text-5xl font-display font-bold text-[var(--text-black)] mb-4 leading-tight">
                   A community of students in data analytics
                 </h2>
               </div>
               
-              {/* Right CTA Cards */}
               <div className="lg:w-2/3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* GroupMe CTA */}
                   <Link href="https://groupme.com/join_group/88947141/lqUnX8rW" className="relative group">
-                    {/* Shadow copy - always visible black background */}
                     <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    
-                    {/* Main card - lifts up and to the right on hover */}
                     <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col border border-black p-6 min-h-[140px] bg-orange-400 text-black">
                       <h3 className="text-xl font-bold mb-2">Join the GroupMe</h3>
                       <p className="text-sm mb-4 opacity-90 flex-1">
@@ -75,12 +63,8 @@ export function Footer() {
                     </div>
                   </Link>
 
-                  {/* Partner CTA */}
                   <Link href="/partners#sponsorship-application" className="relative group">
-                    {/* Shadow copy - always visible black background */}
                     <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    
-                    {/* Main card - lifts up and to the right on hover */}
                     <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col justify-between border border-black p-6 min-h-[140px] bg-blue-400 text-white">
                       <h3 className="text-xl font-bold mb-2">Become a partner</h3>
                       <div className="self-end">
@@ -89,12 +73,8 @@ export function Footer() {
                     </div>
                   </Link>
 
-                  {/* Event CTA */}
                   <Link href="/events" className="relative group">
-                    {/* Shadow copy - always visible black background */}
                     <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    
-                    {/* Main card - lifts up and to the right on hover */}
                     <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col justify-between border border-black p-6 min-h-[140px] bg-red-400 text-black">
                       <h3 className="text-xl font-bold mb-2">Join an event</h3>
                       <div className="self-end">
@@ -103,12 +83,8 @@ export function Footer() {
                     </div>
                   </Link>
 
-                  {/* Newsletter CTA */}
-                  <div className="relative group">
-                    {/* Shadow copy - always visible black background */}
+                  <div className="relative">
                     <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    
-                    {/* Main card - static (no hover lift since it's a form) */}
                     <div className="relative z-10 w-full h-full rounded-2xl border border-black p-6 min-h-[140px] bg-gray-100 text-black">
                       <h3 className="text-xl font-bold mb-4">Subscribe to newsletter</h3>
                       <form onSubmit={handleSubscribe} className="space-y-3">
@@ -136,10 +112,7 @@ export function Footer() {
                           disabled={isSubscribed}
                           className="relative group"
                         >
-                          {/* Shadow copy for subscribe button */}
                           <div className="absolute top-0 left-0 w-full h-full rounded-lg bg-black z-0" />
-                          
-                          {/* Main button */}
                           <div className="relative z-10 w-full h-full rounded-lg font-medium transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-4 py-2 text-sm bg-red-400 text-white disabled:opacity-50">
                             {isSubscribed ? 'Subscribed!' : 'Subscribe'}
                           </div>
@@ -154,12 +127,10 @@ export function Footer() {
         </Container>
       </Section>
 
-      {/* Footer Links */}
       <Section padding="md" background="default" className="border-t border-gray-200">
         <Container>
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row justify-between gap-8">
-              {/* Logo and Contact */}
               <div className="lg:w-1/3">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="relative h-12 w-32">
@@ -174,7 +145,6 @@ export function Footer() {
                 <p className="text-gray-600 text-sm mb-4">info@bdaa-osu.edu</p>
               </div>
 
-              {/* Links Grid */}
               <div className="lg:w-2/3">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
                   <div>
@@ -205,7 +175,6 @@ export function Footer() {
               </div>
             </div>
             
-            {/* Bottom Copyright */}
             <div className="border-t border-gray-200 mt-8 pt-6">
               <p className="text-gray-500 text-sm text-center">
                 © {currentYear} Big Data Analytics Association. All rights reserved.

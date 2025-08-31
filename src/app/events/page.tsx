@@ -1,13 +1,52 @@
 'use client'
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/layout/Section';
 import { Navbar } from '@/components/layout/Navbar';
 import { UpcomingEvents } from '@/components/events/UpcomingEvents';
 import { upcomingEvents, regularMeetings, projectTracks, notionHub } from '@/data/events';
+// Removed direct Airtable import to avoid client-side issues
+import { Event } from '@/types/events';
 
 export default function EventsPage() {
+  const [events, setEvents] = useState<Event[]>(upcomingEvents);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        setLoading(true);
+        console.log('🔄 Fetching events from API...');
+        
+        const response = await fetch('/api/events');
+        
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+        
+        const airtableEvents: Event[] = await response.json();
+        
+        if (airtableEvents.length > 0) {
+          console.log(`✅ Loaded ${airtableEvents.length} events from Airtable`);
+          setEvents(airtableEvents);
+        } else {
+          console.log('⚠️ No events from Airtable, using static data');
+          setEvents(upcomingEvents);
+        }
+      } catch (err) {
+        console.error('Error loading events from API:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load events');
+        setEvents(upcomingEvents); // Fallback to static data
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadEvents();
+  }, []);
+
   return (
     <main className="min-h-screen w-full bg-bd-background">
       <Navbar />
@@ -95,7 +134,20 @@ export default function EventsPage() {
               Upcoming Events
             </h2>
             
-            <UpcomingEvents events={upcomingEvents} />
+            {loading && (
+              <div className="text-center py-12">
+                <p className="text-lg text-gray-600">Loading events...</p>
+              </div>
+            )}
+            
+            {error && (
+              <div className="text-center py-12">
+                <p className="text-lg text-red-600 mb-2">⚠️ {error}</p>
+                <p className="text-sm text-gray-600">Showing cached events instead</p>
+              </div>
+            )}
+            
+            {!loading && <UpcomingEvents events={events} />}
           </div>
         </Container>
       </Section>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { YearBoard } from '@/data/officerData';
+import { YearBoard } from '@/types/events';
 
 interface UseOfficersResult {
   boardHistory: YearBoard[];

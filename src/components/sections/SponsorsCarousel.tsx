@@ -14,8 +14,7 @@ interface Sponsor {
   website?: string
 }
 
-// BDAA Sponsors and Partners
-const sponsors: Sponsor[] = [
+const SPONSORS: Sponsor[] = [
   { 
     id: 'accenture', 
     name: 'Accenture', 
@@ -54,42 +53,61 @@ const sponsors: Sponsor[] = [
   },
 ]
 
+const CAROUSEL_OPTIONS = {
+  loop: true,
+  align: 'start',
+  slidesToScroll: 1,
+  containScroll: 'trimSnaps'
+} as const
+
+const AUTOPLAY_OPTIONS = {
+  delay: 3000,
+  stopOnInteraction: false,
+  stopOnMouseEnter: true,
+  playOnInit: true
+} as const
+
+const AUTOPLAY_RESTART_DELAY = 3000
+
 export function SponsorsCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { 
-      loop: true,
-      align: 'start',
-      slidesToScroll: 1,
-      containScroll: 'trimSnaps'
-    },
-    [
-      Autoplay({ 
-        delay: 3000, // 4 second delay - slow and non-distracting
-        stopOnInteraction: false, // Keep auto-scrolling even after user interaction
-        stopOnMouseEnter: true, // Pause on hover
-        playOnInit: true
-      })
-    ]
-  )
+  const [emblaRef, emblaApi] = useEmblaCarousel(CAROUSEL_OPTIONS, [
+    Autoplay(AUTOPLAY_OPTIONS)
+  ])
 
   const handleSponsorClick = useCallback((sponsor: Sponsor) => {
-    // Stop autoplay temporarily on click
-    if (emblaApi) {
-      const autoplay = emblaApi.plugins().autoplay as { stop: () => void; play: () => void }
-      if (autoplay) {
-        autoplay.stop()
-        // Restart autoplay after 3 seconds
-        setTimeout(() => {
-          autoplay.play()
-        }, 3000)
-      }
+    if (!emblaApi) return
+
+    const autoplay = emblaApi.plugins().autoplay as { stop: () => void; play: () => void }
+    if (autoplay) {
+      autoplay.stop()
+      setTimeout(() => autoplay.play(), AUTOPLAY_RESTART_DELAY)
     }
     
-    // Open sponsor website if available
     if (sponsor.website) {
       window.open(sponsor.website, '_blank', 'noopener,noreferrer')
     }
   }, [emblaApi])
+
+  const renderSponsorSlide = (sponsor: Sponsor, index: number) => (
+    <div 
+      key={`${sponsor.id}-${index}`}
+      className="flex-[0_0_auto] min-w-0 pl-4 md:pl-8"
+    >
+      <div 
+        className="flex items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:scale-105"
+        onClick={() => handleSponsorClick(sponsor)}
+      >
+        <div className="relative w-32 h-20 md:w-40 md:h-24 sponsor-logo flex items-center justify-center">
+          <Image
+            src={sponsor.logo}
+            alt={`${sponsor.name} logo`}
+            fill
+            className="object-contain object-center"
+          />
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <Section padding="md" background="default">
@@ -102,27 +120,7 @@ export function SponsorsCarousel() {
         
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            {/* Duplicate sponsors array for smooth infinite scroll */}
-            {[...sponsors, ...sponsors].map((sponsor, index) => (
-              <div 
-                key={`${sponsor.id}-${index}`}
-                className="flex-[0_0_auto] min-w-0 pl-4 md:pl-8"
-              >
-                <div 
-                  className="flex items-center justify-center p-6 cursor-pointer transition-all duration-300 hover:scale-105"
-                  onClick={() => handleSponsorClick(sponsor)}
-                >
-                  <div className="relative w-32 h-20 md:w-40 md:h-24 sponsor-logo flex items-center justify-center">
-                    <Image
-                      src={sponsor.logo}
-                      alt={`${sponsor.name} logo`}
-                      fill
-                      className="object-contain object-center"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+            {[...SPONSORS, ...SPONSORS].map(renderSponsorSlide)}
           </div>
         </div>
       </Container>

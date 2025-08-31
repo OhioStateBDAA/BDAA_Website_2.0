@@ -1,5 +1,5 @@
 import Airtable from 'airtable';
-import { TeamMember, YearBoard } from '@/data/officerData';
+import { TeamMember, YearBoard, Event } from '@/types/events';
 
 // Configure Airtable with Personal Access Token
 const base = new Airtable({
@@ -272,4 +272,126 @@ export async function getCurrentBoardFromAirtable(): Promise<YearBoard> {
 export async function getBoardByKeyFromAirtable(key: string): Promise<YearBoard | undefined> {
   const boards = await fetchOfficersFromAirtable();
   return boards.find(board => `${board.semester}${board.year}` === key);
+}
+
+// Events Airtable Functions
+export async function fetchEventsFromAirtable(): Promise<Event[]> {
+  const startTime = Date.now();
+  
+  try {
+    const eventsBaseId = process.env.AIRTABLE_EVENTS_BASE_ID;
+    const eventsTableId = process.env.AIRTABLE_EVENTS_TABLE_ID;
+    const eventsViewId = process.env.AIRTABLE_EVENTS_VIEW_ID;
+    
+    console.log('🎉 Fetching events from Airtable...');
+    console.log('Base ID:', eventsBaseId);
+    console.log('Table ID:', eventsTableId);
+    console.log('View ID:', eventsViewId);
+
+    if (!process.env.AIRTABLE_API_KEY) {
+      throw new Error('❌ AIRTABLE_API_KEY is missing from environment variables');
+    }
+    
+    if (!eventsBaseId) {
+      throw new Error('❌ AIRTABLE_EVENTS_BASE_ID is missing from environment variables');
+    }
+    
+    if (!eventsTableId) {
+      throw new Error('❌ AIRTABLE_EVENTS_TABLE_ID is missing from environment variables');
+    }
+
+    let url = `https://api.airtable.com/v0/${eventsBaseId}/${eventsTableId}`;
+    if (eventsViewId) {
+      url += `?view=${encodeURIComponent(eventsViewId)}`;
+    }
+    
+    console.log('📡 Making request to:', url);
+    
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    console.log(`📊 Response status: ${response.status} ${response.statusText}`);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      let errorDetails;
+      
+      try {
+        errorDetails = JSON.parse(errorText);
+      } catch {
+        errorDetails = { message: errorText };
+      }
+      
+      console.error(`🚨 Airtable API error (${response.status}):`, errorDetails);
+      throw new Error(`Airtable API error: ${response.status} ${response.statusText} - ${JSON.stringify(errorDetails)}`);
+    }
+
+    const data = await response.json();
+    const records = data.records || [];
+    
+    console.log(`✅ Successfully fetched ${records.length} event records from Airtable`);
+    
+    if (records.length === 0) {
+      console.warn('⚠️ No event records found in table');
+      return [];
+    }
+
+    // Process records into Event format
+    const events: Event[] = records.map((record: any, index: number) => {
+      const fields = record.fields;
+      
+      // Log first record structure for debugging
+      if (index === 0) {
+        console.log('📋 Sample event record structure:', JSON.stringify(fields, null, 2));
+      }
+
+      return {
+        id: record.id,
+        title: fields['Title'] || fields['Event Name'] || fields['Name'] || 'Untitled Event',
+        description: fields['Description'] || fields['Details'] || '',
+        date: fields['Date'] || fields['Event Date'] || '',
+        time: fields['Time'] || fields['Event Time'] || '',
+        location: fields['Location'] || fields['Venue'] || '',
+        type: mapEventType(fields['Type'] || fields['Event Type'] || fields['Category']),
+        image: fields['Image'] && fields['Image'][0] ? fields['Image'][0].url : undefined,
+        registrationLink: fields['Registration Link'] || fields['Registration URL'] || fields['Registration'],
+        featured: fields['Featured'] === true || fields['Featured'] === 'Yes' || fields['Featured'] === 'True',
+      };
+    });
+
+    const duration = Date.now() - startTime;
+    console.log(`⏱️ Total processing time: ${duration}ms`);
+    console.log(`🎉 Successfully processed ${events.length} events`);
+    
+    return events;
+
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    console.error(`💥 Fatal error fetching events after ${duration}ms:`, error);
+    
+    console.error('🔧 Events troubleshooting checklist:');
+    console.error('   1. Verify events base ID:', process.env.AIRTABLE_EVENTS_BASE_ID);
+    console.error('   2. Verify events table ID:', process.env.AIRTABLE_EVENTS_TABLE_ID);
+    console.error('   3. Check if view ID exists:', process.env.AIRTABLE_EVENTS_VIEW_ID);
+    console.error('   4. Ensure API key has access to events base');
+    
+    // Return empty array instead of throwing to prevent page crashes
+    return [];
+  }
+}
+
+function mapEventType(type: string): 'workshop' | 'meeting' | 'social' | 'competition' | 'guest-speaker' {
+  if (!type) return 'meeting';
+  
+  const lowerType = type.toLowerCase();
+  if (lowerType.includes('workshop') || lowerType.includes('training')) return 'workshop';
+  if (lowerType.includes('guest') || lowerType.includes('speaker') || lowerType.includes('panel')) return 'guest-speaker';
+  if (lowerType.includes('social') || lowerType.includes('networking') || lowerType.includes('mixer')) return 'social';
+  if (lowerType.includes('competition') || lowerType.includes('contest') || lowerType.includes('hackathon')) return 'competition';
+  
+  return 'meeting';
 }

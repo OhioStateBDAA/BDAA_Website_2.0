@@ -1,5 +1,5 @@
 import React from 'react';
-import { Event } from '@/data/events';
+import { Event } from '@/types/events';
 
 interface EventCardProps {
   event: Event;

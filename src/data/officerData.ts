@@ -1,23 +1,4 @@
-export interface TeamMember {
-  name: string
-  img: string
-  role: string
-  linkedIn: string
-  school_year: string
-  major: string
-  minor: string
-  work_experience: string
-  fun_fact: string
-  email: string
-  pronouns?: string // Optional field for older data
-}
-
-export interface YearBoard {
-  year: string
-  semester: string
-  displayName: string
-  officers: TeamMember[]
-}
+import { TeamMember, YearBoard } from '@/types/events';
 
 const SP25Officers: TeamMember[] = [
   {

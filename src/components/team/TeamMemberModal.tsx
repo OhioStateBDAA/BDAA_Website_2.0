@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react'
 import Image from 'next/image'
 import { X, ExternalLink, Mail } from 'lucide-react'
-import { TeamMember as TeamMemberType } from '@/data/officerData'
+import { TeamMember as TeamMemberType } from '@/types/events'
 
 interface TeamMemberModalProps {
   member: TeamMemberType | null
