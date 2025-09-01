@@ -34,7 +34,7 @@ export function useOfficers(): UseOfficersResult {
       // If API fails, fall back to static data
       throw new Error('API failed, using fallback data');
 
-    } catch (err) {
+    } catch {
       // Silently fall back to static data (this is expected when Airtable isn't configured)
       try {
         const { BoardHistory } = await import('@/data/officerData');
