@@ -66,14 +66,3 @@ export interface YearBoard {
   officers: TeamMember[];
 }
 
-// Export all types
-export type {
-  Event,
-  EventType,
-  ProjectTrack,
-  RegularMeeting,
-  RegularMeetings,
-  NotionHub,
-  TeamMember,
-  YearBoard
-};

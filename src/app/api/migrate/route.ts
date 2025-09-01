@@ -33,7 +33,7 @@ export async function POST() {
         const batch = board.officers.slice(i, i + batchSize);
         
         const records = batch.map(officer => {
-          const fields: any = {
+          const fields: Record<string, string> = {
             'Name': officer.name || '',
             'LinkedIn': officer.linkedIn || '',
             'School Year': officer.school_year || '',

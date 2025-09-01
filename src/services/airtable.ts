@@ -1,31 +1,31 @@
-import Airtable from 'airtable';
+// import Airtable from 'airtable';
 import { TeamMember, YearBoard, Event } from '@/types/events';
 
 // Configure Airtable with Personal Access Token
-const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY,
-}).base(process.env.AIRTABLE_BASE_ID!);
+// const base = new Airtable({
+//   apiKey: process.env.AIRTABLE_API_KEY,
+// }).base(process.env.AIRTABLE_BASE_ID!);
 
-const table = base(process.env.AIRTABLE_TABLE_NAME!);
+// const table = base(process.env.AIRTABLE_TABLE_NAME!);
 
-interface AirtableRecord {
-  id: string;
-  fields: {
-    Name?: string;
-    Image?: Array<{ url: string; filename: string }>;
-    Role?: string;
-    LinkedIn?: string;
-    'School Year'?: string;
-    Major?: string;
-    Minor?: string;
-    'Work Experience'?: string;
-    'Fun Fact'?: string;
-    Email?: string;
-    Year?: string;
-    Semester?: string;
-    Status?: string;
-  };
-}
+// interface AirtableRecord {
+//   id: string;
+//   fields: {
+//     Name?: string;
+//     Image?: Array<{ url: string; filename: string }>;
+//     Role?: string;
+//     LinkedIn?: string;
+//     'School Year'?: string;
+//     Major?: string;
+//     Minor?: string;
+//     'Work Experience'?: string;
+//     'Fun Fact'?: string;
+//     Email?: string;
+//     Year?: string;
+//     Semester?: string;
+//     Status?: string;
+//   };
+// }
 
 export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
   const startTime = Date.now();
@@ -128,7 +128,7 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
     let skippedCount = 0;
     const fieldMissingCounts: { [key: string]: number } = {};
 
-    records.forEach((record: any, index: number) => {
+    records.forEach((record: { id: string; fields: Record<string, unknown> }, index: number) => {
       try {
         const fields = record.fields;
         
@@ -153,20 +153,20 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
         });
         
         const officer: TeamMember = {
-          name: fields.Name || '',
-          img: fields.Image?.[0]?.url || '/img/default-headshot.png',
-          role: fields.Role || '',
-          linkedIn: fields.LinkedIn || '',
-          school_year: fields['School Year'] || '',
-          major: fields.Major || '',
-          minor: fields.Minor || 'N/A',
-          work_experience: fields['Work Experience'] || '',
-          fun_fact: fields['Fun Fact'] || '',
-          email: fields.Email || '',
+          name: (fields.Name as string) || '',
+          img: (Array.isArray(fields.Image) && fields.Image[0] ? (fields.Image[0] as { url: string }).url : '/img/default-headshot.png'),
+          role: (fields.Role as string) || '',
+          linkedIn: (fields.LinkedIn as string) || '',
+          school_year: (fields['School Year'] as string) || '',
+          major: (fields.Major as string) || '',
+          minor: (fields.Minor as string) || 'N/A',
+          work_experience: (fields['Work Experience'] as string) || '',
+          fun_fact: (fields['Fun Fact'] as string) || '',
+          email: (fields.Email as string) || '',
         };
 
-        const year = fields.Year || '2025';
-        const semester = fields.Semester || 'Spring';
+        const year = (fields.Year as string) || '2025';
+        const semester = (fields.Semester as string) || 'Spring';
         const key = `${semester}${year}`;
 
         if (!groupedData[key]) {
@@ -341,7 +341,7 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
     }
 
     // Process records into Event format
-    const events: Event[] = records.map((record: any, index: number) => {
+    const events: Event[] = records.map((record: { id: string; fields: Record<string, unknown> }, index: number) => {
       const fields = record.fields;
       
       // Log first record structure for debugging
@@ -356,9 +356,9 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
         date: fields['Date'] || fields['Event Date'] || '',
         time: fields['Time'] || fields['Event Time'] || '',
         location: fields['Location'] || fields['Venue'] || '',
-        type: mapEventType(fields['Type'] || fields['Event Type'] || fields['Category']),
-        image: fields['Image'] && fields['Image'][0] ? fields['Image'][0].url : undefined,
-        registrationLink: fields['Registration Link'] || fields['Registration URL'] || fields['Registration'],
+        type: mapEventType((fields['Type'] || fields['Event Type'] || fields['Category']) as string),
+        image: fields['Image'] && Array.isArray(fields['Image']) && fields['Image'][0] ? (fields['Image'][0] as { url: string }).url : undefined,
+        registrationLink: (fields['Registration Link'] || fields['Registration URL'] || fields['Registration']) as string | undefined,
         featured: fields['Featured'] === true || fields['Featured'] === 'Yes' || fields['Featured'] === 'True',
       };
     });

@@ -1,4 +1,4 @@
-import { Event, EventType, ProjectTrack, RegularMeetings, NotionHub } from '@/types/events';
+import { Event, ProjectTrack, RegularMeetings, NotionHub } from '@/types/events';
 
 export const projectTracks: ProjectTrack[] = [
   {

@@ -22,7 +22,7 @@ export async function DELETE() {
 
   try {
     // First, get all records
-    let allRecords = [];
+    let allRecords: Array<{ id: string }> = [];
     let offset = '';
 
     do {
@@ -41,7 +41,7 @@ export async function DELETE() {
       }
 
       const data = await response.json();
-      allRecords = allRecords.concat(data.records);
+      allRecords = allRecords.concat(data.records as Array<{ id: string }>);
       offset = data.offset;
       
     } while (offset);

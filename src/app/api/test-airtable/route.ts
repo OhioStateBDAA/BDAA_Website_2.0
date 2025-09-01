@@ -13,7 +13,7 @@ export async function GET() {
     const envTest = {
       name: 'Environment Variables',
       status: 'PASS' as 'PASS' | 'FAIL',
-      details: {} as any,
+      details: {} as Record<string, unknown>,
       issues: [] as string[]
     };
 
@@ -48,7 +48,7 @@ export async function GET() {
     const keyTest = {
       name: 'API Key Format',
       status: 'PASS' as 'PASS' | 'FAIL',
-      details: {} as any,
+      details: {} as Record<string, unknown>,
       issues: [] as string[]
     };
 
@@ -78,7 +78,7 @@ export async function GET() {
     const connectionTest = {
       name: 'Connection Test',
       status: 'PASS' as 'PASS' | 'FAIL',
-      details: {} as any,
+      details: {} as Record<string, unknown>,
       issues: [] as string[]
     };
 
@@ -141,7 +141,7 @@ export async function GET() {
       const dataTest = {
         name: 'Data Structure',
         status: 'PASS' as 'PASS' | 'FAIL',
-        details: {} as any,
+        details: {} as Record<string, unknown>,
         issues: [] as string[]
       };
 
@@ -178,7 +178,7 @@ export async function GET() {
             console.log('   ✅ All expected fields present');
           }
         }
-      } catch (parseError) {
+      } catch {
         dataTest.status = 'FAIL';
         dataTest.issues.push('❌ Failed to parse response data');
         overallStatus = 'FAIL';

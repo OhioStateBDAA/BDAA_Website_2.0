@@ -71,7 +71,7 @@ export async function GET() {
     }
 
     // Process records into Event format
-    const events: Event[] = records.map((record: any, index: number) => {
+    const events: Event[] = records.map((record: { id: string; fields: Record<string, unknown> }, index: number) => {
       const fields = record.fields;
       
       // Log first record structure for debugging
@@ -86,9 +86,9 @@ export async function GET() {
         date: fields['Date'] || fields['Event Date'] || '',
         time: fields['Time'] || fields['Event Time'] || '',
         location: fields['Location'] || fields['Venue'] || '',
-        type: mapEventType(fields['Type'] || fields['Event Type'] || fields['Category']),
-        image: fields['Image'] && fields['Image'][0] ? fields['Image'][0].url : undefined,
-        registrationLink: fields['Registration Link'] || fields['Registration URL'] || fields['Registration'],
+        type: mapEventType((fields['Type'] || fields['Event Type'] || fields['Category']) as string),
+        image: fields['Image'] && Array.isArray(fields['Image']) && fields['Image'][0] ? (fields['Image'][0] as { url: string }).url : undefined,
+        registrationLink: (fields['Registration Link'] || fields['Registration URL'] || fields['Registration']) as string | undefined,
         featured: fields['Featured'] === true || fields['Featured'] === 'Yes' || fields['Featured'] === 'True',
       };
     });
