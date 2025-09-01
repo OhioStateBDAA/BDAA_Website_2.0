@@ -1,57 +1,66 @@
 import React from 'react';
+import Image from 'next/image';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
 
 export function PhotoGallerySection() {
-  // Masonry items with varying heights
+  // Real photo gallery items with actual images
   const items = [
     {
       id: "1",
-      img: "/api/placeholder/600/400",
-      alt: "BDAA Event Photo 1",
+      img: "/img/gallery/photo-1.jpg",
+      alt: "Eboard photo #1",
       height: 400,
+      width: 600,
     },
     {
-      id: "2", 
-      img: "/api/placeholder/600/250",
-      alt: "BDAA Event Photo 2",
+      id: "2",
+      img: "/img/gallery/photo-2.jpg",
+      alt: "Eboard photo #2",
       height: 250,
+      width: 600,
     },
     {
       id: "3",
-      img: "/api/placeholder/600/600", 
-      alt: "BDAA Event Photo 3",
-      height: 600,
+      img: "/img/gallery/photo-3.jpg",
+      alt: "BDAA at the involvement fair",
+      height: 300,
+      width: 600,
     },
     {
       id: "4",
-      img: "/api/placeholder/600/350",
-      alt: "BDAA Event Photo 4", 
+      img: "/img/gallery/photo-4.jpg",
+      alt: "Bank of America Tech Talk",
       height: 350,
+      width: 600,
     },
     {
       id: "5",
-      img: "/api/placeholder/600/300",
-      alt: "BDAA Event Photo 5",
+      img: "/img/gallery/photo-5.jpg",
+      alt: "BDAA networking event",
       height: 300,
+      width: 600,
     },
     {
       id: "6",
-      img: "/api/placeholder/600/450",
-      alt: "BDAA Event Photo 6",
-      height: 450,
+      img: "/img/gallery/photo-6.jpg",
+      alt: "Talking to a Bank of America representative",
+      height: 350,
+      width: 600,
     },
     {
       id: "7",
-      img: "/api/placeholder/600/280",
-      alt: "BDAA Event Photo 7",
-      height: 280,
+      img: "/img/gallery/photo-7.jpg",
+      alt: "BDAA winning OSU's Student Organization Excellence Award",
+      height: 270,
+      width: 600,
     },
     {
       id: "8",
-      img: "/api/placeholder/600/380",
-      alt: "BDAA Event Photo 8", 
-      height: 380,
+      img: "/img/gallery/photo-8.jpg",
+      alt: "Community building activities at BDAA",
+      height: 350,
+      width: 600,
     }
   ];
 
@@ -67,22 +76,31 @@ export function PhotoGallerySection() {
           </p>
         </div>
 
-        {/* Masonry layout */}
+        {/* Masonry layout with real images */}
         <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 max-w-7xl mx-auto">
           {items.map((item) => (
             <div
               key={item.id}
               className="break-inside-avoid mb-4"
             >
-              <div 
-                className="bg-white border border-gray-300 overflow-hidden"
+              <div
+                className="bg-white border border-gray-300 overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                 style={{ height: `${item.height}px` }}
               >
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <div className="text-center text-gray-500">
-                    <div className="text-3xl mb-2">📸</div>
-                    <div className="text-sm font-medium">Photo {item.id}</div>
-                    <div className="text-xs mt-1">{item.height}px</div>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={item.img}
+                    alt={item.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                    priority={item.id === "1" || item.id === "3"}
+                  />
+                  {/* Optional overlay with photo info */}
+                  <div className="absolute inset-0 bg-black/0 hover:bg-black/20 transition-colors duration-300 flex items-end">
+                    <div className="w-full p-3 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300">
+                      <div className="text-white text-sm font-medium">{item.alt}</div>
+                    </div>
                   </div>
                 </div>
               </div>

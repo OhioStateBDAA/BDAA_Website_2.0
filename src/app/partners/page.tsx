@@ -50,7 +50,7 @@ const eventImages: EventImage[] = [
     date: "March 2025",
     location: "Pomerane Hall"
   },
-  
+
 ];
 
 export default function PartnersPage() {
@@ -61,13 +61,13 @@ export default function PartnersPage() {
 
   // Image carousel navigation functions
   const nextImageSlide = () => {
-    setCurrentImageIndex((prevIndex) => 
+    setCurrentImageIndex((prevIndex) =>
       prevIndex === eventImages.length - 1 ? 0 : prevIndex + 1
     );
   };
 
   const prevImageSlide = () => {
-    setCurrentImageIndex((prevIndex) => 
+    setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? eventImages.length - 1 : prevIndex - 1
     );
   };
@@ -84,7 +84,7 @@ export default function PartnersPage() {
     try {
       const form = e.currentTarget;
       const formData = new FormData(form);
-      
+
       // Convert FormData to regular object for EmailJS
       const templateParams = {
         company_name: formData.get('companyName'),
@@ -130,11 +130,11 @@ export default function PartnersPage() {
   return (
     <main className=" w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen w-full bg-bd-background">
       <Navbar />
-      
+
       {/* Hero Section */}
       <Section padding="lg" background="default">
         <Container>
-          <motion.div 
+          <motion.div
             className="max-w-4xl mx-auto text-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -153,7 +153,7 @@ export default function PartnersPage() {
               >
                 {/* Shadow copy - always visible black background */}
                 <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                
+
                 {/* Main button - lifts up and to the right on hover */}
                 <div
                   className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-8 py-3 min-h-[48px] bg-[var(--background-white)] text-black"
@@ -166,9 +166,9 @@ export default function PartnersPage() {
         </Container>
       </Section>
 
-     
+
       {/* Events Carousel Section */}
- 
+
 
       {/* Event Images Carousel Section */}
       <Section padding="lg" background="highlight">
@@ -193,7 +193,7 @@ export default function PartnersPage() {
               {/* Single Event Card Container */}
               <div className="mb-10">
                 <p className='flex-1 text-center font-bold text-5xl mb-8 text-white'>Our Events in Action</p>
-                
+
                 {/* Single Event Card */}
                 <div className="flex justify-center px-4">
                   <div className="w-full max-w-4xl">
@@ -208,7 +208,7 @@ export default function PartnersPage() {
                           unoptimized
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                        
+
                         {/* Event metadata overlay */}
                         <div className="absolute bottom-4 left-4 text-white">
                           {eventImages[currentImageIndex].date && (
@@ -225,7 +225,7 @@ export default function PartnersPage() {
                           )}
                         </div>
                       </div>
-                      
+
                       {/* Event Details */}
                       <div className="event-details-section">
                         <h3 className="event-title">
@@ -246,11 +246,10 @@ export default function PartnersPage() {
                   <button
                     key={index}
                     onClick={() => goToImageSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentImageIndex 
-                        ? 'bg-white scale-125' 
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentImageIndex
+                        ? 'bg-white scale-125'
                         : 'bg-white/30 hover:bg-white/50'
-                    }`}
+                      }`}
                   />
                 ))}
               </div>
@@ -273,12 +272,12 @@ export default function PartnersPage() {
               <h2 className="text-3xl font-display font-bold text-black mb-6">Want more information?</h2>
             </div>
             <div className="bg-[var(--background-white)] p-4 rounded-xl border border-[var(--border-black)]">
-              <iframe 
-                src="/FILE_7307.pdf" 
-                width="100%" 
+              <iframe
+                src="/FILE_7307.pdf"
+                width="100%"
                 height="800px"
                 className="rounded-lg"
-              > 
+              >
               </iframe>
             </div>
           </div>
@@ -305,11 +304,10 @@ export default function PartnersPage() {
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${
-                    submitStatus === 'success'
+                  className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${submitStatus === 'success'
                       ? 'bg-green-50 border-green-200 text-green-800'
                       : 'bg-red-50 border-red-200 text-red-800'
-                  }`}
+                    }`}
                 >
                   {submitStatus === 'success' ? (
                     <CheckCircle className="w-5 h-5 flex-shrink-0" />

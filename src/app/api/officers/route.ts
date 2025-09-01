@@ -3,8 +3,21 @@ import { fetchOfficersFromAirtable } from '@/services/airtable';
 
 export async function GET() {
   try {
+    // Check if required environment variables are set
+    if (!process.env.AIRTABLE_API_KEY || !process.env.AIRTABLE_BASE_ID) {
+      // Don't log this as an error since it's expected when Airtable isn't configured
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Airtable not configured - using fallback data',
+          timestamp: new Date().toISOString()
+        },
+        { status: 503 } // Service Unavailable
+      );
+    }
+
     const boardHistory = await fetchOfficersFromAirtable();
-    
+
     return NextResponse.json({
       success: true,
       data: boardHistory,
@@ -12,11 +25,11 @@ export async function GET() {
     });
   } catch (error) {
     console.error('API Error:', error);
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Failed to fetch officer data',
+      {
+        success: false,
+        error: 'Failed to fetch officer data from Airtable',
         timestamp: new Date().toISOString()
       },
       { status: 500 }

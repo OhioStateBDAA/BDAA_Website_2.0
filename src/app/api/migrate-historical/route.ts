@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { BoardHistory } from '@/data/officerData';
+import { AirtableCreateRecord, AirtableOfficerFields } from '@/types/airtable';
 
 export async function POST() {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
@@ -17,7 +18,7 @@ export async function POST() {
   }
 
   console.log('Starting historical data migration...');
-  
+
   let totalRecordsCreated = 0;
   const results = [];
 
@@ -31,9 +32,9 @@ export async function POST() {
       const batchSize = 10;
       for (let i = 0; i < board.officers.length; i += batchSize) {
         const batch = board.officers.slice(i, i + batchSize);
-        
-        const records = batch.map(officer => {
-          const fields: Record<string, string> = {
+
+        const records: AirtableCreateRecord[] = batch.map(officer => {
+          const fields: AirtableOfficerFields = {
             'Name': officer.name || '',
             'LinkedIn': officer.linkedIn || '',
             'School Year': officer.school_year || '',
@@ -46,14 +47,14 @@ export async function POST() {
             'Semester': board.semester,
             'Status': 'Active'
           };
-          
+
           // For historical data, default empty roles to "Officer"
           if (officer.role && officer.role.trim()) {
             fields['Role'] = officer.role.trim();
           } else {
             fields['Role'] = 'Officer'; // Default for historical data
           }
-          
+
           return { fields };
         });
 
@@ -84,7 +85,7 @@ export async function POST() {
         const result = await response.json();
         totalRecordsCreated += result.records.length;
         console.log(`✓ Created batch ${i / batchSize + 1}: ${result.records.length} records`);
-        
+
         results.push({
           board: board.displayName,
           batch: i / batchSize + 1,
@@ -107,7 +108,7 @@ export async function POST() {
 
   } catch (error) {
     console.error('Historical migration failed:', error);
-    
+
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
