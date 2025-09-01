@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { TeamMember as TeamMemberType } from '@/data/officerData'
+import { TeamMember as TeamMemberType } from '@/types/events'
 import { ExternalLink } from 'lucide-react'
 
 interface TeamMemberProps {
