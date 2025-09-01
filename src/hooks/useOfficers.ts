@@ -18,26 +18,31 @@ export function useOfficers(): UseOfficersResult {
     try {
       setLoading(true);
       setError(null);
-      
+
+      // Try to fetch from API first
       const response = await fetch('/api/officers');
-      const data = await response.json();
-      
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || 'Failed to fetch officers');
+
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data.success && data.data) {
+          setBoardHistory(data.data);
+          return; // Success, exit early
+        }
       }
-      
-      setBoardHistory(data.data);
-    } catch (err) {
-      console.error('Error fetching officers:', err);
-      setError(err instanceof Error ? err.message : 'An error occurred');
-      
-      // Fallback to static data if available
+
+      // If API fails, fall back to static data
+      throw new Error('API failed, using fallback data');
+
+    } catch {
+      // Silently fall back to static data (this is expected when Airtable isn't configured)
       try {
         const { BoardHistory } = await import('@/data/officerData');
         setBoardHistory(BoardHistory);
-        console.log('Fallback to static data');
+        setError(null); // Clear any previous errors
       } catch (fallbackError) {
-        console.error('Fallback failed:', fallbackError);
+        console.error('Fallback to static data failed:', fallbackError);
+        setError('Failed to load officer data from both API and fallback sources');
       }
     } finally {
       setLoading(false);

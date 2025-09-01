@@ -1,31 +1,5 @@
-// import Airtable from 'airtable';
 import { TeamMember, YearBoard, Event } from '@/types/events';
-
-// Configure Airtable with Personal Access Token
-// const base = new Airtable({
-//   apiKey: process.env.AIRTABLE_API_KEY,
-// }).base(process.env.AIRTABLE_BASE_ID!);
-
-// const table = base(process.env.AIRTABLE_TABLE_NAME!);
-
-// interface AirtableRecord {
-//   id: string;
-//   fields: {
-//     Name?: string;
-//     Image?: Array<{ url: string; filename: string }>;
-//     Role?: string;
-//     LinkedIn?: string;
-//     'School Year'?: string;
-//     Major?: string;
-//     Minor?: string;
-//     'Work Experience'?: string;
-//     'Fun Fact'?: string;
-//     Email?: string;
-//     Year?: string;
-//     Semester?: string;
-//     Status?: string;
-//   };
-// }
+import { AirtableOfficerRecord, AirtableEventRecord } from '@/types/airtable';
 
 export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
   const startTime = Date.now();
@@ -128,7 +102,7 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
     let skippedCount = 0;
     const fieldMissingCounts: { [key: string]: number } = {};
 
-    records.forEach((record: { id: string; fields: Record<string, unknown> }, index: number) => {
+    records.forEach((record: AirtableOfficerRecord, index: number) => {
       try {
         const fields = record.fields;
         
@@ -145,7 +119,7 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
         }
 
         // Track missing optional fields for analytics
-        const optionalFields = ['Role', 'LinkedIn', 'School Year', 'Major', 'Work Experience', 'Fun Fact', 'Email', 'Image'];
+        const optionalFields = ['Role', 'LinkedIn', 'School Year', 'Major', 'Work Experience', 'Fun Fact', 'Email', 'Image'] as const;
         optionalFields.forEach(field => {
           if (!fields[field] || (Array.isArray(fields[field]) && fields[field].length === 0)) {
             fieldMissingCounts[field] = (fieldMissingCounts[field] || 0) + 1;
@@ -341,7 +315,7 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
     }
 
     // Process records into Event format
-    const events: Event[] = records.map((record: { id: string; fields: Record<string, unknown> }, index: number) => {
+    const events: Event[] = records.map((record: AirtableEventRecord, index: number) => {
       const fields = record.fields;
       
       // Log first record structure for debugging
@@ -351,13 +325,13 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
 
       return {
         id: record.id,
-        title: fields['Title'] || fields['Event Name'] || fields['Name'] || 'Untitled Event',
-        description: fields['Description'] || fields['Details'] || '',
-        date: fields['Date'] || fields['Event Date'] || '',
-        time: fields['Time'] || fields['Event Time'] || '',
-        location: fields['Location'] || fields['Venue'] || '',
+        title: (fields['Title'] || fields['Event Name'] || fields['Name'] || 'Untitled Event') as string,
+        description: (fields['Description'] || fields['Details'] || '') as string,
+        date: (fields['Date'] || fields['Event Date'] || '') as string,
+        time: (fields['Time'] || fields['Event Time'] || '') as string,
+        location: (fields['Location'] || fields['Venue'] || '') as string,
         type: mapEventType((fields['Type'] || fields['Event Type'] || fields['Category']) as string),
-        image: fields['Image'] && Array.isArray(fields['Image']) && fields['Image'][0] ? (fields['Image'][0] as { url: string }).url : undefined,
+        image: fields['Image'] && Array.isArray(fields['Image']) && fields['Image'][0] ? fields['Image'][0].url : undefined,
         registrationLink: (fields['Registration Link'] || fields['Registration URL'] || fields['Registration']) as string | undefined,
         featured: fields['Featured'] === true || fields['Featured'] === 'Yes' || fields['Featured'] === 'True',
       };
