@@ -7,13 +7,13 @@ import { Button } from '../ui/Button';
 
 const InstagramPreview = () => {
   return (
-    <div className="instagram-chat-mockup">
-      <div className="instagram-chat-container">
+    <div className="instagram-preview-mockup">
+      <div className="instagram-preview-container">
         <Image
           src="/img/InstagramScreenshot.png"
           alt="BDAA Instagram Feed"
           fill
-          className="object-cover"
+          className="object-cover object-left"
           unoptimized
         />
       </div>
@@ -21,17 +21,17 @@ const InstagramPreview = () => {
   );
 };
 
-const JoinCommunityCard = () => {
+const InstagramSectionCard = () => {
   return (
-    <div className="discord-style-card">
-      <div className="discord-style-content">
+    <div className="instagram-section-card">
+      <div className="instagram-section-content">
         {/* Left side - Instagram mockup (wider) */}
-        <div className="discord-style-left">
+        <div className="instagram-section-preview">
           <InstagramPreview />
         </div>
         
         {/* Right side - Join community content (smaller) */}
-        <div className="discord-style-right">
+        <div className="instagram-section-info">
           <div className="instagram-icon-container">
             <svg
               viewBox="0 0 24 24"
@@ -42,15 +42,15 @@ const JoinCommunityCard = () => {
             </svg>
           </div>
           
-          <h2 className="community-title">Join our community</h2>
+          <h2 className="instagram-section-title">Join our community</h2>
           
-          <p className="community-description">
+          <p className="instagram-section-description">
             Our Instagram platform is a safe space to exchange ideas, interesting topics, events, useful resources, and opportunities for personal and career development.
           </p>
           
           <Link href="https://www.instagram.com/bdaaosu/" target="_blank" rel="noopener noreferrer">
             <Button 
-              label="Follow @bdaaosu" 
+              label="Follow on Instagram" 
               color="white" 
               showArrow={true}
             />
@@ -66,7 +66,7 @@ export function SocialFeedSection() {
     <Section background="default" padding="lg">
       <Container>
         <div className="flex justify-center w-full">
-          <JoinCommunityCard />
+          <InstagramSectionCard />
         </div>
       </Container>
     </Section>

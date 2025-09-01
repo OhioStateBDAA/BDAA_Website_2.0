@@ -11,7 +11,7 @@ import { SponsorsCarousel as SponsorsCarouselComponent } from '@/components/sect
 
 export default function Home() {
   return (
-<main className=" w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen w-full bg-bd-background overflow-x-hidden">
+<main className="w-full max-w-full min-h-screen px-4 sm:px-6 lg:px-8 bg-bd-background overflow-x-hidden">
    <Navbar />
       {/* Hero Section */}
       <HeroSection />

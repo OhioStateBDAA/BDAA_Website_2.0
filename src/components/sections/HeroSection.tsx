@@ -31,6 +31,7 @@ export function HeroSection() {
                 color="var(--highlight)" 
                 showArrow={false} 
                 className="hero-button" 
+                href="/events"
               />
               <Link href="/partners#sponsorship-application">
                 <Button 

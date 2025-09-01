@@ -33,6 +33,7 @@ export function Navbar() {
             color="var(--highlight)" 
             showArrow={false} 
             className="hero-button min-w-[100px] max-h-[50px]" 
+            href="/events"
           />
         </div>
       </nav>

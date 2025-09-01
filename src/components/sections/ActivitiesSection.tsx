@@ -51,6 +51,7 @@ export function ActivitiesSection() {
               label="Activity calendar" 
               color="var(--text-secondary)" 
               showArrow={true}
+              href="/events"
             />
           </div>
 
