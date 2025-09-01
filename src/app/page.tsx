@@ -11,8 +11,8 @@ import { SponsorsCarousel as SponsorsCarouselComponent } from '@/components/sect
 
 export default function Home() {
   return (
-    <main className="min-h-screen w-full bg-bd-background">
-      <Navbar />
+<main className="min-h-screen w-full bg-bd-background overflow-x-hidden">
+   <Navbar />
       {/* Hero Section */}
       <HeroSection />
 

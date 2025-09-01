@@ -44,13 +44,14 @@ export default function AboutPage() {
       <Section padding="lg" background="default">
         <Container>
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-display font-bold text-black mb-6">
-              About BDAA
-            </h1>
-            <p className="text-lg text-black leading-relaxed mb-8">
-              The Big Data Analytics Association at The Ohio State University
-            </p>
-            
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-black mb-4 sm:mb-6">
+  About BDAA
+</h1>
+
+
+<p className="text-base sm:text-lg text-black leading-relaxed mb-6 sm:mb-8 px-4 sm:px-0">
+  The Big Data Analytics Association at The Ohio State University
+</p>
             <div className="grid md:grid-cols-2 gap-8 mt-12">
               <div className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
                 <h2 className="text-2xl font-display font-bold text-black mb-4">Our Mission</h2>
@@ -64,7 +65,8 @@ export default function AboutPage() {
               
               <div className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
                 <h2 className="text-2xl font-display font-bold text-black mb-4">What We Offer</h2>
-                <div className="space-y-3 text-black">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12 text-black">                  
+                  
                   <p><span className="font-medium">Workshops:</span> Hands-on training in analytics tools</p>
                   <p><span className="font-medium">Networking:</span> Connect with industry professionals</p>
                   <p><span className="font-medium">Career Development:</span> Job placement assistance</p>
