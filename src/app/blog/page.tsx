@@ -190,7 +190,7 @@ export default async function BlogPage() {
   const posts = await getMediumPosts(MEDIUM_USERNAME);
 
   return (
-    <main className="min-h-screen bg-bd-background">
+    <main className=" w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen bg-bd-background">
             <Navbar />
       
       <div className="container mx-auto py-12 px-4">

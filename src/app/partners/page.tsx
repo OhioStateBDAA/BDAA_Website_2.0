@@ -128,7 +128,7 @@ export default function PartnersPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-bd-background">
+    <main className=" w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen w-full bg-bd-background">
       <Navbar />
       
       {/* Hero Section */}
