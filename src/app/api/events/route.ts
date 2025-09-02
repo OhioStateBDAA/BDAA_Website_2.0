@@ -6,14 +6,13 @@ export async function GET() {
   try {
     console.log('🎉 API: Fetching events from Airtable...');
 
-    const eventsBaseId = process.env.AIRTABLE_EVENTS_BASE_ID;
-    const eventsTableId = process.env.AIRTABLE_EVENTS_TABLE_ID;
-    const eventsViewId = process.env.AIRTABLE_EVENTS_VIEW_ID;
-    const apiKey = process.env.AIRTABLE_API_KEY;
+    const eventsBaseId = "appiR9P5vH1da1lEn";
+    const eventsTableId = "tblqE2ub9bkdPVzGB";
+    
+    const apiKey = "patAaTPIE79DazbIz.ab8e7f118d9fe696f32114ebf5538639c21769074045542afd9d4fdf45af9f7c";
 
     console.log('Base ID:', eventsBaseId);
     console.log('Table ID:', eventsTableId);
-    console.log('View ID:', eventsViewId);
     console.log('API Key present:', !!apiKey);
 
     if (!apiKey) {
@@ -29,9 +28,7 @@ export async function GET() {
     }
 
     let url = `https://api.airtable.com/v0/${eventsBaseId}/${eventsTableId}`;
-    if (eventsViewId) {
-      url += `?view=${encodeURIComponent(eventsViewId)}`;
-    }
+   
 
     console.log('📡 Making request to:', url);
 
