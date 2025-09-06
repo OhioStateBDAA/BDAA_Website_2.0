@@ -2,6 +2,10 @@
 
 This is the official website for the Big Data Analytics Association at The Ohio State University, built with [Next.js](https://nextjs.org).
 
+## Recent Updates
+- Refactored Airtable integration for better maintainability  
+- Added expandable event descriptions with Read More/Less functionality
+
 ## Getting Started
 
 First, run the development server:
