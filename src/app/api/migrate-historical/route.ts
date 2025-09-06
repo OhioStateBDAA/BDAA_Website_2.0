@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { BoardHistory } from '@/data/officerData';
-import { AirtableCreateRecord, AirtableOfficerFields } from '@/types/airtable';
+import { AirtableCreateRecord } from '@/types/airtable';
 
 export async function POST() {
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
@@ -34,7 +34,7 @@ export async function POST() {
         const batch = board.officers.slice(i, i + batchSize);
 
         const records: AirtableCreateRecord[] = batch.map(officer => {
-          const fields: AirtableOfficerFields = {
+          const fields: Record<string, unknown> = {
             'Name': officer.name || '',
             'LinkedIn': officer.linkedIn || '',
             'School Year': officer.school_year || '',

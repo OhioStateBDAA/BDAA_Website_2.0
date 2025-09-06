@@ -1,10 +1,11 @@
-export interface AirtableRecord {
+// Generic Airtable types
+export interface AirtableRecord<T = Record<string, unknown>> {
   id: string;
-  fields: Record<string, unknown>;
+  fields: T;
 }
 
-export interface AirtableResponse {
-  records: AirtableRecord[];
+export interface AirtableResponse<T = Record<string, unknown>> {
+  records: AirtableRecord<T>[];
 }
 
 export interface AirtableError {
@@ -21,57 +22,39 @@ export interface AirtableImage {
   type?: string;
 }
 
-// More specific field types for events
-export interface AirtableEventFields {
-  'Title'?: string;
-  'Event Name'?: string;
-  'Name'?: string;
-  'Description'?: string;
-  'Details'?: string;
-  'Date'?: string;
-  'Event Date'?: string;
-  'Time'?: string;
-  'Event Time'?: string;
-  'Location'?: string;
-  'Venue'?: string;
-  'Type'?: string;
-  'Event Type'?: string;
-  'Category'?: string;
-  'Image'?: AirtableImage[];
-  'Registration Link'?: string;
-  'Registration URL'?: string;
-  'Registration'?: string;
-  'Featured'?: boolean | string;
-}
+// Field mapping configurations
+export const EVENT_FIELD_MAP = {
+  title: ['Title', 'Event Name', 'Name'],
+  description: ['Description', 'Details'],
+  date: ['Date', 'Event Date'],
+  time: ['Time', 'Event Time'],
+  location: ['Location', 'Venue'],
+  type: ['Type', 'Event Type', 'Category'],
+  image: ['Image'],
+  registrationLink: ['Registration Link', 'Registration URL', 'Registration'],
+  featured: ['Featured'],
+} as const;
 
-// More specific field types for officers
-export interface AirtableOfficerFields {
-  'Name'?: string;
-  'Role'?: string;
-  'LinkedIn'?: string;
-  'School Year'?: string;
-  'Major'?: string;
-  'Minor'?: string;
-  'Work Experience'?: string;
-  'Fun Fact'?: string;
-  'Email'?: string;
-  'Year'?: string;
-  'Semester'?: string;
-  'Status'?: string;
-  'Image'?: AirtableImage[];
-}
+export const OFFICER_FIELD_MAP = {
+  name: ['Name'],
+  role: ['Role'],
+  linkedIn: ['LinkedIn'],
+  schoolYear: ['School Year'],
+  major: ['Major'],
+  minor: ['Minor'],
+  workExperience: ['Work Experience'],
+  funFact: ['Fun Fact'],
+  email: ['Email'],
+  year: ['Year'],
+  semester: ['Semester'],
+  status: ['Status'],
+  image: ['Image'],
+} as const;
 
-export interface AirtableEventRecord {
-  id: string;
-  fields: AirtableEventFields;
-}
-
-export interface AirtableOfficerRecord {
-  id: string;
-  fields: AirtableOfficerFields;
-}
+// Utility type for field mapping
+export type FieldMap = typeof EVENT_FIELD_MAP | typeof OFFICER_FIELD_MAP;
 
 // Type for creating records (without ID)
-export interface AirtableCreateRecord {
-  fields: AirtableOfficerFields;
+export interface AirtableCreateRecord<T = Record<string, unknown>> {
+  fields: T;
 }

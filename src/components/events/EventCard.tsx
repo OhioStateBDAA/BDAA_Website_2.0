@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Event } from '@/types/events';
 
 interface EventCardProps {
@@ -6,6 +6,14 @@ interface EventCardProps {
 }
 
 export function EventCard({ event }: EventCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const DESCRIPTION_LIMIT = 150; // Character limit for truncation
+  
+  const shouldTruncate = event.description.length > DESCRIPTION_LIMIT;
+  const displayDescription = shouldTruncate && !isExpanded 
+    ? event.description.slice(0, DESCRIPTION_LIMIT) + '...'
+    : event.description;
+
   const getTypeColor = (type: Event['type']) => {
     switch (type) {
       case 'workshop':
@@ -61,10 +69,18 @@ export function EventCard({ event }: EventCardProps) {
         {event.title}
       </h3>
 
-      {/* Event Description */}
-      <p className="text-gray-700 mb-4 leading-relaxed">
-        {event.description}
-      </p>
+      {/* Event Description with Read More/Less */}
+      <div className="text-gray-700 mb-4 leading-relaxed">
+        <p>{displayDescription}</p>
+        {shouldTruncate && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-[var(--highlight)] hover:text-red-700 text-sm font-medium mt-1 transition-colors duration-200"
+          >
+            {isExpanded ? 'Read Less' : 'Read More'}
+          </button>
+        )}
+      </div>
 
       {/* Event Details */}
       <div className="space-y-2 mb-4">
