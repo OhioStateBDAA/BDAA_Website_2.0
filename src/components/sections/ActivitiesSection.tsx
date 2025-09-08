@@ -60,8 +60,9 @@ export function ActivitiesSection() {
             <Button
               label="Activity calendar"
               color="var(--text-secondary)"
-              showArrow={true}
+              showArrow={false}
               href="/events"
+              className="text-center justify-center"
             />
           </div>
 

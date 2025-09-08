@@ -27,8 +27,8 @@ export const Button: React.FC<ButtonProps> = ({
 
       {/* Main button - lifts up and to the right on hover */}
       <div
-        className={`relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-6 py-3 min-h-[48px]`}
-        style={{ backgroundColor: color, color: '#fff' }}
+        className={`relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-6 py-3 min-h-[48px] ${className}`}
+        style={{ backgroundColor: color, color: color === '#ffffff' || color === 'white' ? '#000' : '#fff' }}
       >
         <div className="flex items-center justify-center">
           <span className="leading-tight">{label}</span>
