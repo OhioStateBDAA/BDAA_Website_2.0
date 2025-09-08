@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/layout/Section';
 import { Navbar } from '@/components/layout/Navbar';
+import { Button } from '@/components/ui/Button';
 import { UpcomingEvents } from '@/components/events/UpcomingEvents';
 import { upcomingEvents, regularMeetings, projectTracks, notionHub } from '@/data/events';
 // Removed direct Airtable import to avoid client-side issues
@@ -76,7 +77,7 @@ export default function EventsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* General Meeting Card */}
               <div className="bg-white border border-black rounded-xl p-6 shadow-sm">
-                <h3 className="text-2xl font-display font-bold text-black mb-4">
+                <h3 className="text-2xl font-display font-bold text-black mb-4 text-center">
                   General Meetings
                 </h3>
                 <div className="space-y-3">
@@ -90,7 +91,18 @@ export default function EventsPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                    <span className="text-black font-medium">{regularMeetings.general.location}</span>
+                    {regularMeetings.general.locationUrl ? (
+                      <a 
+                        href={regularMeetings.general.locationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-black font-medium hover:text-red-600 transition-colors underline"
+                      >
+                        {regularMeetings.general.location}
+                      </a>
+                    ) : (
+                      <span className="text-black font-medium">{regularMeetings.general.location}</span>
+                    )}
                   </div>
                 </div>
                 <p className="text-gray-700 mt-4 leading-relaxed">
@@ -100,7 +112,7 @@ export default function EventsPage() {
 
               {/* Project Series Card */}
               <div className="bg-white border border-black rounded-xl p-6 shadow-sm">
-                <h3 className="text-2xl font-display font-bold text-black mb-4">
+                <h3 className="text-2xl font-display font-bold text-black mb-4 text-center">
                   Project Series
                 </h3>
                 <div className="space-y-3">
@@ -114,7 +126,18 @@ export default function EventsPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span className="text-black font-medium">{regularMeetings.projectSeries.location}</span>
+                    {regularMeetings.projectSeries.locationUrl ? (
+                      <a 
+                        href={regularMeetings.projectSeries.locationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-black font-medium hover:text-blue-600 transition-colors underline"
+                      >
+                        {regularMeetings.projectSeries.location}
+                      </a>
+                    ) : (
+                      <span className="text-black font-medium">{regularMeetings.projectSeries.location}</span>
+                    )}
                   </div>
                 </div>
                 <p className="text-gray-700 mt-4 leading-relaxed">
@@ -156,22 +179,18 @@ export default function EventsPage() {
       <Section padding="lg" background="alt">
         <Container>
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-black mb-6">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
               Project Series Archive
             </h2>
-            <p className="text-lg text-black leading-relaxed mb-8">
+            <p className="text-lg text-white leading-relaxed mb-8">
               Explore our comprehensive collection of past project series, including student projects, 
               lecture materials, and resources from previous semesters.
             </p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {projectTracks.map((track) => (
                 <div key={track.id} className="bg-white border border-black rounded-xl p-6">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div 
-                      className="w-4 h-4 rounded-full" 
-                      style={{ backgroundColor: track.color }}
-                    ></div>
+                  <div className="text-center mb-3">
                     <h3 className="text-xl font-display font-bold text-black">
                       {track.name}
                     </h3>
@@ -184,17 +203,12 @@ export default function EventsPage() {
             </div>
             
             {/* CTA Button for Notion Hub */}
-            <a 
+            <Button
+              label={notionHub.title}
+              color="var(--highlight)"
+              showArrow={false}
               href={notionHub.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[var(--highlight)] text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors duration-200"
-            >
-              <span>{notionHub.title}</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
+            />
           </div>
         </Container>
       </Section>

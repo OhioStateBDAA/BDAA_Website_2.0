@@ -28,6 +28,7 @@ export interface RegularMeeting {
   day: string;
   time: string;
   location: string;
+  locationUrl?: string;
   description: string;
 }
 
