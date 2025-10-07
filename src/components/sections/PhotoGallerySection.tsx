@@ -59,7 +59,7 @@ export function PhotoGallerySection() {
       id: "8",
       img: "/img/gallery/photo-8.jpg",
       alt: "Community building activities at BDAA",
-      height: 350,
+      height: 380,
       width: 600,
     }
   ];
@@ -84,7 +84,7 @@ export function PhotoGallerySection() {
               className="break-inside-avoid mb-4"
             >
               <div
-                className="bg-white border border-gray-300 overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-white border border-black overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
                 style={{ height: `${item.height}px` }}
               >
                 <div className="relative w-full h-full">

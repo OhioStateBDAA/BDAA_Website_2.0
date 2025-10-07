@@ -26,21 +26,25 @@ export function HeroSection() {
             </div>
             {/* Buttons outside the card - big rectangular buttons like wireframe */}
             <div className="flex gap-4 w-full">
-              <Button 
-                label="Join Event" 
-                color="var(--highlight)" 
-                showArrow={false} 
-                className="hero-button" 
-                href="/events"
-              />
-              <Link href="/partners#sponsorship-application">
+              <div className="flex-1">
                 <Button 
-                  label="Partner With Us" 
-                  color="var(--text-secondary)" 
+                  label="Join Event" 
+                  color="var(--highlight)" 
                   showArrow={false} 
-                  className="hero-button"
+                  className="hero-button w-full" 
+                  href="/events"
                 />
-              </Link>
+              </div>
+              <div className="flex-1">
+                <Link href="/partners#sponsorship-application">
+                  <Button 
+                    label="Partner With Us" 
+                    color="var(--text-secondary)" 
+                    showArrow={false} 
+                    className="hero-button w-full"
+                  />
+                </Link>
+              </div>
             </div>
           </div>
           {/* Right: Image - bigger horizontally */}

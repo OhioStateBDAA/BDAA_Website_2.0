@@ -80,14 +80,13 @@ const client = new AirtableClient();
 // Officer functions
 export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
   try {
-    const baseId = process.env.AIRTABLE_BASE_ID;
-    const tableId = process.env.AIRTABLE_TABLE_ID || process.env.AIRTABLE_TABLE_NAME;
+    // Officers are in a different base than events
+    const baseId = 'appCnpNG8URbwd4uB';
+    const tableId = 'tblOHWYt4ZRFFD0WW';
+    const viewId = 'viwFMXms1c5yd2uEs';
     
-    if (!baseId || !tableId) {
-      throw new Error('Missing Airtable configuration for officers');
-    }
-
-    const records = await client.fetch(baseId, tableId);
+    // Use view if available for better filtering
+    const records = await client.fetch(baseId, tableId, viewId);
     const groupedData: { [key: string]: TeamMember[] } = {};
 
     records.forEach((record) => {

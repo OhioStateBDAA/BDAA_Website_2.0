@@ -48,6 +48,7 @@ export function TeamMember({ member, onClick }: TeamMemberProps) {
             className="object-cover team-member-photo"
             onError={() => setImageError(true)}
             priority={false}
+            unoptimized
           />
         ) : (
           <div className="w-full h-full bg-gray-200 flex items-center justify-center">

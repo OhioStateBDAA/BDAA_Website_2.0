@@ -162,12 +162,12 @@ body {
 
 /* Activity Cards */
 .activity-card {
-  @apply bg-white border-2 border-gray-300 rounded-xl overflow-hidden h-full flex flex-col shadow-sm min-h-[550px];
+  @apply bg-white border border-black rounded-xl overflow-hidden h-full flex flex-col min-h-[550px];
   transition: all 0.2s ease;
 }
 
 .activity-card:hover {
-  @apply shadow-md;
+  /* No shadow on hover */
 }
 
 .activity-card-header {
@@ -176,7 +176,7 @@ body {
 
 .activity-card-title {
   font-family: var(--font-display);
-  @apply text-lg font-bold text-black mb-3;
+  @apply text-2xl font-bold text-black mb-3;
 }
 
 .activity-card-description {
@@ -310,20 +310,20 @@ main {
 
 /* Instagram Section Styles */
 .instagram-section-card {
-  @apply rounded-2xl p-6 text-white max-w-6xl shadow-xl;
+  @apply rounded-2xl p-6 text-white max-w-7xl shadow-xl;
   background: var(--highlight);
 }
 
 .instagram-section-content {
-  @apply flex flex-col lg:flex-row gap-16 items-stretch;
+  @apply flex flex-col lg:flex-row gap-8 items-stretch;
 }
 
 .instagram-section-preview {
-  @apply w-[700px] flex-shrink-0;
+  @apply w-[900px] flex-shrink-0;
 }
 
 .instagram-section-info {
-  @apply flex-[1] flex flex-col justify-center px-6 py-4 max-w-xs;
+  @apply flex-[1] flex flex-col justify-center px-8 py-4;
 }
 
 .instagram-preview-mockup {
@@ -331,7 +331,7 @@ main {
 }
 
 .instagram-preview-container {
-  @apply relative w-full h-full bg-white rounded-2xl overflow-hidden shadow-lg;
+  @apply relative w-full h-full bg-transparent rounded-2xl overflow-hidden shadow-lg;
 }
 
 .instagram-preview-container img {
