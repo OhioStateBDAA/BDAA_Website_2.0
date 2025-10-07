@@ -1,12 +1,10 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   sublabel?: string;
   color: string;
   href?: string;
-  className?: string;
   showArrow?: boolean;
 }
 
@@ -17,6 +15,9 @@ export const Button: React.FC<ButtonProps> = ({
   href,
   className = '',
   showArrow = true,
+  type,
+  disabled,
+  ...rest
 }) => {
   const content = (
     <div className={`relative group ${className}`}>
@@ -50,5 +51,10 @@ export const Button: React.FC<ButtonProps> = ({
       </a>
     );
   }
-  return content;
-}; 
+  
+  return (
+    <button type={type} disabled={disabled} {...rest} className="w-full">
+      {content}
+    </button>
+  );
+};
