@@ -21,7 +21,7 @@ export async function DELETE() {
   let totalRecordsDeleted = 0;
 
   try {
-    // First, get all records
+    // First, get all records,
     let allRecords: Array<{ id: string }> = [];
     let offset = '';
 

@@ -108,7 +108,7 @@ export default function PartnersPage() {
 
       if (result.status === 200) {
         setSubmitStatus('success');
-        setSubmitMessage('Thank you! Your partnership application has been submitted successfully. We&apos;ll get back to you soon.');
+        setSubmitMessage('Thank you! Your partnership application has been submitted successfully. We will get back to you soon.');
         form.reset();
       } else {
         throw new Error('Failed to send email');
@@ -334,6 +334,7 @@ export default function PartnersPage() {
                     className="w-full  px-4 py-3 border border-[var(--border-black)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--highlight)] focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                 </div>
+                
 
                 <div>
                   <label htmlFor="contactName" className="block text-sm font-primary font-bold text-black mb-2">

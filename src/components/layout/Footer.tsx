@@ -171,8 +171,8 @@ export function Footer() {
                     <h4 className="font-bold text-[var(--text-black)] mb-3">Join us</h4>
                     <ul className="space-y-2 text-sm text-gray-600">
                       <li><Link href="https://groupme.com/join_group/88947141/lqUnX8rW" className="hover:text-[var(--text-black)] transition-colors">GroupMe</Link></li>
-                      <li><Link href="https://linkedin.com/company/bdaa-osu" className="hover:text-[var(--text-black)] transition-colors">LinkedIn</Link></li>
-                      <li><Link href="https://instagram.com/bdaa_osu" className="hover:text-[var(--text-black)] transition-colors">Instagram</Link></li>
+                      <li><Link href="https://www.linkedin.com/company/big-data-analytics-association/" className="hover:text-[var(--text-black)] transition-colors">LinkedIn</Link></li>
+                      <li><Link href="https://instagram.com/bdaa_osu/2" className="hover:text-[var(--text-black)] transition-colors">Instagram</Link></li>
                     </ul>
                   </div>
                 </div>

@@ -156,10 +156,10 @@ export default function EventsPage() {
       <Section padding="lg" background="alt">
         <Container>
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-black mb-6">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
               Project Series Archive
             </h2>
-            <p className="text-lg text-black leading-relaxed mb-8">
+            <p className="text-lg text-black leading-relaxed text-white mb-8">
               Explore our comprehensive collection of past project series, including student projects, 
               lecture materials, and resources from previous semesters.
             </p>
