@@ -17,7 +17,7 @@ const companies = [
   { name: 'Salesforce', logo: 'https://logo.clearbit.com/salesforce.com' },
   { name: 'Adobe', logo: 'https://logo.clearbit.com/adobe.com' },
   { name: 'Intel', logo: 'https://logo.clearbit.com/intel.com' },
-  { name: 'IBM', logo: 'https://logo.clearbit.com/ibm.com' },
+  { name: 'IBM', logo: 'ibm.png' }, 
   { name: 'Oracle', logo: 'https://logo.clearbit.com/oracle.com' },
   { name: 'Cisco', logo: 'https://logo.clearbit.com/cisco.com' },
   { name: 'Dropbox', logo: 'https://logo.clearbit.com/dropbox.com' },
