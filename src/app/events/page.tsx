@@ -182,11 +182,8 @@ export default function EventsPage() {
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
               Project Series Archive
             </h2>
-<<<<<<< HEAD
-            <p className="text-lg text-black leading-relaxed text-white mb-8">
-=======
+
             <p className="text-lg text-white leading-relaxed mb-8">
->>>>>>> 856e31cd4a6c40cd82dfd371fc99f821cfc2c67f
               Explore our comprehensive collection of past project series, including student projects, 
               lecture materials, and resources from previous semesters.
             </p>
