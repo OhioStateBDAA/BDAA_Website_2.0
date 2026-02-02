@@ -48,7 +48,7 @@ export default function AboutPage() {
   // Show loading state
   if (loading) {
     return (
-      <main className="min-h-screen w-full w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 bg-bd-background">
+      <main className="min-h-screen w-full w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8  bg-bd-background">
         <Navbar />
         <Section padding="lg" background="default">
           <Container>
