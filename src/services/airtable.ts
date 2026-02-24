@@ -81,9 +81,9 @@ const client = new AirtableClient();
 export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
   try {
     // Officers are in a different base than events
-    const baseId = 'appCnpNG8URbwd4uB';
-    const tableId = 'tblOHWYt4ZRFFD0WW';
-    const viewId = 'viwFMXms1c5yd2uEs';
+    const baseId = 'appBalJvYVZ0oxutz';      
+    const tableId = 'tblOHWYt4ZRFFD0WW';   
+    const viewId = 'viwFMXms1c5yd2uEs';  
     
     // Use view if available for better filtering
     const records = await client.fetch(baseId, tableId, viewId);
