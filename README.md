@@ -3,7 +3,8 @@
 This is the official website for the Big Data Analytics Association at The Ohio State University, built with [Next.js](https://nextjs.org).
 
 ## Recent Updates
-- Refactored Airtable integration for better maintainability  
+
+- Refactored Airtable integration for better maintainability
 - Added expandable event descriptions with Read More/Less functionality
 
 ## Getting Started
@@ -42,12 +43,14 @@ The website follows a consistent design system defined in `src/app/globals.css`:
 ## Events Page Development Plan
 
 ### Overview
+
 Creating a dedicated Events page that will be accessible via the "All Events" button and other event links throughout the site. The page will showcase upcoming BDAA events and provide access to historical Project Series content.
 
 ### Requirements
+
 1. **Regular Meetings Display**
-   - Weekly general meetings: Tuesdays 7:30 PM at Palm Reen Hall
-   - Project Series: Thursdays at Palm Reen Hall (concurrent program)
+   - Weekly general meetings: Tuesdays 7:00 PM at Pomerene Hall
+   - Project Series: Thursdays at Pomerene Hall (concurrent program)
 
 2. **Upcoming Events Section**
    - Card-based layout (no calendar interface)
@@ -58,33 +61,38 @@ Creating a dedicated Events page that will be accessible via the "All Events" bu
    - Link to Notion hub containing historical content
    - Previous year's project tracks:
      - Charted Data Visualization
-     - Data Science  
+     - Data Science
      - Machine Learning
    - Student projects and lecture materials
 
 ### Technical Implementation Plan
 
 #### Phase 1: Page Structure
+
 - Create `/src/app/events/page.tsx`
 - Implement standard layout with Navbar, Container, Section components
 - Add page title and introductory content
 
 #### Phase 2: Event Components
+
 - Create `EventCard` component for individual events
 - Design `UpcomingEvents` section component
 - Implement `RegularMeetings` information component
 
 #### Phase 3: Project Series Integration
+
 - Create `ProjectSeriesArchive` component
 - Add external link to Notion hub
 - Include track descriptions and call-to-action
 
 #### Phase 4: Data Integration
+
 - Create event data structure
 - Consider future database integration
 - Implement responsive design patterns
 
 ### File Structure
+
 ```
 src/
 ├── app/
@@ -101,6 +109,7 @@ src/
 ```
 
 ### Design Specifications
+
 - Follow existing color scheme and typography
 - Use consistent card patterns from current components
 - Maintain responsive design principles
@@ -108,6 +117,7 @@ src/
 - Ensure accessibility standards
 
 ### Future Enhancements
+
 - Dynamic event loading from database/CMS
 - Event registration functionality
 - Integration with calendar systems

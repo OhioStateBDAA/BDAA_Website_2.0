@@ -29,7 +29,7 @@ interface MediumResponse {
 }
 
 // Replace with your Medium username
-const MEDIUM_USERNAME = 'BigData&AnalyticsAssociation';
+const MEDIUM_USERNAME = 'ohiostatebdaa';
 
 // Metadata for SEO
 export const metadata: Metadata = {

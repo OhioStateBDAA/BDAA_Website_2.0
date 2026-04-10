@@ -6,6 +6,8 @@ import { Button } from '../ui/Button';
 import Link from 'next/link';
 
 import heroImage from '../../../public/group-photo.jpg';
+import guysImage from '../../../public/img/group-guys.jpg';
+import girlsImage from '../../../public/img/group-girls.jpg';
 
 export function HeroSection() {
   return (
@@ -27,34 +29,44 @@ export function HeroSection() {
             {/* Buttons outside the card - big rectangular buttons like wireframe */}
             <div className="flex gap-4 w-full">
               <div className="flex-1">
-                <Button 
-                  label="Join Event" 
-                  color="var(--highlight)" 
-                  showArrow={false} 
-                  className="hero-button w-full" 
+                <Button
+                  label="Join Event"
+                  color="var(--highlight)"
+                  showArrow={false}
+                  className="hero-button w-full"
                   href="/events"
                 />
               </div>
               <div className="flex-1">
                 <Link href="/partners#sponsorship-application">
-                  <Button 
-                    label="Partner With Us" 
-                    color="var(--text-secondary)" 
-                    showArrow={false} 
+                  <Button
+                    label="Partner With Us"
+                    color="var(--text-secondary)"
+                    showArrow={false}
                     className="hero-button w-full"
                   />
                 </Link>
               </div>
             </div>
           </div>
-          {/* Right: Image - bigger horizontally */}
-          <div className="flex items-stretch min-w-[200px] max-w-full" style={{ flex: 'var(--hero-image-flex)' }}>
-            <div className="relative w-full h-full rounded-xl overflow-hidden">
-              <Image src={heroImage} alt="Group photo of BDAA members" fill style={{objectFit: 'cover', objectPosition: 'center'}} priority />
+          {/* Right: Photo collage — vertical portrait left, guys top-right, girls bottom-right */}
+          <div className="flex gap-3 min-w-[200px] max-w-full" style={{ flex: 'var(--hero-image-flex)' }}>
+            {/* Vertical group photo */}
+            <div className="relative rounded-xl overflow-hidden flex-shrink-0" style={{ width: '42%' }}>
+              <Image src={heroImage} alt="Group photo of BDAA members" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} priority />
+            </div>
+            {/* Right column: guys on top, girls on bottom */}
+            <div className="flex flex-col gap-3 flex-1">
+              <div className="relative rounded-xl overflow-hidden flex-1">
+                <Image src={guysImage} alt="BDAA guys group photo" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
+              </div>
+              <div className="relative rounded-xl overflow-hidden flex-1">
+                <Image src={girlsImage} alt="BDAA girls group photo" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
+              </div>
             </div>
           </div>
         </div>
       </Container>
     </Section>
   );
-} 
+}

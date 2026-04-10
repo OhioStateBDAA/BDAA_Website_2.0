@@ -84,14 +84,14 @@ export const upcomingEvents: Event[] = [
 export const regularMeetings: RegularMeetings = {
   general: {
     day: 'Tuesday',
-    time: '7:30 PM',
+    time: '7:00 PM',
     location: 'Pomerene Hall',
     locationUrl: 'https://maps.app.goo.gl/redNoVKLBrgrQRP97',
     description: 'Join our weekly general meetings to connect with fellow students, learn about upcoming events, and participate in discussions about data analytics and career opportunities.',
   },
   projectSeries: {
     day: 'Thursday', 
-    time: '7:30 PM',
+    time: '7:00 PM',
     location: 'Pomerene Hall',
     locationUrl: 'https://maps.app.goo.gl/redNoVKLBrgrQRP97',
     description: 'Hands-on learning sessions covering data visualization, data science, and machine learning. Build projects while learning from experienced mentors.',
