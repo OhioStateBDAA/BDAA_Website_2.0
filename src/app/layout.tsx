@@ -50,7 +50,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${anaheim.variable} ${courierPrime.variable} antialiased`}
       >
         {children}
-        <Footer />
+        <Footer currentYear={new Date().getFullYear()} />
       </body>
     </html>
   );

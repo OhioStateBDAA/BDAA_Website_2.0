@@ -151,3 +151,19 @@ npm run test:security
 
 The test intentionally checks the public API allowlist. Any new API route needs
 an explicit security review and a corresponding update to this test.
+
+## Local validation
+
+Run these checks before pushing changes:
+
+```bash
+npm run lint
+npm run build
+npm run test:security
+```
+
+Lint uses the Next.js ESLint flat presets and fails on warnings as well as
+errors. It covers application code, scripts, configuration, and tests; generated
+Next.js/build output is excluded. TypeScript-specific rules apply to TypeScript
+files so the existing CommonJS maintenance scripts remain supported.
+Next.js builds do not run lint automatically, so run both checks.
