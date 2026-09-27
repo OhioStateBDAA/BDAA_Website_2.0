@@ -7,7 +7,8 @@
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:security": "node --test tests/api-surface.test.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
