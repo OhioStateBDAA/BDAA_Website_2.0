@@ -19,13 +19,8 @@
   --font-display: 'Courier Prime', 'Courier', monospace;
 
   /* Hero Section Heights */
-  --hero-min-height: 520px;
   --hero-card-height: 400px;
   --hero-button-height: 80px;
-
-  /* Hero Section Responsive Max Width */
-  --hero-text-max-width: 600px;
-  --hero-image-flex: 1.5;
 
   /* Navbar Variables */
   --navbar-min-height: 56px;
@@ -81,8 +76,14 @@ body {
   padding: 2rem;
   min-width: 0;
   margin-bottom: 1.5rem;
-  height: var(--hero-card-height);
+  flex: 1;
   justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .hero-card {
+    min-height: var(--hero-card-height);
+  }
 }
 
 .hero-button {

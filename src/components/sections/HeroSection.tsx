@@ -3,7 +3,6 @@ import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
 import Image from 'next/image';
 import { Button } from '../ui/Button';
-import Link from 'next/link';
 
 import heroImage from '../../../public/group-photo.jpg';
 import guysImage from '../../../public/img/group-guys.jpg';
@@ -13,21 +12,20 @@ export function HeroSection() {
   return (
     <Section padding="lg" background="default">
       <Container>
-        <div className="flex flex-col md:flex-row gap-10 items-stretch" style={{ minHeight: 'var(--hero-min-height)' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-10 items-stretch">
           {/* Left: Text Card */}
-          <div className="flex-1 flex flex-col min-w-0 max-w-full h-full justify-start font-primary" style={{ maxWidth: 'var(--hero-text-max-width)' }}>
-            {/* White card with dashed border - fixed height to match image with padding */}
+          <div className="flex flex-col min-w-0 font-primary">
+            {/* Let the text card grow with its content on every screen size. */}
             <div className="hero-card">
               <div className="flex flex-col">
-                <div className="hero-title text-black">Welcome to BDAA</div>
-                <div className="text-base text-black leading-relaxed">
+                <h1 className="hero-title text-black">Welcome to BDAA</h1>
+                <p className="text-base text-black leading-relaxed">
                   BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s central hub for involvement in data analytics.
-                </div>
+                </p>
               </div>
-              <div className="flex-1"></div>
             </div>
             {/* Buttons outside the card - big rectangular buttons like wireframe */}
-            <div className="flex gap-4 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
               <div className="flex-1">
                 <Button
                   label="Join Event"
@@ -38,30 +36,29 @@ export function HeroSection() {
                 />
               </div>
               <div className="flex-1">
-                <Link href="/partners#sponsorship-application">
                   <Button
+                    href="/partners#sponsorship-application"
                     label="Partner With Us"
                     color="var(--text-secondary)"
                     showArrow={false}
                     className="hero-button w-full"
                   />
-                </Link>
               </div>
             </div>
           </div>
           {/* Right: Photo collage — vertical portrait left, guys top-right, girls bottom-right */}
-          <div className="flex gap-3 min-w-[200px] max-w-full" style={{ flex: 'var(--hero-image-flex)' }}>
+          <div className="grid grid-cols-[42fr_58fr] gap-3 min-w-0 aspect-[4/3] sm:aspect-video lg:aspect-auto lg:min-h-[400px]">
             {/* Vertical group photo */}
-            <div className="relative rounded-xl overflow-hidden flex-shrink-0" style={{ width: '42%' }}>
-              <Image src={heroImage} alt="Group photo of BDAA members" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} priority />
+            <div className="relative rounded-xl overflow-hidden min-w-0">
+              <Image src={heroImage} alt="Group photo of BDAA members" sizes="(min-width: 1536px) 350px, (min-width: 1024px) 25vw, 42vw" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} priority />
             </div>
             {/* Right column: guys on top, girls on bottom */}
-            <div className="flex flex-col gap-3 flex-1">
-              <div className="relative rounded-xl overflow-hidden flex-1">
-                <Image src={guysImage} alt="BDAA guys group photo" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
+            <div className="grid grid-rows-2 gap-3 min-w-0">
+              <div className="relative rounded-xl overflow-hidden min-h-0">
+                <Image src={guysImage} alt="BDAA guys group photo" sizes="(min-width: 1536px) 490px, (min-width: 1024px) 35vw, 58vw" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
               </div>
-              <div className="relative rounded-xl overflow-hidden flex-1">
-                <Image src={girlsImage} alt="BDAA girls group photo" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
+              <div className="relative rounded-xl overflow-hidden min-h-0">
+                <Image src={girlsImage} alt="BDAA girls group photo" sizes="(min-width: 1536px) 490px, (min-width: 1024px) 35vw, 58vw" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
               </div>
             </div>
           </div>
