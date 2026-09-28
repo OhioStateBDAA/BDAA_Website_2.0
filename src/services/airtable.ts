@@ -74,9 +74,6 @@ function mapEventType(type: string): EventType {
   return 'meeting';
 }
 
-// Initialize client
-const client = new AirtableClient();
-
 // Officer functions
 export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
   try {
@@ -86,7 +83,7 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
     const viewId = 'viwFMXms1c5yd2uEs';  
     
     // Use view if available for better filtering
-    const records = await client.fetch(baseId, tableId, viewId);
+    const records = await new AirtableClient().fetch(baseId, tableId, viewId);
     const groupedData: { [key: string]: TeamMember[] } = {};
 
     records.forEach((record) => {
@@ -170,11 +167,10 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
     const viewId = process.env.AIRTABLE_EVENTS_VIEW_ID;
     
     if (!baseId || !tableId) {
-      console.warn('Missing Airtable events configuration, returning empty array');
-      return [];
+      throw new Error('Missing Airtable events configuration');
     }
 
-    const records = await client.fetch(baseId, tableId, viewId);
+    const records = await new AirtableClient().fetch(baseId, tableId, viewId);
 
     return records.map((record): Event => {
       const { fields } = record;
@@ -196,6 +192,6 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
     });
   } catch (error) {
     console.error('Failed to fetch events:', error);
-    return []; // Return empty array to prevent page crashes
+    throw error;
   }
 }

@@ -7,9 +7,8 @@ export async function GET() {
     return NextResponse.json(events);
   } catch (error) {
     console.error('Failed to fetch events:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: `Failed to fetch events: ${errorMessage}` },
+      { error: 'Unable to load events. Please try again.' },
       { status: 500 }
     );
   }

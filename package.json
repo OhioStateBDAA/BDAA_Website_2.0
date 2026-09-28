@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
-    "test:security": "node --test tests/api-surface.test.mjs"
+    "test:security": "node --test tests/api-surface.test.mjs",
+    "test:events": "node --test tests/events.test.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
