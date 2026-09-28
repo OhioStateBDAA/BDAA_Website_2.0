@@ -1,4 +1,5 @@
 'use client'
+import { socialLinks } from '@/data/socialLinks';
 import React, { useState } from 'react';
 import { Container } from './Container';
 import { Section } from './Section';
@@ -54,7 +55,7 @@ export function Footer({ currentYear }: FooterProps) {
               
               <div className="lg:w-2/3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Link href="https://groupme.com/join_group/88947141/lqUnX8rW" className="relative group">
+                  <Link href={socialLinks.groupMe} className="relative group">
                     <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
                     <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col border border-black p-6 min-h-[140px] bg-orange-400 text-black">
                       <h3 className="text-xl font-bold mb-2">Join the GroupMe</h3>
@@ -170,7 +171,7 @@ export function Footer({ currentYear }: FooterProps) {
                   <div>
                     <h4 className="font-bold text-[var(--text-black)] mb-3">Join us</h4>
                     <ul className="space-y-2 text-sm text-gray-600">
-                      <li><Link href="https://groupme.com/join_group/88947141/lqUnX8rW" className="hover:text-[var(--text-black)] transition-colors">GroupMe</Link></li>
+                      <li><Link href={socialLinks.groupMe} className="hover:text-[var(--text-black)] transition-colors">GroupMe</Link></li>
                       <li><Link href="https://www.linkedin.com/company/big-data-analytics-association/" className="hover:text-[var(--text-black)] transition-colors">LinkedIn</Link></li>
                       <li><Link href="https://www.instagram.com/bdaaosu/" className="hover:text-[var(--text-black)] transition-colors">Instagram</Link></li>
                     </ul>

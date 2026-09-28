@@ -45,9 +45,7 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
     }
   }
 
-  const handleLinkClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
+  const emailAddress = member.email?.replace(/^mailto:\s*/i, '').trim()
 
   return (
     <div 
@@ -137,26 +135,28 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
           )}
 
           {/* Contact Links */}
-          {(member.linkedIn || member.email) && (
+          {(member.linkedIn || emailAddress) && (
             <div className="flex flex-wrap gap-3">
               {member.linkedIn && (
-                <button
-                  onClick={() => handleLinkClick(member.linkedIn)}
+                <a
+                  href={member.linkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-[var(--highlight)] text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity text-sm font-primary font-bold"
                 >
                   <ExternalLink className="w-4 h-4" />
                   LinkedIn
-                </button>
+                </a>
               )}
               
-              {member.email && (
-                <button
-                  onClick={() => handleLinkClick(member.email)}
+              {emailAddress && (
+                <a
+                  href={`mailto:${emailAddress}`}
                   className="flex items-center gap-2 border border-[var(--border-black)] text-black px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-primary font-bold"
                 >
                   <Mail className="w-4 h-4" />
                   Email
-                </button>
+                </a>
               )}
             </div>
           )}

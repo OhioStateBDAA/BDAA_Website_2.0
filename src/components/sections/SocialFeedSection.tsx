@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { socialLinks } from '@/data/socialLinks';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
 import { Button } from '../ui/Button';
@@ -39,20 +39,18 @@ const InstagramSectionCard = () => {
           </p>
           
           <div className="flex flex-col gap-4">
-            <Link href="https://www.instagram.com/bdaaosu/" target="_blank" rel="noopener noreferrer">
               <Button 
+                href={socialLinks.instagram}
                 label="Follow Insta" 
                 color="#BCB8B1" 
                 showArrow={false}
               />
-            </Link>
-            <Link href="#" target="_blank" rel="noopener noreferrer">
               <Button 
+                href={socialLinks.groupMe}
                 label="Join GroupMe" 
                 color="#BCB8B1" 
                 showArrow={false}
               />
-            </Link>
           </div>
         </div>
       </div>
