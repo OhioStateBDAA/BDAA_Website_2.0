@@ -5,26 +5,17 @@ import ts from 'typescript';
 
 const source = await readFile(new URL('../src/components/mascot/guideMotion.ts', import.meta.url), 'utf8');
 const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext } });
-const { guidePosition } = await import('data:text/javascript;base64,' + Buffer.from(outputText).toString('base64'));
+const { crossingPosition } = await import('data:text/javascript;base64,' + Buffer.from(outputText).toString('base64'));
 
-const base = { progress: 0, viewportWidth: 1280, viewportHeight: 800, guideWidth: 72, guideHeight: 78, still: false };
-test('guide stays in the gutters outside the crossing', () => {
-  assert.equal(guidePosition({ ...base, crossingCenter: 1200 }).x, 1206);
-  assert.equal(guidePosition({ ...base, crossingCenter: 100 }).x, 2);
-});
-test('crossing follows the empty lane from right to left', () => {
-  for (const center of [600, 500, 400, 300, 200]) {
-    const position = guidePosition({ ...base, crossingCenter: center });
-    assert.equal(position.y + base.guideHeight / 2, center);
-    assert.ok(position.x >= 2 && position.x <= 1206);
-  }
-  assert.equal(guidePosition({ ...base, crossingCenter: 400 }).x, 604);
-});
-test('reduced motion stays docked and phone paths stay in bounds', () => {
-  for (const crossingCenter of [1000, 600, 400, 200, -100]) {
-    assert.deepEqual(guidePosition({ ...base, crossingCenter, still: true }), { x: 1206, y: 706 });
-    const phone = guidePosition({ ...base, crossingCenter, viewportWidth: 320, guideWidth: 48, guideHeight: 52 });
-    assert.ok(phone.x >= 0 && phone.x + 48 <= 320);
+test('crossing stays in its lane and clamps progress', () => {
+  assert.deepEqual(crossingPosition(1200, 80, 400, -1), { x: 1200, y: 361 });
+  assert.deepEqual(crossingPosition(1200, 80, 400, 2), { x: 80, y: 361 });
+  let previous = 1200;
+  for (let step = 0; step <= 100; step++) {
+    const point = crossingPosition(1200, 80, 400, step / 100);
+    assert.ok(point.x <= previous && point.x >= 80);
+    assert.equal(point.y, 361);
+    previous = point.x;
   }
 });
 

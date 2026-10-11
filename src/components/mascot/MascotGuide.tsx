@@ -4,12 +4,11 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import { ArrowUpRight, Bot, ChevronRight, Pause, Play, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { notionHub } from '@/data/events';
 import { socialLinks } from '@/data/socialLinks';
 import type { createMascotScene } from './mascotScene';
 import styles from './MascotGuide.module.css';
-import { guidePosition } from './guideMotion';
+import { crossingPosition } from './guideMotion';
 
 const highlights = [
   {
@@ -56,11 +55,26 @@ function subscribeToMotion(callback: () => void) {
   return () => query.removeEventListener('change', callback);
 }
 
+function subscribePreference(callback: () => void) {
+  window.addEventListener('storage', callback);
+  window.addEventListener('bdaa-guide-preference', callback);
+  return () => { window.removeEventListener('storage', callback); window.removeEventListener('bdaa-guide-preference', callback); };
+}
+function usePreference(key: string) {
+  const value = useSyncExternalStore(subscribePreference, () => {
+    try { return localStorage.getItem(key) === 'true'; } catch { return false; }
+  }, () => false);
+  const setValue = (next: boolean) => {
+    try { localStorage.setItem(key, String(next)); } catch { /* Storage can be unavailable in private contexts. */ }
+    window.dispatchEvent(new Event('bdaa-guide-preference'));
+  };
+  return [value, setValue] as const;
+}
+
 export function MascotGuide() {
-  const pathname = usePathname();
   const reducedMotion = useSyncExternalStore(subscribeToMotion, () => window.matchMedia('(prefers-reduced-motion: reduce)').matches, () => true);
-  const [hidden, setHidden] = useState(false);
-  const [paused, setPaused] = useState(false);
+  const [hidden, setHidden] = usePreference('bdaa-guide-hidden');
+  const [paused, setPaused] = usePreference('bdaa-guide-paused');
   const [open, setOpen] = useState(false);
   const [engaged, setEngaged] = useState(false);
   const [moving, setMoving] = useState(false);
@@ -72,6 +86,8 @@ export function MascotGuide() {
   const dialog = useRef<HTMLDialogElement>(null);
   const scene = useRef<Awaited<ReturnType<typeof createMascotScene>> | null>(null);
   const direction = useRef(1);
+  const arrived = useRef(false);
+  const crossingElapsed = useRef(0);
   const titleId = useId();
   const still = reducedMotion || paused;
   const highlight = highlights[selected];
@@ -82,7 +98,7 @@ export function MascotGuide() {
     let cancelled = false;
     let instance: Awaited<ReturnType<typeof createMascotScene>> | undefined;
     // Keep the 3D engine out of the page's initial bundle.
-    import('./mascotScene').then(module => module.createMascotScene(element)).then(value => {
+    import('./mascotScene').then(module => module.createMascotScene(element, value => { if (!cancelled) setReady(value); })).then(value => {
       instance = value;
       if (cancelled) { value.dispose(); return; }
       scene.current = value;
@@ -102,49 +118,53 @@ export function MascotGuide() {
     const element = traveler.current;
     if (!element || hidden) return;
     let frame = 0;
-    let stopTimer: ReturnType<typeof setTimeout>;
-    let lastScroll = window.scrollY;
-    let previousX = element.getBoundingClientRect().left;
-    const update = () => {
+    let started = crossingElapsed.current > 0;
+    let previousTime = 0;
+    const dock = element.parentElement!;
+    const settle = (complete = true) => {
+      element.dataset.traveling = 'false';
+      element.style.transform = '';
+      if (complete) arrived.current = true;
+      setMoving(false);
+    };
+    const update = (time: number) => {
       frame = 0;
-      if (engaged || open) return;
-      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const crossing = document.getElementById('mascot-crossing')?.getBoundingClientRect();
-      const position = guidePosition({
-        progress: maxScroll > 0 ? window.scrollY / maxScroll : 0,
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
-        guideWidth: element.offsetWidth,
-        guideHeight: element.offsetHeight,
-        crossingCenter: crossing ? crossing.top + crossing.height / 2 : null,
-        still,
-      });
-      direction.current = position.x >= previousX ? 1 : -1;
-      previousX = position.x;
-      element.dataset.side = position.x < window.innerWidth / 2 ? 'left' : 'right';
-      // Keep the model precisely within the gap, including fast scrolling.
-      element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
-      if (Math.abs(window.scrollY - lastScroll) > 2 && !still) {
+      const rect = dock.getBoundingClientRect();
+      if (still || window.innerWidth < 1360) { settle(false); return; }
+      if (arrived.current || rect.bottom < 80) { settle(); return; }
+      element.dataset.traveling = 'true';
+      element.dataset.side = 'right';
+      const right = window.innerWidth - 78;
+      const center = rect.top + rect.height / 2;
+      if (!started && center <= window.innerHeight * .72) started = true;
+      if (started) {
+        const delta = previousTime ? Math.min(50, time - previousTime) : 0;
+        previousTime = time;
+        if (engaged || open || document.hidden) { frame = requestAnimationFrame(update); return; }
+        crossingElapsed.current += delta;
+        const progress = Math.min(1, crossingElapsed.current / 3000);
+        const position = crossingPosition(right, rect.left + 12, center, progress);
+        element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
+        element.dataset.side = position.x < window.innerWidth / 2 ? 'left' : 'right';
+        direction.current = -1;
         setMoving(true);
-        clearTimeout(stopTimer);
-        stopTimer = setTimeout(() => setMoving(false), 220);
+        if (progress >= 1) { settle(); return; }
+        frame = requestAnimationFrame(update);
+      } else {
+        const y = Math.max(100, Math.min(window.innerHeight * .72 - 39, 100 + window.scrollY * .22));
+        element.style.transform = `translate3d(${right}px, ${y}px, 0)`;
       }
-      lastScroll = window.scrollY;
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     schedule();
-    const observer = new ResizeObserver(schedule);
-    observer.observe(document.body);
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     return () => {
       cancelAnimationFrame(frame);
-      clearTimeout(stopTimer);
-      observer.disconnect();
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
     };
-  }, [hidden, still, engaged, open, pathname]);
+  }, [hidden, still, engaged, open]);
 
   useEffect(() => {
     const panel = dialog.current;
@@ -195,7 +215,7 @@ export function MascotGuide() {
           <p className={styles.note}>{highlight.note}</p>
         </div>
         <div className={styles.settings}>
-          <button disabled={reducedMotion} onClick={() => setPaused(value => !value)}>{still ? <Play size={14} /> : <Pause size={14} />}{reducedMotion ? 'Reduced motion on' : paused ? 'Resume movement' : 'Pause movement'}</button>
+          <button disabled={reducedMotion} onClick={() => setPaused(!paused)}>{still ? <Play size={14} /> : <Pause size={14} />}{reducedMotion ? 'Reduced motion on' : paused ? 'Resume movement' : 'Pause movement'}</button>
           <button onClick={() => { close(); setHidden(true); }}>Hide guide</button>
         </div>
       </dialog>

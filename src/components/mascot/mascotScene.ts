@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export type MascotPose = 'Idle' | 'Run' | 'Wave';
 
-export async function createMascotScene(host: HTMLElement) {
+export async function createMascotScene(host: HTMLElement, availability: (ready: boolean) => void = () => {}) {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -54,19 +54,23 @@ export async function createMascotScene(host: HTMLElement) {
       renderer.render(scene, camera);
       if (running) frame = requestAnimationFrame(draw);
     };
+    const lost = (event: Event) => { event.preventDefault(); cancelAnimationFrame(frame); availability(false); };
+    const restored = () => { availability(true); previousTime = 0; frame = requestAnimationFrame(draw); };
+    renderer.domElement.addEventListener('webglcontextlost', lost);
+    renderer.domElement.addEventListener('webglcontextrestored', restored);
     host.appendChild(renderer.domElement);
     const setPose = (pose: MascotPose, animate: boolean, direction: number) => {
       cancelAnimationFrame(frame);
       running = animate && !document.hidden;
       previousTime = 0;
-      targetRotation = pose === 'Run' ? direction * 0.38 : -0.12;
+      targetRotation = pose === 'Run' ? direction * 0.85 : -0.12;
       const action = actions.get(pose);
       if (action && action !== current) {
-        current?.stop();
-        action.reset().play();
+        current?.fadeOut(0.18);
+        action.reset().fadeIn(0.18).play();
         current = action;
       }
-      if (!running) { mixer.update(0); model.rotation.y = targetRotation; }
+      if (!running) { current?.stopFading().setEffectiveWeight(1); mixer.update(0); model.rotation.y = targetRotation; }
       frame = requestAnimationFrame(draw);
     };
     setPose('Idle', false, 1);
@@ -86,6 +90,8 @@ export async function createMascotScene(host: HTMLElement) {
             }
           }
         });
+        renderer.domElement.removeEventListener('webglcontextlost', lost);
+        renderer.domElement.removeEventListener('webglcontextrestored', restored);
         renderer.dispose();
         renderer.domElement.remove();
       },

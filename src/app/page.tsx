@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { DataIOFeature } from '@/components/sections/DataIOFeature';
 import { ActivitiesSection } from '@/components/sections/ActivitiesSection';
 import { AlumniSection } from '@/components/sections/AlumniSection';
 import { SocialFeedSection } from '@/components/sections/SocialFeedSection';
@@ -22,7 +23,7 @@ export default function Home() {
       {/* Photo Gallery Section */}
       <PhotoGallerySection />
 
-      <div id="mascot-crossing" className="h-28" aria-hidden="true" />
+      <DataIOFeature />
 
       {/* Activities Section */}
       <ActivitiesSection />

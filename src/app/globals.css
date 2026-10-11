@@ -1,7 +1,32 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-bd-background: var(--background);
+  --color-bd-background-alt: var(--background-alt);
+  --color-bd-highlight: var(--highlight);
+  --color-bd-text-primary: var(--text-primary);
+  --color-bd-text-secondary: var(--text-secondary);
+  --color-bd-border: var(--border);
+}
+@utility font-primary { font-family: var(--font-primary); }
+@utility font-display { font-family: var(--font-display); }
+
+:focus-visible { outline: 2px solid #7A1400; outline-offset: 4px; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 100; padding: 12px; background: white; color: black; transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
 :root {
-  --text-primary: #BCB8B1;
+  color-scheme: light;
+  --text-primary: #1F2421;
   --text-secondary: #1F2421;
   --text-black: #000000;
   /* Universal black text */
@@ -36,16 +61,6 @@
   --activity-coffee: #87CEEB;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #F4F3EE;
-    --text-primary: #F4F3EE;
-    --text-secondary: #BCB8B1;
-    --background-alt: #232323;
-    --highlight: #E04A3F;
-    --border: #BCB8B1;
-  }
-}
 
 body {
   background: var(--background);
@@ -163,7 +178,7 @@ body {
 
 /* Activity Cards */
 .activity-card {
-  @apply bg-white border border-black rounded-xl overflow-hidden h-full flex flex-col min-h-[550px];
+  @apply bg-white border border-black rounded-xl overflow-hidden h-full flex flex-col min-h-[420px];
   transition: all 0.2s ease;
 }
 
@@ -172,7 +187,7 @@ body {
 }
 
 .activity-card-header {
-  @apply p-4 pb-2 mb-8;
+  @apply p-5 pb-2 mb-3;
 }
 
 .activity-card-title {
@@ -181,7 +196,7 @@ body {
 }
 
 .activity-card-description {
-  @apply text-xs text-gray-700 leading-relaxed;
+  @apply text-sm text-gray-700 leading-relaxed;
 }
 
 .activity-card-illustration {
@@ -298,7 +313,7 @@ main {
 }
 
 .footer-cta-card-blue {
-  @apply bg-blue-400 text-white;
+  @apply bg-blue-400 text-black;
 }
 
 .footer-cta-card-red {
@@ -320,15 +335,15 @@ main {
 }
 
 .instagram-section-preview {
-  @apply w-[900px] flex-shrink-0;
+  @apply w-full min-w-0 lg:w-1/2;
 }
 
 .instagram-section-info {
-  @apply flex-[1] flex flex-col justify-center px-8 py-4;
+  @apply flex-1 min-w-0 flex flex-col justify-center px-0 sm:px-4 py-4;
 }
 
 .instagram-preview-mockup {
-  @apply relative w-full h-full min-h-[600px] lg:min-h-[700px];
+  @apply relative w-full aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[400px];
 }
 
 .instagram-preview-container {
