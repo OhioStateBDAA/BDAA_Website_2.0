@@ -12,20 +12,20 @@ export function DataIOFeature() {
         <div className={styles.feature}>
           <div className={styles.runway} id="mascot-crossing">
             <div className={styles.dock} id="mascot-dock"><MascotGuide /></div>
-            <p className={styles.runwayNote}><strong>Follow your curiosity.</strong>Our little guide has something to show you.</p>
+            <p className={styles.runwayNote}>Click the robot for more about BDAA.</p>
           </div>
           <div className={styles.featureCard}>
             <div className={styles.featureCopy}>
               <p className={styles.eyebrow}>The BDAA hackathon</p>
-              <h2 id="data-io-title">Data I/O.</h2>
-              <h3>Make your next “what if” a real thing.</h3>
-              <p>Bring an idea. Find a team. Explore what you can build with data. Data I/O is where curiosity becomes collaboration.</p>
-              <Link className={styles.primary} href="/events">Explore BDAA events <ArrowUpRight size={18} /></Link>
-              <p className={styles.footnote}>Future dates and registration will be shared through BDAA announcements.</p>
+              <h2 id="data-io-title">Data I/O</h2>
+              
+              <p>Data I/O is our data analytics hackathon. Students work in teams to take on a data challenge and present what they’ve built.</p>
+              <Link className={styles.primary} href="/events">See BDAA events <ArrowUpRight size={18} /></Link>
+              <p className={styles.footnote}>Check our event announcements for the next Data I/O.</p>
             </div>
             <div className={styles.featureVisual}>
               <Image src="/img/events/dataio.JPG" alt="Students working together at the 2025 Data I/O hackathon" fill sizes="(max-width: 767px) 90vw, 50vw" />
-              <p className={styles.imageCaption}>Real people. Real problems. New possibilities.<span>A look back at Data I/O 2025.</span></p>
+              <p className={styles.imageCaption}>Data I/O 2025</p>
             </div>
           </div>
         </div>

@@ -14,38 +14,38 @@ const highlights = [
   {
     tag: '01 / THE HACKATHON',
     title: 'Data I/O',
-    heading: 'Big ideas. Real data.',
-    description: 'Find your team, tackle a data challenge, and turn an idea into something you can show. Data I/O brings the BDAA community together to learn by building.',
+    heading: 'Our hackathon',
+    description: 'At Data I/O, students work in teams on a data challenge and present their projects. Check our events page for announcements.',
     image: '/img/events/dataio.JPG',
     alt: 'BDAA Data I/O hackathon',
     link: '/events',
-    action: 'Explore BDAA events',
+    action: 'See BDAA events',
     note: 'New event details will appear on our events page.',
-    cue: 'Discover Data I/O',
+    cue: 'About Data I/O',
   },
   {
-    tag: '02 / MAKE SOMETHING',
+    tag: '02 / PROJECTS',
     title: 'Project series',
-    heading: 'From curious to creator.',
+    heading: 'The Project Hub',
     description: 'Explore data science, full stack development, machine learning, and AI. Find past projects and learning materials in the BDAA Project Hub.',
     image: '/img/events/gala.JPG',
     alt: 'BDAA project presentations at the research gala',
     link: notionHub.url,
     action: 'Open the Project Hub',
-    note: 'Projects, workshop materials, and room to experiment.',
-    cue: 'Find your next project',
+    note: 'Browse materials from past workshops.',
+    cue: 'Browse projects',
   },
   {
-    tag: '03 / FIND YOUR PEOPLE',
+    tag: '03 / STAY IN TOUCH',
     title: 'The community',
-    heading: 'Good data. Great company.',
-    description: 'Tech talks, shared ideas, and people to build with. Join our GroupMe to keep up with BDAA announcements and find your way into the community.',
+    heading: 'Join our GroupMe',
+    description: 'Our GroupMe is where we share meeting reminders and club announcements. Join to keep up with what’s happening at BDAA.',
     image: '/img/community/IceCreamSocial.jpeg',
     alt: 'BDAA members at an ice cream social',
     link: socialLinks.groupMe,
     action: 'Join the GroupMe',
-    note: 'Your next conversation could start something great.',
-    cue: 'Meet your community',
+    note: 'Meeting reminders and club updates.',
+    cue: 'Stay in touch',
   },
 ];
 
@@ -194,7 +194,7 @@ export function MascotGuide() {
               <Bot className={styles.fallback} size={66} aria-hidden="true" />
             </span>
             <span className={styles.shadow} />
-            <span className={styles.caption}>YOUR BDAA SIDEKICK <ChevronRight size={10} /></span>
+            <span className={styles.caption}>BDAA GUIDE <ChevronRight size={10} /></span>
           </button>
         </div>
       )}
@@ -205,7 +205,7 @@ export function MascotGuide() {
           const rect = event.currentTarget.getBoundingClientRect();
           if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) close();
         }}>
-        <div className={styles.panelTop}><span><Bot size={18} /> A LITTLE BDAA DISCOVERY</span><button onClick={close} aria-label="Close BDAA guide"><X size={20} /></button></div>
+        <div className={styles.panelTop}><span><Bot size={18} /> MORE ABOUT BDAA</span><button onClick={close} aria-label="Close BDAA guide"><X size={20} /></button></div>
         <div className={styles.featureImage}><Image src={highlight.image} alt={highlight.alt} fill sizes="440px" /><span>{highlight.tag}</span></div>
         <div className={styles.content}>
           <div className={styles.tabs} aria-label="BDAA highlights">{highlights.map((item, index) => <button key={item.title} aria-pressed={selected === index} onClick={() => setSelected(index)}>{item.title}</button>)}</div>

@@ -13,7 +13,7 @@ export function AlumniSection() {
             Where our alumni work
           </h2>
           <p className="text-base text-white/90 leading-relaxed mb-4">
-            We focus on professional development through our alumni network. Our graduates work across data science, machine learning, software engineering, and product management at top companies. This network becomes your pathway to explore and grow in these spaces.
+            BDAA alumni work in data science, machine learning, software engineering, and product management. Here are some of the companies they’ve joined.
           </p>
         </div>
 

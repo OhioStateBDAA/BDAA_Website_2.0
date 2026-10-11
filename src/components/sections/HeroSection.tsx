@@ -15,13 +15,13 @@ export function HeroSection() {
       <div className={styles.hero}>
         <div>
           <p className={styles.eyebrow}>Ohio State · Big Data Analytics Association</p>
-          <h1>Get curious.<br /><em>Build with data.</em></h1>
-          <p className={styles.intro}>A community for exploring ideas, building real projects, and finding your people in data.</p>
+          <h1>Ohio State<br /><em>students in data.</em></h1>
+          <p className={styles.intro}>We’re BDAA, a student organization at Ohio State. We get together to learn about data analytics, work on projects, and meet people who share our interests.</p>
           <div className={styles.actions}>
-            <Link href={socialLinks.groupMe} className={styles.primary}>Join the community <ArrowUpRight size={17} /></Link>
-            <Link href="/events" className={styles.secondary}>Explore events <ArrowUpRight size={17} /></Link>
+            <Link href={socialLinks.groupMe} className={styles.primary}>Join our GroupMe <ArrowUpRight size={17} /></Link>
+            <Link href="/events" className={styles.secondary}>See upcoming events <ArrowUpRight size={17} /></Link>
           </div>
-          <p className={styles.footnote}>Workshops. Tech talks. Projects. A place to start.</p>
+          
         </div>
         <div className={styles.collage}>
           <div className={styles.portrait}><Image src={heroImage} alt="BDAA members together on campus" fill sizes="(max-width: 767px) 45vw, 24vw" className="object-top" priority /></div>

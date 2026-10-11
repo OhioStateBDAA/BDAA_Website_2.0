@@ -14,7 +14,7 @@ const InstagramPreview = () => {
           alt="BDAA Community Ice Cream Social"
           fill
           className="object-cover object-center rounded-2xl"
-          unoptimized
+          sizes="(min-width: 1024px) 50vw, 100vw"
         />
       </div>
     </div>
@@ -35,20 +35,20 @@ const InstagramSectionCard = () => {
           <h2 className="instagram-section-title">Join our community</h2>
           
           <p className="instagram-section-description">
-            Our platforms are safe spaces to exchange ideas, interesting topics, events, useful resources, and opportunities for personal and professional development for everyone.
+            Join our GroupMe for meeting reminders and club updates, or follow us on Instagram to see what we’ve been up to.
           </p>
           
           <div className="flex flex-col gap-4">
               <Button 
                 href={socialLinks.instagram}
                 label="Follow Insta" 
-                color="#BCB8B1" 
+                color="#1F2421" 
                 showArrow={false}
               />
               <Button 
                 href={socialLinks.groupMe}
                 label="Join GroupMe" 
-                color="#BCB8B1" 
+                color="#1F2421" 
                 showArrow={false}
               />
           </div>
