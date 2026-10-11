@@ -407,13 +407,6 @@ body { --font-primary: var(--font-geist-sans), Arial, sans-serif; font-family: v
 .activity-card-title { font-size: 23px; }
 .activity-card-description { font-size: 14px; line-height: 1.75; }
 .activity-card-illustration { flex: none; height: 220px; margin: auto 16px 16px; margin-top: 20px; }
-.team-card { padding: 14px; border: 1px solid #ddd6cb; border-radius: 16px; background: #fff; }
-.team-member-photo { filter: none; }
-.team-card .team-member-container { margin-bottom: 14px; }
-.team-card > a { top: 52px; right: 22px; }
-.team-card button:hover .team-member-photo { transform: scale(1.025); }
-.sponsor-strip { padding-block: 8px 20px; }
-.company-logo-square { border-color: #ffffff25; border-radius: 12px; cursor: default; }
 .instagram-section-card { box-shadow: none; border-radius: 20px; }
 .instagram-section-description { line-height: 1.8; }
 .footer-action { border-color: #ddd6cb; border-radius: 14px; }
@@ -428,12 +421,7 @@ footer a:hover .footer-action { border-color: #9e7167; }
  .blog-card { padding: 22px; }
  .blog-card > div:last-child { flex-wrap: wrap; }
  .page-about .about-panel { padding: 24px; }
- .team-card { padding: 12px; }
 }
 
-.company-logo-square { aspect-ratio: 3 / 2; }
-.company-logo-square img { padding: 18px; filter: grayscale(1); opacity: .85; transition: filter .2s, opacity .2s; }
-.company-logo-square:hover img { filter: none; opacity: 1; }
 footer h2 { font-size: clamp(28px,3vw,36px); line-height: 1.25; }
 .footer-action p { font-weight: 400; line-height: 1.65; }
-@media (max-width: 639px) { .company-logo-square img { padding: 10px; } }
