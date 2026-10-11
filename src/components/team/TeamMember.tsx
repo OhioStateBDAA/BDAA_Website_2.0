@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import { TeamMember as TeamMemberType } from '@/types/events'
 import { ExternalLink } from 'lucide-react'
+import styles from './TeamMember.module.css'
 
 interface TeamMemberProps {
   member: TeamMemberType
@@ -13,7 +14,7 @@ interface TeamMemberProps {
 export function TeamMember({ member, onClick }: TeamMemberProps) {
   const [imageError, setImageError] = useState(false)
   return (
-    <div className="relative group">
+    <div className={`relative ${styles.member}`}>
       <button type="button" onClick={() => onClick?.(member)} aria-label={`View profile for ${member.name}`}
         className="block w-full text-black rounded-lg">
         <span className="block text-center mb-3 text-lg font-display font-bold leading-tight">{member.name}</span>
@@ -21,7 +22,7 @@ export function TeamMember({ member, onClick }: TeamMemberProps) {
           {!imageError && member.img ? (
             <Image src={member.img} alt={`${member.name} headshot`} fill
               sizes="(max-width: 639px) calc(100vw - 64px), (max-width: 1023px) 45vw, (max-width: 1279px) 29vw, 280px"
-              className="object-cover team-member-photo" onError={() => setImageError(true)} />
+              className={`object-cover ${styles.photo}`} onError={() => setImageError(true)} />
           ) : (
             <span className="h-full flex items-center justify-center bg-gray-200 text-gray-700 text-sm">Photo not available</span>
           )}

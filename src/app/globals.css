@@ -149,16 +149,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Team Member Styles */
-.team-member-photo {
-  filter: grayscale(100%);
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-.group:hover .team-member-photo {
-  filter: grayscale(0%);
-}
-
 /* Team Member Container Background */
 .team-member-container {
   background-color: var(--highlight) !important;

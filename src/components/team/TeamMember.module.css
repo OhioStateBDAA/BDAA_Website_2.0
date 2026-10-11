@@ -1,0 +1,13 @@
+.photo {
+  filter: grayscale(100%);
+  transition: filter 300ms ease;
+}
+
+.member:hover .photo,
+.member:focus-within .photo {
+  filter: grayscale(0%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo { transition: none; }
+}
