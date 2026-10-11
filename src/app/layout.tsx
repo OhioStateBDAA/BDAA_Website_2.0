@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Anaheim, Courier_Prime } from "next/font/google";
 import "./globals.css";
+import { MascotGuide } from "@/components/mascot/MascotGuide";
 import { Footer } from "@/components/layout/Footer";
 
 
@@ -51,6 +52,7 @@ export default function RootLayout({
       >
         {children}
         <Footer currentYear={new Date().getFullYear()} />
+        <MascotGuide />
       </body>
     </html>
   );
