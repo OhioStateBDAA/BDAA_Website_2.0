@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
-import { socialLinks } from '@/data/socialLinks';
 import styles from './HomeEditorial.module.css';
 import heroImage from '../../../public/group-photo.jpg';
 import guysImage from '../../../public/img/group-guys.jpg';
@@ -14,12 +13,12 @@ export function HeroSection() {
     <Section padding="lg"><Container>
       <div className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>Ohio State · Big Data Analytics Association</p>
-          <h1>Ohio State<br /><em>students in data.</em></h1>
-          <p className={styles.intro}>We’re BDAA, a student organization at Ohio State. We get together to learn about data analytics, work on projects, and meet people who share our interests.</p>
+          
+          <h1>Welcome to <em>BDAA</em></h1>
+          <p className={styles.intro}>BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s central hub for involvement in data analytics.</p>
           <div className={styles.actions}>
-            <Link href={socialLinks.groupMe} className={styles.primary}>Join our GroupMe <ArrowUpRight size={17} /></Link>
-            <Link href="/events" className={styles.secondary}>See upcoming events <ArrowUpRight size={17} /></Link>
+            <Link href="/events" className={styles.primary}>Join Event <ArrowUpRight size={17} /></Link>
+            <Link href="/partners#sponsorship-application" className={styles.secondary}>Partner With Us <ArrowUpRight size={17} /></Link>
           </div>
           
         </div>

@@ -35,7 +35,7 @@ const InstagramSectionCard = () => {
           <h2 className="instagram-section-title">Join our community</h2>
           
           <p className="instagram-section-description">
-            Join our GroupMe for meeting reminders and club updates, or follow us on Instagram to see what we’ve been up to.
+            Our platforms are safe spaces to exchange ideas, interesting topics, events, useful resources, and opportunities for personal and professional development for everyone.
           </p>
           
           <div className="flex flex-col gap-4">

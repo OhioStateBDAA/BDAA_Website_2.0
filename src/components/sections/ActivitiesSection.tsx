@@ -7,35 +7,35 @@ import { Button } from '../ui/Button';
 const activities = [
   {
     title: 'Tech talks',
-    description: 'Hear from people working in data analytics about their jobs and the problems they work on. Bring your questions.',
+    description: 'Industry experts share insights on cutting-edge technologies, career paths, and emerging trends in data analytics. Learn from professionals working at top companies and expand your technical knowledge.',
     colorVar: '--activity-bookclub',
     image: '/img/activities/tech-talks.jpg',
     alt: 'Industry professionals giving tech talks to BDAA members',
   },
   {
     title: 'Career fair',
-    description: 'Meet recruiters and ask about internships, full-time roles, and what working at their company is like.',
+    description: 'Connect with leading companies actively recruiting data analysts and data scientists. Network with recruiters, learn about opportunities, and discover your next career move in the analytics field.',
     colorVar: '--activity-newsletter',
     image: '/img/activities/career-fair.jpg',
     alt: 'BDAA career fair with company representatives',
   },
   {
     title: 'Hackathons',
-    description: 'Work with a team on a data challenge, try out your ideas, and present your results.',
+    description: 'Collaborate on real-world data challenges and build innovative solutions over intensive weekends. Work with teammates to solve problems using analytics tools and present your findings to judges.',
     colorVar: '--activity-events',
     image: '/img/activities/hackathons.jpg',
     alt: 'Students collaborating during BDAA hackathon',
   },
   {
     title: 'Social events',
-    description: 'Get to know other members outside of meetings. Our socials give us a chance to hang out and take a break from class.',
+    description: 'Build meaningful connections with fellow data enthusiasts in a relaxed atmosphere. From game nights to study sessions, these events foster community and lasting friendships within our organization.',
     colorVar: '--activity-discord',
     image: '/img/activities/social-events.jpg',
     alt: 'BDAA members enjoying social activities together',
   },
   {
     title: 'Project series',
-    description: 'Work through a project with other members and practice using data tools along the way. Past materials are available in our Project Hub.',
+    description: 'Hands-on workshops where you build portfolio projects using real datasets. Develop practical skills in Python, R, SQL, and visualization tools while creating work to showcase to potential employers.',
     colorVar: '--activity-coffee',
     image: '/img/activities/project-series.jpg',
     alt: 'Students working on data science projects',
@@ -52,10 +52,10 @@ export function ActivitiesSection() {
           {/* Text section - takes first grid position */}
           <div className="p-4 flex flex-col justify-center h-full min-h-[240px]">
             <h2 className="font-display text-3xl font-bold text-black leading-tight mb-4">
-              What we do
+              Activities
             </h2>
             <div className="text-sm text-gray-600 leading-relaxed mb-6">
-              We host tech talks, project workshops, recruiting events, and socials throughout the semester.
+              Read about all the activities we offer.
             </div>
             <Button
               label="Activity calendar"

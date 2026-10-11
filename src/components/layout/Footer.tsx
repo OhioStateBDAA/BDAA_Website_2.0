@@ -33,7 +33,7 @@ export function Footer({ currentYear }: FooterProps) {
                     <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col border border-black p-6 min-h-[140px] bg-orange-400 text-black">
                       <h3 className="text-xl font-bold mb-2">Join the GroupMe</h3>
                       <p className="text-sm mb-4 opacity-90 flex-1">
-                        Get meeting reminders, club updates, and opportunities shared by other members.
+                        A safe space for exchanging ideas, events, job opportunities and opportunities for personal and career development.
                       </p>
                       <div className="self-end">
                         <ArrowRight className="w-5 h-5" />

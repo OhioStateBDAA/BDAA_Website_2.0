@@ -14,37 +14,34 @@ const highlights = [
   {
     tag: '01 / THE HACKATHON',
     title: 'Data I/O',
-    heading: 'Our hackathon',
-    description: 'At Data I/O, students work in teams on a data challenge and present their projects. Check our events page for announcements.',
+    heading: 'Hackathons',
+    description: 'Collaborate on real-world data challenges and build innovative solutions over intensive weekends. Work with teammates to solve problems using analytics tools and present your findings to judges.',
     image: '/img/events/dataio.JPG',
     alt: 'BDAA Data I/O hackathon',
     link: '/events',
-    action: 'See BDAA events',
-    note: 'New event details will appear on our events page.',
+    action: 'Join Event',
     cue: 'About Data I/O',
   },
   {
     tag: '02 / PROJECTS',
     title: 'Project series',
-    heading: 'The Project Hub',
-    description: 'Explore data science, full stack development, machine learning, and AI. Find past projects and learning materials in the BDAA Project Hub.',
+    heading: 'Project series',
+    description: 'Hands-on workshops where you build portfolio projects using real datasets. Develop practical skills in Python, R, SQL, and visualization tools while creating work to showcase to potential employers.',
     image: '/img/events/gala.JPG',
     alt: 'BDAA project presentations at the research gala',
     link: notionHub.url,
     action: 'Open the Project Hub',
-    note: 'Browse materials from past workshops.',
     cue: 'Browse projects',
   },
   {
     tag: '03 / STAY IN TOUCH',
     title: 'The community',
-    heading: 'Join our GroupMe',
-    description: 'Our GroupMe is where we share meeting reminders and club announcements. Join to keep up with what’s happening at BDAA.',
+    heading: 'Join our community',
+    description: 'Our platforms are safe spaces to exchange ideas, interesting topics, events, useful resources, and opportunities for personal and professional development for everyone.',
     image: '/img/community/IceCreamSocial.jpeg',
     alt: 'BDAA members at an ice cream social',
     link: socialLinks.groupMe,
     action: 'Join the GroupMe',
-    note: 'Meeting reminders and club updates.',
     cue: 'Stay in touch',
   },
 ];
@@ -212,7 +209,6 @@ export function MascotGuide() {
           <h2 id={titleId}>{highlight.heading}</h2>
           <p>{highlight.description}</p>
           <Link className={styles.cta} href={highlight.link} onClick={close}>{highlight.action}<ArrowUpRight size={18} /></Link>
-          <p className={styles.note}>{highlight.note}</p>
         </div>
         <div className={styles.settings}>
           <button disabled={reducedMotion} onClick={() => setPaused(!paused)}>{still ? <Play size={14} /> : <Pause size={14} />}{reducedMotion ? 'Reduced motion on' : paused ? 'Resume movement' : 'Pause movement'}</button>
