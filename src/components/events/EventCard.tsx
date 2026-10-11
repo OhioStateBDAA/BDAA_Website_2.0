@@ -40,7 +40,7 @@ export function EventCard({ event, isPast = false }: EventCardProps) {
   };
 
   return (
-    <div className={`bg-white border border-black rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 ${event.featured ? 'ring-2 ring-[var(--highlight)]' : ''}`}>
+    <div className={`surface-card bg-white border border-black rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 ${event.featured ? 'ring-2 ring-[var(--highlight)]' : ''}`}>
       {/* Event Type Badge */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">

@@ -33,7 +33,7 @@ const MEDIUM_USERNAME = 'ohiostatebdaa';
 
 // Metadata for SEO
 export const metadata: Metadata = {
-  title: 'Blog | ',
+  title: 'Blog | BDAA',
   description: 'Latest articles and insights from BDAA Medium blog',
   openGraph: {
     title: 'Blog',
@@ -127,7 +127,7 @@ function MediumPostCard({ post }: { post: MediumPost }) {
   });
 
   return (
-    <article className="bg-white rounded-lg border border-black p-6 duration-300">      
+    <article className="surface-card blog-card bg-white rounded-lg border border-black p-6 duration-300">
     <h2 className="text-2xl font-bold mb-3">
         <Link 
           href={post.link}
@@ -148,7 +148,7 @@ function MediumPostCard({ post }: { post: MediumPost }) {
           {post.categories.slice(0, 3).map((category, index) => (
             <span 
               key={index}
-              className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full"
+              className="px-3 py-1 bg-[#f1e5df] text-[#793326] text-sm rounded-full"
             >
               {category}
             </span>
@@ -190,16 +190,16 @@ export default async function BlogPage() {
   const posts = await getMediumPosts(MEDIUM_USERNAME);
 
   return (
-    <main className=" w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen bg-bd-background">
+    <main id="main-content" tabIndex={-1} className="page-blog  w-full max-w-full overflow-hidden    min-h-screen bg-bd-background">
             <Navbar />
       
-      <div className="container mx-auto py-12 px-4">
-        <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
+      <div className="site-container max-w-[1280px] mx-auto py-12">
+        <h1 className="font-display text-4xl font-bold text-center mb-5 text-gray-800">
           BDAA&apos;s Medium Blog
         </h1>
-        <h2 className="text-2xl  text-center mb-12 text-gray-800">
+        <p className="text-base leading-relaxed max-w-2xl mx-auto text-center mb-12 text-gray-600">
          Find tips and insights about the project series, recent BDAA events, and our initatives.
-        </h2>
+        </p>
         
         {posts.length > 0 ? (
           <div className="max-w-6xl mx-auto grid gap-6 md:gap-8 lg:grid-cols-2">

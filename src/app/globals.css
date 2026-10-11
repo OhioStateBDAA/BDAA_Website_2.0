@@ -31,16 +31,16 @@
   --text-black: #000000;
   /* Universal black text */
   --background: #F4F3EE;
-  --highlight: #7A1400;
+  --highlight: #832d28;
   --background-alt: #FFFFFF;
   --background-white: #FFFFFF;
   /* Universal white background */
   --border: #1F2421;
-  --border-black: #000000;
+  --border-black: #ddd6cb;
   /* Universal black border */
   --shadow: rgba(31, 36, 33, 0.1);
 
-  --font-primary: 'Anaheim', 'Anaheim Fallback', sans-serif;
+  --font-primary: Arial, sans-serif;
   --font-display: 'Courier Prime', 'Courier', monospace;
 
   /* Hero Section Heights */
@@ -376,3 +376,64 @@ main {
   @apply bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center gap-2;
   font-family: var(--font-primary);
 }
+/* Shared visual system: warm surfaces, consistent gutters and quieter chrome. */
+body { --font-primary: var(--font-geist-sans), Arial, sans-serif; font-family: var(--font-primary); font-size: 15px; line-height: 1.65; }
+.site-container { width: 100%; padding-inline: clamp(20px, 4vw, 40px); }
+.navbar { margin-top: 20px; border: 1px solid #ded8ce; border-radius: 16px; padding: 14px 22px; box-shadow: 0 4px 20px #30251a04; }
+.navbar-links { gap: 30px; font-size: 14px; font-weight: 500; }
+.navbar-links a { padding-block: 10px; text-decoration: none; border-bottom: 2px solid transparent; }
+.navbar-links a:hover, .navbar-links a[aria-current=page] { color: var(--highlight); border-bottom-color: var(--highlight); }
+.site-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; transition: filter .2s, box-shadow .2s; cursor: pointer; }
+.site-button:hover { filter: brightness(1.1); box-shadow: 0 4px 14px #30251a12; }
+.site-button:disabled { opacity: .5; cursor: not-allowed; }
+.navbar .hero-button { height: 46px; font-size: 14px; }
+.surface-card, .activity-card { border: 1px solid #ddd6cb; border-radius: 16px; box-shadow: 0 4px 20px #30251a04; }
+.page-about h1, .page-events h1, .page-partners h1, .page-blog h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,48px); letter-spacing: -1.5px; line-height: 1.15; }
+.page-about > section:first-of-type, .page-events > section:first-of-type, .page-partners > section:first-of-type { padding-top: 64px; padding-bottom: 32px; }
+.page-events > section:nth-of-type(2) { padding-top: 24px; }
+.page-about .about-panel { text-align: left; padding: 28px; }
+.page-about .about-panel h2 { font-size: 24px; }
+.page-about .about-panel > div { margin-top: 24px; gap: 20px; }
+.page-about > section:nth-of-type(2) { padding-top: 32px; }
+.page-partners > section:first-of-type p { font-size: 16px; line-height: 1.85; max-width: 760px; margin-inline: auto; }
+.page-partners h2 { font-family: var(--font-display); font-size: clamp(26px,3vw,36px); }
+.blog-card { display: flex; flex-direction: column; padding: 28px; }
+.blog-card h2 { font-size: 22px; line-height: 1.4; letter-spacing: -.4px; }
+.blog-card > div:last-child { margin-top: auto; padding-top: 18px; gap: 16px; }
+.blog-card time { flex-shrink: 0; font-size: 12px; }
+.blog-card a:hover { color: var(--highlight); }
+.activity-card { min-height: 0; }
+.activity-card-header { padding: 24px 24px 12px; margin: 0; }
+.activity-card-title { font-size: 23px; }
+.activity-card-description { font-size: 14px; line-height: 1.75; }
+.activity-card-illustration { flex: none; height: 220px; margin: auto 16px 16px; margin-top: 20px; }
+.team-card { padding: 14px; border: 1px solid #ddd6cb; border-radius: 16px; background: #fff; }
+.team-member-photo { filter: none; }
+.team-card .team-member-container { margin-bottom: 14px; }
+.team-card > a { top: 52px; right: 22px; }
+.team-card button:hover .team-member-photo { transform: scale(1.025); }
+.sponsor-strip { padding-block: 8px 20px; }
+.company-logo-square { border-color: #ffffff25; border-radius: 12px; cursor: default; }
+.instagram-section-card { box-shadow: none; border-radius: 20px; }
+.instagram-section-description { line-height: 1.8; }
+.footer-action { border-color: #ddd6cb; border-radius: 14px; }
+footer > section:first-child { border-top: 1px solid #ddd6cb; }
+footer h2 { font-family: var(--font-display); letter-spacing: -1px; }
+footer a:hover { transform: none; }
+footer .footer-action { transition: border-color .2s; }
+footer a:hover .footer-action { border-color: #9e7167; }
+@media (max-width: 639px) {
+ .navbar { margin-top: 12px; padding: 12px 14px; }
+ .page-about > section:first-of-type, .page-events > section:first-of-type, .page-partners > section:first-of-type { padding-top: 40px; }
+ .blog-card { padding: 22px; }
+ .blog-card > div:last-child { flex-wrap: wrap; }
+ .page-about .about-panel { padding: 24px; }
+ .team-card { padding: 12px; }
+}
+
+.company-logo-square { aspect-ratio: 3 / 2; }
+.company-logo-square img { padding: 18px; filter: grayscale(1); opacity: .85; transition: filter .2s, opacity .2s; }
+.company-logo-square:hover img { filter: none; opacity: 1; }
+footer h2 { font-size: clamp(28px,3vw,36px); line-height: 1.25; }
+.footer-action p { font-weight: 400; line-height: 1.65; }
+@media (max-width: 639px) { .company-logo-square img { padding: 10px; } }

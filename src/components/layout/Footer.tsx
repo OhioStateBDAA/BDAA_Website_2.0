@@ -29,8 +29,7 @@ export function Footer({ currentYear }: FooterProps) {
               <div className="lg:w-2/3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Link href={socialLinks.groupMe} className="relative group">
-                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col border border-black p-6 min-h-[140px] bg-orange-400 text-black">
+                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out  flex flex-col footer-action border p-6 min-h-[120px] bg-[#efe4da] text-black">
                       <h3 className="text-xl font-bold mb-2">Join the GroupMe</h3>
                       <p className="text-sm mb-4 opacity-90 flex-1">
                         A safe space for exchanging ideas, events, job opportunities and opportunities for personal and career development.
@@ -42,8 +41,7 @@ export function Footer({ currentYear }: FooterProps) {
                   </Link>
 
                   <Link href="/partners#sponsorship-application" className="relative group">
-                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col justify-between border border-black p-6 min-h-[140px] bg-blue-400 text-black">
+                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out  flex flex-col justify-between footer-action border p-6 min-h-[120px] bg-white text-black">
                       <h3 className="text-xl font-bold mb-2">Become a partner</h3>
                       <div className="self-end">
                         <ArrowRight className="w-5 h-5" />
@@ -52,8 +50,7 @@ export function Footer({ currentYear }: FooterProps) {
                   </Link>
 
                   <Link href="/events" className="relative group">
-                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex flex-col justify-between border border-black p-6 min-h-[140px] bg-red-400 text-black">
+                    <div className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out  flex flex-col justify-between footer-action border p-6 min-h-[120px] bg-white text-black">
                       <h3 className="text-xl font-bold mb-2">Join an event</h3>
                       <div className="self-end">
                         <ArrowRight className="w-5 h-5" />
@@ -62,8 +59,7 @@ export function Footer({ currentYear }: FooterProps) {
                   </Link>
 
                   <div className="relative">
-                    <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-                    <div className="relative z-10 w-full h-full rounded-2xl border border-black p-6 min-h-[140px] bg-gray-100 text-black">
+                    <div className="relative z-10 w-full h-full rounded-2xl footer-action border p-6 min-h-[120px] bg-gray-100 text-black">
                       <h3 className="text-xl font-bold mb-4">Subscribe to newsletter</h3>
                       {newsletterUrl ? (
                         <a href={newsletterUrl} className="inline-flex min-h-11 items-center rounded-lg bg-[var(--highlight)] px-4 py-2 text-white font-semibold">

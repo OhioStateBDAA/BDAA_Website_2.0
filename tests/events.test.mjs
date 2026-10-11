@@ -55,8 +55,9 @@ test('today stays upcoming until campus midnight, with sorted archives and undat
 
 test('Airtable failures reject instead of masquerading as an empty calendar', async () => {
   const fieldsUrl = await loadTypescript('../src/types/airtable.ts');
+  const imageUrl = await loadTypescript('../src/services/officerImage.ts');
   const serviceUrl = await loadTypescript('../src/services/airtable.ts', source =>
-    source.replaceAll('@/types/airtable', fieldsUrl));
+    source.replaceAll('@/types/airtable', fieldsUrl).replaceAll('./officerImage', imageUrl));
   const { fetchEventsFromAirtable } = await import(serviceUrl);
   const keys = ['AIRTABLE_API_KEY', 'AIRTABLE_API_KEY_READ_ONLY', 'AIRTABLE_EVENTS_BASE_ID', 'AIRTABLE_EVENTS_TABLE_ID'];
   const originalEnv = Object.fromEntries(keys.map(key => [key, process.env[key]]));

@@ -5,7 +5,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/Button';
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import emailjs from '@emailjs/browser';
 
@@ -30,7 +30,7 @@ const eventImages: EventImage[] = [
     id: 1,
     title: "Data I/O Hackathon 2025",
     description: "Our flagship hackathon brought together 100+ students to solve real-world data challenges.",
-    imageUrl: "img/events/dataio.JPG", // Replace with actual image path
+    imageUrl: "/img/events/dataio.JPG", // Replace with actual image path
     date: "February 08, 2025",
     location: "Keenan Center for Entrepreneurship"
   },
@@ -38,7 +38,7 @@ const eventImages: EventImage[] = [
     id: 2,
     title: "BDAA Research Gala",
     description: "Members spent the semester working on innovative data science projects and presented their work infront of industry professionals.",
-    imageUrl: "img/events/gala.JPG", // Replace with actual image path
+    imageUrl: "/img/events/gala.JPG", // Replace with actual image path
     date: "April 20, 2025",
     location: "Student Union"
   },
@@ -46,14 +46,17 @@ const eventImages: EventImage[] = [
     id: 3,
     title: "Bank of America Tech Talk",
     description: "BDAA is proud to host weekly tech talks led by professionals making a difference in industry.",
-    imageUrl: "img/events/BOA.JPG", // Replace with actual image path
+    imageUrl: "/img/events/BOA.JPG", // Replace with actual image path
     date: "March 2025",
-    location: "Pomerane Hall"
+    location: "Pomerene Hall"
   },
 
 ];
 
+const emailConfigured = Boolean(process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID && process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID && process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+
 export default function PartnersPage() {
+  const reduceMotion = useReducedMotion();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -78,6 +81,7 @@ export default function PartnersPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting || !emailConfigured) return;
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
@@ -116,19 +120,15 @@ export default function PartnersPage() {
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmitStatus('error');
-      setSubmitMessage('Sorry, there was an error submitting your application. Please try again or contact us directly.');
+      setSubmitMessage('Sorry, there was an error submitting your application. Your entries are saved in the form. Please try again or email info@bdaa-osu.edu.');
     } finally {
       setIsSubmitting(false);
-      // Clear status message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus('idle');
-        setSubmitMessage('');
-      }, 5000);
+
     }
   };
 
   return (
-    <main className=" w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8 min-h-screen w-full bg-bd-background">
+    <main id="main-content" tabIndex={-1} className="page-partners  w-full max-w-full overflow-hidden    min-h-screen w-full bg-bd-background">
       <Navbar />
 
       {/* Hero Section */}
@@ -136,7 +136,7 @@ export default function PartnersPage() {
         <Container>
           <motion.div
             className="max-w-4xl mx-auto text-center"
-            initial={{ opacity: 0, y: 30 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
@@ -148,19 +148,9 @@ export default function PartnersPage() {
             </p>
             <div className="mt-8">
               <button
-                onClick={() => document.getElementById('sponsorship-application')?.scrollIntoView({ behavior: 'smooth' })}
-                className="relative group"
-              >
-                {/* Shadow copy - always visible black background */}
-                <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0" />
-
-                {/* Main button - lifts up and to the right on hover */}
-                <div
-                  className="relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-8 py-3 min-h-[48px] bg-[var(--background-white)] text-black"
-                >
-                  <span className="leading-tight">Become a partner</span>
-                </div>
-              </button>
+                onClick={() => document.getElementById('sponsorship-application')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' })}
+                className="site-button bg-[var(--highlight)] text-white"
+              >Become a partner</button>
             </div>
           </motion.div>
         </Container>
@@ -177,6 +167,7 @@ export default function PartnersPage() {
             <div className="relative">
               {/* Navigation Buttons */}
               <button
+                aria-label="Previous event"
                 onClick={prevImageSlide}
                 className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-full p-3 transition-all duration-300 group"
               >
@@ -184,6 +175,7 @@ export default function PartnersPage() {
               </button>
 
               <button
+                aria-label="Next event"
                 onClick={nextImageSlide}
                 className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/20 hover:bg-white/30 backdrop-blur-sm border border-white/30 rounded-full p-3 transition-all duration-300 group"
               >
@@ -192,20 +184,20 @@ export default function PartnersPage() {
 
               {/* Single Event Card Container */}
               <div className="mb-10">
-                <p className='flex-1 text-center font-bold text-5xl mb-8 text-white'>Our Events in Action</p>
+                <h2 className='text-center font-bold mb-8 text-white'>Our Events in Action</h2>
 
                 {/* Single Event Card */}
                 <div className="flex justify-center px-4">
                   <div className="w-full max-w-4xl">
                     <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl overflow-hidden">
                       {/* Event Image */}
-                      <div className="relative overflow-hidden" style={{ height: '600px' }}>
+                      <div className="relative overflow-hidden h-64 sm:h-[380px] lg:h-[480px]">
                         <Image
                           src={eventImages[currentImageIndex].imageUrl}
                           alt={eventImages[currentImageIndex].title}
                           fill
                           className="object-cover"
-                          unoptimized
+                          sizes="(max-width: 1024px) 100vw, 896px"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
@@ -245,8 +237,10 @@ export default function PartnersPage() {
                 {eventImages.map((_, index) => (
                   <button
                     key={index}
+                    aria-label={`Show event ${index + 1}: ${eventImages[index].title}`}
+                    aria-pressed={index === currentImageIndex}
                     onClick={() => goToImageSlide(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentImageIndex
+                    className={`w-8 h-8 rounded-full transition-all duration-300 ${index === currentImageIndex
                         ? 'bg-white scale-125'
                         : 'bg-white/30 hover:bg-white/50'
                       }`}
@@ -272,11 +266,14 @@ export default function PartnersPage() {
               <h2 className="text-3xl font-display font-bold text-black mb-6">Want more information?</h2>
             </div>
             <div className="bg-[var(--background-white)] p-4 rounded-xl border border-[var(--border-black)]">
+              <a className="inline-flex min-h-11 items-center text-[var(--highlight)] underline mb-3" href="/FILE_7307.pdf" target="_blank" rel="noopener noreferrer">BDAA sponsorship information (PDF)</a>
               <iframe
+                title="BDAA sponsorship information"
+                loading="lazy"
                 src="/FILE_7307.pdf"
                 width="100%"
                 height="800px"
-                className="rounded-lg"
+                className="rounded-lg h-[65vh] max-h-[680px]"
               >
               </iframe>
             </div>
@@ -301,7 +298,8 @@ export default function PartnersPage() {
             <AnimatePresence>
               {submitStatus !== 'idle' && (
                 <motion.div
-                  initial={{ opacity: 0, y: -20 }}
+                  role={submitStatus === 'error' ? 'alert' : 'status'}
+                  initial={reduceMotion ? false : { opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                   className={`mb-6 p-4 rounded-lg border flex items-center gap-3 ${submitStatus === 'success'
@@ -319,7 +317,12 @@ export default function PartnersPage() {
               )}
             </AnimatePresence>
 
-            <form onSubmit={handleSubmit} className="bg-[var(--background-white)] text-black p-8 rounded-xl border border-[var(--border-black)]">
+            {!emailConfigured && (
+              <p className="surface-card rounded-xl bg-white p-6 text-black">
+                To discuss a partnership, email <a className="underline font-semibold" href="mailto:info@bdaa-osu.edu">info@bdaa-osu.edu</a>. Online applications are temporarily unavailable.
+              </p>
+            )}
+            {emailConfigured && <form onSubmit={handleSubmit} className="surface-card bg-[var(--background-white)] text-black p-8 rounded-xl border border-[var(--border-black)]">
               <div className="text-black grid md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="companyName" className="block text-sm font-primary font-bold text-black mb-2">
@@ -441,7 +444,7 @@ export default function PartnersPage() {
                   We&apos;ll review your application and get back to you ASAP.
                 </p>
               </div>
-            </form>
+            </form>}
           </div>
         </Container>
       </Section>

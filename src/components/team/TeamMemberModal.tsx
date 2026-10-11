@@ -17,12 +17,14 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
   useEffect(() => {
     const dialog = dialogRef.current
     if (!isOpen || !member || !dialog) return
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null
     const previousOverflow = document.body.style.overflow
     dialog.showModal()
     document.body.style.overflow = 'hidden'
     return () => {
       dialog.close()
       document.body.style.overflow = previousOverflow
+      if (trigger?.isConnected) trigger.focus()
     }
   }, [isOpen, member])
 
@@ -50,7 +52,7 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
           </h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="min-h-11 min-w-11 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />

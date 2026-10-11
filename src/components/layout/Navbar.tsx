@@ -37,10 +37,11 @@ export function Navbar() {
         }}
       >
         <Link href="/" className="flex shrink-0 items-center gap-2" onClick={() => setIsOpen(false)}>
-          <div className="relative h-12 w-40">
+          <div className="relative h-12 w-28 sm:w-40">
             <Image
               src="/BDAALogo.png"
               alt="BDAA home"
+              sizes="(min-width: 640px) 160px, 112px"
               fill
               className="object-contain object-left"
               priority

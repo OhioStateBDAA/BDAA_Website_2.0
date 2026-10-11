@@ -44,7 +44,7 @@ export default function EventsPage() {
   };
 
   return (
-    <main className="min-h-screen w-full bg-bd-background">
+    <main id="main-content" tabIndex={-1} className="page-events min-h-screen w-full bg-bd-background">
       <Navbar />
       
       {/* Hero Section */}
@@ -71,7 +71,7 @@ export default function EventsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* General Meeting Card */}
-              <div className="bg-white border border-black rounded-xl p-6 shadow-sm">
+              <div className="surface-card bg-white border border-black rounded-xl p-6 shadow-sm">
                 <h3 className="text-2xl font-display font-bold text-black mb-4 text-center">
                   General Meetings
                 </h3>
@@ -106,7 +106,7 @@ export default function EventsPage() {
               </div>
 
               {/* Project Series Card */}
-              <div className="bg-white border border-black rounded-xl p-6 shadow-sm">
+              <div className="surface-card bg-white border border-black rounded-xl p-6 shadow-sm">
                 <h3 className="text-2xl font-display font-bold text-black mb-4 text-center">
                   Project Series
                 </h3>
@@ -196,18 +196,18 @@ export default function EventsPage() {
       <Section padding="lg" background="alt">
         <Container>
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-black mb-6">
               Project Series Archive
             </h2>
 
-            <p className="text-lg text-white leading-relaxed mb-8">
+            <p className="text-lg text-black leading-relaxed mb-8">
               Explore our comprehensive collection of past project series, including student projects, 
               lecture materials, and resources from previous semesters.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {projectTracks.map((track) => (
-                <div key={track.id} className="bg-white border border-black rounded-xl p-6">
+                <div key={track.id} className="surface-card bg-white border border-black rounded-xl p-6">
                   <div className="text-center mb-3">
                     <h3 className="text-xl font-display font-bold text-black">
                       {track.name}
