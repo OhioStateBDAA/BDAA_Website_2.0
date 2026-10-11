@@ -49,3 +49,18 @@
 .traveler[data-traveling=true] .launcher { height: 78px; }
 .traveler:not([data-traveling=true]) .cue { left: 0; right: auto; }
 .launcher:focus-visible { outline: 2px solid #83291f; outline-offset: 3px; }
+
+/* Keep identical model dimensions throughout the journey: no resize on arrival. */
+.traveler { inset: 7px auto auto 8px; width: 80px; }
+.traveler[data-traveling=true] { inset: 0 auto auto 0; width: 80px; }
+.model, .traveler[data-traveling=true] .model { height: 80px; }
+.launcher, .traveler[data-traveling=true] .launcher { height: 86px; }
+.shadow { transition: width .25s ease, opacity .25s ease; }
+.traveler[data-motion=float] .shadow { width: 18px; opacity: .35; }
+.traveler[data-motion=run] .shadow { width: 30px; opacity: .7; }
+.traveler[data-motion=run] .model::after {
+  content: ''; position: absolute; right: -8px; top: 43px; width: 17px; height: 7px;
+  border-top: 1px solid #a52f2940; border-bottom: 1px solid #a52f2926;
+  opacity: var(--travel-speed,0); transform: skewX(-25deg); pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .shadow { transition: none; } }

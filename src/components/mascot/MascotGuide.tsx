@@ -8,7 +8,7 @@ import { notionHub } from '@/data/events';
 import { socialLinks } from '@/data/socialLinks';
 import type { createMascotScene } from './mascotScene';
 import styles from './MascotGuide.module.css';
-import { crossingPosition } from './guideMotion';
+import { crossingPosition, crossingDuration, followPosition } from './guideMotion';
 
 const highlights = [
   {
@@ -74,7 +74,6 @@ export function MascotGuide() {
   const [paused, setPaused] = usePreference('bdaa-guide-paused');
   const [open, setOpen] = useState(false);
   const [engaged, setEngaged] = useState(false);
-  const [moving, setMoving] = useState(false);
   const [ready, setReady] = useState(false);
   const [selected, setSelected] = useState(0);
   const host = useRef<HTMLSpanElement>(null);
@@ -82,9 +81,10 @@ export function MascotGuide() {
   const launcher = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const scene = useRef<Awaited<ReturnType<typeof createMascotScene>> | null>(null);
-  const direction = useRef(1);
   const arrived = useRef(false);
-  const crossingElapsed = useRef(0);
+  const greeted = useRef(false);
+  const restPose = useRef<'Idle' | 'Arrive'>('Idle');
+  const journey = useRef({ elapsed: 0, x: 0, y: 100, startY: 100, started: false, initialized: false });
   const titleId = useId();
   const still = reducedMotion || paused;
   const highlight = highlights[selected];
@@ -105,63 +105,92 @@ export function MascotGuide() {
   }, [hidden]);
 
   useEffect(() => {
-    const update = () => scene.current?.setPose(engaged ? 'Wave' : moving ? 'Run' : 'Idle', !still && !open && (engaged || moving), direction.current);
-    update();
-    document.addEventListener('visibilitychange', update);
-    return () => document.removeEventListener('visibilitychange', update);
-  }, [engaged, moving, still, open, ready]);
-
-  useEffect(() => {
     const element = traveler.current;
     if (!element || hidden) return;
     let frame = 0;
-    let started = crossingElapsed.current > 0;
     let previousTime = 0;
+    let lastSpeed = 0;
+    const path = journey.current;
     const dock = element.parentElement!;
     const settle = (complete = true) => {
       element.dataset.traveling = 'false';
+      element.dataset.motion = 'idle';
       element.style.transform = '';
+      const justArrived = complete && !arrived.current && path.started;
       if (complete) arrived.current = true;
-      setMoving(false);
+      const bounds = dock.getBoundingClientRect();
+      const firstGreeting = !greeted.current && bounds.top >= 0 && bounds.bottom <= window.innerHeight && ready;
+      if ((justArrived || firstGreeting) && !still) { restPose.current = 'Arrive'; greeted.current = true; }
+      if (engaged || still || open) restPose.current = 'Idle';
+      scene.current?.setMotion(still || open ? 'Idle' : engaged ? 'Wave' : restPose.current, 0, 1, !still && !open);
     };
     const update = (time: number) => {
       frame = 0;
+      if (document.hidden) { previousTime = 0; return; }
+      const dt = previousTime ? Math.min(.04, (time - previousTime) / 1000) : 1 / 60;
+      previousTime = time;
       const rect = dock.getBoundingClientRect();
       if (still || window.innerWidth < 1360) { settle(false); return; }
-      if (arrived.current || rect.bottom < 80) { settle(); return; }
+      if (arrived.current || rect.bottom < 80 || (path.started && rect.top > window.innerHeight)) { settle(); return; }
+      const right = window.innerWidth - 88;
+      if (!path.initialized) { path.x = right; path.initialized = true; }
       element.dataset.traveling = 'true';
-      element.dataset.side = 'right';
-      const right = window.innerWidth - 78;
       const center = rect.top + rect.height / 2;
-      if (!started && center <= window.innerHeight * .72) started = true;
-      if (started) {
-        const delta = previousTime ? Math.min(50, time - previousTime) : 0;
-        previousTime = time;
-        if (engaged || open || document.hidden) { frame = requestAnimationFrame(update); return; }
-        crossingElapsed.current += delta;
-        const progress = Math.min(1, crossingElapsed.current / 3000);
-        const position = crossingPosition(right, rect.left + 12, center, progress);
-        element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
-        element.dataset.side = position.x < window.innerWidth / 2 ? 'left' : 'right';
-        direction.current = -1;
-        setMoving(true);
-        if (progress >= 1) { settle(); return; }
-        frame = requestAnimationFrame(update);
-      } else {
-        const y = Math.max(100, Math.min(window.innerHeight * .72 - 39, 100 + window.scrollY * .22));
-        element.style.transform = `translate3d(${right}px, ${y}px, 0)`;
+      if (!path.started && center <= window.innerHeight * .72) {
+        path.started = true;
+        path.startY = path.y;
       }
+      if (engaged || open) {
+        scene.current?.setMotion(engaged && !open ? 'Wave' : 'Idle', 0, 1, !open);
+        return;
+      }
+      const oldX = path.x;
+      const oldY = path.y;
+      let complete = false;
+      if (path.started) {
+        path.elapsed += dt;
+        const progress = Math.min(1, path.elapsed / crossingDuration(right - rect.left - 8));
+        const position = crossingPosition(right, rect.left + 8, center, progress, path.startY);
+        path.x = position.x;
+        path.y = position.y;
+        complete = progress >= 1;
+      } else {
+        const targetY = Math.max(100, Math.min(window.innerHeight * .72 - 43, 100 + window.scrollY * .22));
+        path.x = followPosition(path.x, right, dt);
+        path.y = followPosition(path.y, targetY, dt);
+      }
+      const horizontalSpeed = Math.abs(path.x - oldX) / dt;
+      const verticalSpeed = Math.abs(path.y - oldY) / dt;
+      const running = path.started && horizontalSpeed > 12;
+      const speed = running ? horizontalSpeed : verticalSpeed;
+      lastSpeed = followPosition(lastSpeed, speed, dt);
+      element.dataset.motion = running ? 'run' : lastSpeed > 2 ? 'float' : 'idle';
+      element.dataset.side = path.x < window.innerWidth / 2 ? 'left' : 'right';
+      element.style.transform = `translate3d(${path.x}px, ${path.y}px, 0)`;
+      element.style.setProperty('--travel-speed', String(Math.min(1, lastSpeed / 260)));
+      scene.current?.setMotion(running ? 'Run' : lastSpeed > 2 ? 'Float' : 'Idle', lastSpeed, -1);
+      if (complete) { settle(); return; }
+      if (path.started || lastSpeed > .5 || Math.abs(path.x - right) > .2) frame = requestAnimationFrame(update);
     };
-    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    const schedule = () => { if (!frame) { previousTime = 0; frame = requestAnimationFrame(update); } };
+    const visibility = () => {
+      cancelAnimationFrame(frame); frame = 0; previousTime = 0;
+      if (!document.hidden) schedule();
+    };
     schedule();
+    const observer = new ResizeObserver(schedule);
+    observer.observe(document.body);
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
+    document.addEventListener('visibilitychange', visibility);
     return () => {
       cancelAnimationFrame(frame);
+      observer.disconnect();
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
+      document.removeEventListener('visibilitychange', visibility);
     };
-  }, [hidden, still, engaged, open]);
+  }, [hidden, still, engaged, open, ready]);
 
   useEffect(() => {
     const panel = dialog.current;
@@ -173,18 +202,18 @@ export function MascotGuide() {
     return () => { panel.close(); document.body.style.overflow = previous; trigger?.focus(); };
   }, [open]);
 
-  const close = () => { setOpen(false); setEngaged(false); setMoving(false); };
+  const close = () => { setOpen(false); setEngaged(false); };
   return (
     <>
       {hidden ? (
         <button className={styles.restore} onClick={() => { setReady(false); setHidden(false); }} aria-label="Show BDAA mascot guide"><Bot size={18} /> Show guide</button>
       ) : (
-        <div ref={traveler} className={styles.traveler} data-moving={moving && !still} data-paused={still}>
+        <div ref={traveler} className={styles.traveler} data-paused={still}>
           <button ref={launcher} className={styles.launcher} aria-label="Explore BDAA with our mascot" aria-haspopup="dialog"
-            onClick={() => { setMoving(false); setOpen(true); }}
-            onPointerEnter={() => { setMoving(false); setEngaged(true); }}
+            onClick={() => { setOpen(true); }}
+            onPointerEnter={() => { setEngaged(true); }}
             onPointerLeave={() => setEngaged(false)}
-            onFocus={event => { if (event.currentTarget.matches(':focus-visible')) { setMoving(false); setEngaged(true); } }}
+            onFocus={event => { if (event.currentTarget.matches(':focus-visible')) { setEngaged(true); } }}
             onBlur={() => setEngaged(false)}>
             <span className={styles.cue}><span className={styles.dot} />{highlight.cue}<ArrowUpRight size={13} /></span>
             <span ref={host} className={styles.model} data-ready={ready}>

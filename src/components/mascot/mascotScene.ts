@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-export type MascotPose = 'Idle' | 'Run' | 'Wave';
+export type MascotPose = 'Idle' | 'Float' | 'Run' | 'Wave' | 'Arrive';
 
 export async function createMascotScene(host: HTMLElement, availability: (ready: boolean) => void = () => {}) {
   const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' });
@@ -37,50 +37,106 @@ export async function createMascotScene(host: HTMLElement, availability: (ready:
       }
     });
     scene.add(model);
-    const mixer = new THREE.AnimationMixer(model);
-    const actions = new Map(gltf.animations.map(clip => [clip.name, mixer.clipAction(clip)]));
-    let current: THREE.AnimationAction | undefined;
+    // Animate the supplied joint hierarchy directly, keeping its original geometry.
+    const jointNames = ['Head Group', 'Torso Group', 'Left Arm', 'Right Arm', 'Left Leg', 'Right Leg'];
+    const joints = jointNames.map(name => (model.getObjectByName(name) || model.getObjectByName(name.replaceAll(' ', '_')))! );
+    if (joints.some(joint => !joint)) throw new Error('Mascot joint hierarchy is incomplete');
+    const eyes = ['Left_Eye', 'Right_Eye', 'Left_Eye_Highlight', 'Right_Eye_Highlight'].map(name => model.getObjectByName(name)).filter((eye): eye is THREE.Object3D => !!eye);
+    const eyeScales = eyes.map(eye => eye.scale.clone());
+    const rest = joints.map(joint => joint.rotation.clone());
+    const pivot = new THREE.Group();
+    scene.remove(model);
+    pivot.add(model);
+    scene.add(pivot);
+    let pose: MascotPose = 'Idle';
+    let speed = 0;
+    let heading = 1;
+    let enabled = true;
+    let visible = true;
+    let contextLost = false;
     let frame = 0;
-    let running = false;
     let previousTime = 0;
-    let targetRotation = 0;
+    let elapsed = 0;
+    let phase = 0;
+    let yaw = -.12;
+    let runWeight = 0;
+    let floatWeight = 0;
+    let waveWeight = 0;
+    let pointWeight = 0;
     let disposed = false;
+    const damp = (from: number, to: number, dt: number) => THREE.MathUtils.lerp(from, to, 1 - Math.exp(-12 * dt));
     const draw = (time: number) => {
-      if (disposed) return;
-      const delta = previousTime ? Math.min((time - previousTime) / 1000, 0.05) : 0;
+      frame = 0;
+      if (disposed || contextLost || !visible || document.hidden) return;
+      const dt = previousTime ? Math.min((time - previousTime) / 1000, .04) : 1 / 60;
       previousTime = time;
-      mixer.update(delta);
-      model.rotation.y = THREE.MathUtils.lerp(model.rotation.y, targetRotation, 0.12);
+      elapsed += dt;
+      const active = enabled;
+      runWeight = damp(runWeight, active && pose === 'Run' ? Math.min(1, speed / 100) : 0, dt);
+      floatWeight = damp(floatWeight, active && pose === 'Float' ? 1 : 0, dt);
+      const greeting = pose === 'Wave' ? elapsed < 1.7 : pose === 'Arrive' && elapsed > .35 && elapsed < 1.9;
+      waveWeight = damp(waveWeight, active && greeting ? 1 : 0, dt);
+      pointWeight = damp(pointWeight, active && pose === 'Arrive' && elapsed >= 2 && elapsed < 2.9 ? 1 : 0, dt);
+      phase += dt * Math.min(3, Math.max(.3, speed / 150)) * Math.PI * 2;
+      const stride = Math.sin(phase);
+      const targetYaw = pose === 'Run' && active ? heading * 1.05 : pose === 'Float' && active ? -.25 : -.12;
+      yaw = active ? damp(yaw, targetYaw, dt) : targetYaw;
+      pivot.rotation.set(0, yaw, -heading * .065 * runWeight);
+      const landing = active && pose === 'Arrive' ? Math.sin(Math.min(1, elapsed / .42) * Math.PI) * .16 : 0;
+      pivot.position.y = Math.abs(Math.cos(phase)) * .055 * runWeight + Math.sin(elapsed * 3) * .04 * floatWeight + landing;
+      const compression = active && pose === 'Arrive' && elapsed > .42 ? Math.sin((elapsed - .42) * 18) * Math.exp(-(elapsed - .42) * 9) * .06 : 0;
+      pivot.scale.set(1 + compression * .5, 1 - compression, 1 + compression * .5);
+      joints.forEach((joint, index) => joint.rotation.copy(rest[index]));
+      const [head, torso, leftArm, rightArm, leftLeg, rightLeg] = joints;
+      leftLeg.rotation.x += stride * .85 * runWeight + .2 * floatWeight;
+      rightLeg.rotation.x -= stride * .85 * runWeight - .32 * floatWeight;
+      leftArm.rotation.x -= stride * .65 * runWeight;
+      rightArm.rotation.x += stride * .65 * runWeight;
+      leftArm.rotation.z -= .15 * runWeight + .3 * floatWeight;
+      rightArm.rotation.z += .15 * runWeight + .3 * floatWeight;
+      torso.rotation.x += .12 * runWeight;
+      head.rotation.z += -.035 * stride * runWeight + .07 * waveWeight;
+      head.rotation.y += .12 * pointWeight;
+      rightArm.rotation.z += (2.35 + Math.sin(elapsed * 11) * .24) * waveWeight + 1.25 * pointWeight;
+      rightArm.rotation.x -= .3 * waveWeight;
+      // A short blink during the greeting, with no perpetual idle animation.
+      const blink = active && (pose === 'Wave' || pose === 'Arrive') ? Math.max(0, 1 - Math.abs(elapsed - 1.15) / .1) : 0;
+      eyes.forEach((eye, index) => { eye.scale.copy(eyeScales[index]); eye.scale.y *= 1 - blink * .9; });
       renderer.render(scene, camera);
-      if (running) frame = requestAnimationFrame(draw);
+      // Gestures finish once; a resting or offscreen robot consumes no animation frames.
+      if (active && ((pose === 'Run' && speed > 1) || (pose === 'Float' && speed > 1) || elapsed < (pose === 'Arrive' ? 3.6 : pose === 'Wave' ? 2.4 : .8))) wake();
     };
-    const lost = (event: Event) => { event.preventDefault(); cancelAnimationFrame(frame); availability(false); };
-    const restored = () => { availability(true); previousTime = 0; frame = requestAnimationFrame(draw); };
+    const wake = () => { if (!frame && !disposed && !contextLost && visible && !document.hidden) frame = requestAnimationFrame(draw); };
+    const lost = (event: Event) => { event.preventDefault(); contextLost = true; cancelAnimationFrame(frame); frame = 0; availability(false); };
+    const restored = () => { contextLost = false; availability(true); previousTime = 0; wake(); };
+    const visibility = () => { cancelAnimationFrame(frame); frame = 0; previousTime = 0; if (!document.hidden) wake(); };
     renderer.domElement.addEventListener('webglcontextlost', lost);
     renderer.domElement.addEventListener('webglcontextrestored', restored);
+    document.addEventListener('visibilitychange', visibility);
+    const observer = new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting;
+      if (!visible) { cancelAnimationFrame(frame); frame = 0; }
+      else { previousTime = 0; wake(); }
+    });
+    observer.observe(host);
     host.appendChild(renderer.domElement);
-    const setPose = (pose: MascotPose, animate: boolean, direction: number) => {
-      cancelAnimationFrame(frame);
-      running = animate && !document.hidden;
-      previousTime = 0;
-      targetRotation = pose === 'Run' ? direction * 0.85 : -0.12;
-      const action = actions.get(pose);
-      if (action && action !== current) {
-        current?.fadeOut(0.18);
-        action.reset().fadeIn(0.18).play();
-        current = action;
-      }
-      if (!running) { current?.stopFading().setEffectiveWeight(1); mixer.update(0); model.rotation.y = targetRotation; }
-      frame = requestAnimationFrame(draw);
+    const setMotion = (next: MascotPose, velocity = 0, direction = 1, animate = true) => {
+      if (next !== pose || animate !== enabled) { elapsed = 0; previousTime = 0; }
+      pose = next;
+      speed = Math.abs(velocity);
+      heading = direction;
+      enabled = animate;
+      if (!animate) { runWeight = 0; floatWeight = 0; waveWeight = 0; pointWeight = 0; }
+      wake();
     };
-    setPose('Idle', false, 1);
+    wake();
     return {
-      setPose,
+      setMotion,
       dispose() {
         disposed = true;
         cancelAnimationFrame(frame);
-        mixer.stopAllAction();
-        mixer.uncacheRoot(model);
+        observer.disconnect();
+        document.removeEventListener('visibilitychange', visibility);
         model.traverse(object => {
           if (object instanceof THREE.Mesh) {
             object.geometry.dispose();
