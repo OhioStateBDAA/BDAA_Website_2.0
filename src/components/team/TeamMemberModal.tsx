@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useId } from 'react'
 import Image from 'next/image'
 import { X, ExternalLink, Mail } from 'lucide-react'
 import { TeamMember as TeamMemberType } from '@/types/events'
@@ -12,50 +12,40 @@ interface TeamMemberModalProps {
 }
 
 export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const titleId = useId()
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
+    const dialog = dialogRef.current
+    if (!isOpen || !member || !dialog) return
+    const previousOverflow = document.body.style.overflow
+    dialog.showModal()
+    document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = 'unset'
+      dialog.close()
+      document.body.style.overflow = previousOverflow
     }
-  }, [isOpen])
+  }, [isOpen, member])
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      return () => document.removeEventListener('keydown', handleEscape)
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen || !member) return null
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }
+  if (!member) return null
 
   const emailAddress = member.email?.replace(/^mailto:\s*/i, '').trim()
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
+    <dialog
+      ref={dialogRef}
+      aria-labelledby={titleId}
+      className="m-auto w-[calc(100%-2rem)] max-w-lg max-h-[90vh] rounded-xl p-0 backdrop:bg-black/50"
+      onCancel={event => { event.preventDefault(); onClose() }}
+      onClick={event => {
+        if (event.target !== event.currentTarget) return
+        const rect = event.currentTarget.getBoundingClientRect()
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) onClose()
+      }}
     >
       <div className="bg-[var(--background-white)] rounded-xl border border-[var(--border-black)] max-w-lg w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-display font-bold text-black">
+          <h2 id={titleId} className="text-xl font-display font-bold text-black">
             {member.name}
           </h2>
           <button
@@ -76,6 +66,7 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
                 <Image
                   src={member.img}
                   alt={`${member.name} headshot`}
+                  sizes="128px"
                   fill
                   className="object-cover"
                 />
@@ -162,6 +153,6 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
           )}
         </div>
       </div>
-    </div>
+    </dialog>
   )
 }

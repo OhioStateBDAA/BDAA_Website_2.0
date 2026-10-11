@@ -6,6 +6,7 @@ export interface AirtableRecord<T = Record<string, unknown>> {
 
 export interface AirtableResponse<T = Record<string, unknown>> {
   records: AirtableRecord<T>[];
+  offset?: string;
 }
 
 export interface AirtableError {
@@ -16,6 +17,7 @@ export interface AirtableError {
 }
 
 export interface AirtableImage {
+  thumbnails?: { large?: { url: string; width: number; height: number } };
   url: string;
   filename?: string;
   size?: number;
