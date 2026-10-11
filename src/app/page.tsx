@@ -11,7 +11,7 @@ import { SponsorsCarousel as SponsorsCarouselComponent } from '@/components/sect
 
 export default function Home() {
   return (
-<main className="w-full max-w-full min-h-screen px-4 sm:px-6 lg:px-8 bg-bd-background overflow-x-hidden">
+<main id="main-content" tabIndex={-1} className="w-full max-w-full min-h-screen px-4 sm:px-6 lg:px-8 bg-bd-background overflow-x-hidden">
    <Navbar />
       {/* Hero Section */}
       <HeroSection />
@@ -21,6 +21,8 @@ export default function Home() {
 
       {/* Photo Gallery Section */}
       <PhotoGallerySection />
+
+      <div id="mascot-crossing" className="h-28" aria-hidden="true" />
 
       {/* Activities Section */}
       <ActivitiesSection />

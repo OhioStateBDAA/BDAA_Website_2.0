@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, useSyncExternalStore } from 'react'
 import { ArrowUpRight, Bot, ChevronRight, Pause, Play, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { notionHub } from '@/data/events';
 import { socialLinks } from '@/data/socialLinks';
 import type { createMascotScene } from './mascotScene';
@@ -56,6 +57,7 @@ function subscribeToMotion(callback: () => void) {
 }
 
 export function MascotGuide() {
+  const pathname = usePathname();
   const reducedMotion = useSyncExternalStore(subscribeToMotion, () => window.matchMedia('(prefers-reduced-motion: reduce)').matches, () => true);
   const [hidden, setHidden] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -101,39 +103,48 @@ export function MascotGuide() {
     if (!element || hidden) return;
     let frame = 0;
     let stopTimer: ReturnType<typeof setTimeout>;
-    let x = element.getBoundingClientRect().left;
-    let target = x;
-    let y = 0;
     let lastScroll = window.scrollY;
-    const paint = () => {
-      const difference = target - x;
-      x = still ? target : x + difference * 0.12;
-      element.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      if (Math.abs(difference) > 0.5 && !still) frame = requestAnimationFrame(paint);
-      else frame = 0;
-    };
+    let previousX = element.getBoundingClientRect().left;
     const update = () => {
+      frame = 0;
       if (engaged || open) return;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = maxScroll > 0 ? Math.min(1, Math.max(0, window.scrollY / maxScroll)) : 0;
-      const width = element.offsetWidth;
-      const position = guidePosition(progress, window.innerWidth, width, still);
-      target = position.x;
-      y = position.y;
-      direction.current = target >= x ? 1 : -1;
+      const crossing = document.getElementById('mascot-crossing')?.getBoundingClientRect();
+      const position = guidePosition({
+        progress: maxScroll > 0 ? window.scrollY / maxScroll : 0,
+        viewportWidth: window.innerWidth,
+        viewportHeight: window.innerHeight,
+        guideWidth: element.offsetWidth,
+        guideHeight: element.offsetHeight,
+        crossingCenter: crossing ? crossing.top + crossing.height / 2 : null,
+        still,
+      });
+      direction.current = position.x >= previousX ? 1 : -1;
+      previousX = position.x;
+      element.dataset.side = position.x < window.innerWidth / 2 ? 'left' : 'right';
+      // Keep the model precisely within the gap, including fast scrolling.
+      element.style.transform = `translate3d(${position.x}px, ${position.y}px, 0)`;
       if (Math.abs(window.scrollY - lastScroll) > 2 && !still) {
         setMoving(true);
         clearTimeout(stopTimer);
         stopTimer = setTimeout(() => setMoving(false), 220);
       }
       lastScroll = window.scrollY;
-      if (!frame) frame = requestAnimationFrame(paint);
     };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    return () => { cancelAnimationFrame(frame); clearTimeout(stopTimer); window.removeEventListener('scroll', update); window.removeEventListener('resize', update); };
-  }, [hidden, still, engaged, open]);
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    schedule();
+    const observer = new ResizeObserver(schedule);
+    observer.observe(document.body);
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      clearTimeout(stopTimer);
+      observer.disconnect();
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [hidden, still, engaged, open, pathname]);
 
   useEffect(() => {
     const panel = dialog.current;

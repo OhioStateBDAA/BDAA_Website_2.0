@@ -7,21 +7,24 @@ const source = await readFile(new URL('../src/components/mascot/guideMotion.ts',
 const { outputText } = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.ESNext } });
 const { guidePosition } = await import('data:text/javascript;base64,' + Buffer.from(outputText).toString('base64'));
 
-test('guide stays within phone and desktop viewports throughout its journey', () => {
-  for (const [viewport, width] of [[320, 126], [390, 126], [768, 180], [1440, 180]]) {
-    for (let i = 0; i <= 100; i++) {
-      const { x, y } = guidePosition(i / 100, viewport, width, false);
-      assert.ok(x >= 0 && x + width <= viewport);
-      assert.ok(Math.abs(y) <= 12);
-    }
-    assert.ok(guidePosition(0, viewport, width, false).x > guidePosition(0.5, viewport, width, false).x);
-    assert.deepEqual(guidePosition(0, viewport, width, false), guidePosition(-1, viewport, width, false));
-  }
+const base = { progress: 0, viewportWidth: 1280, viewportHeight: 800, guideWidth: 72, guideHeight: 78, still: false };
+test('guide stays in the gutters outside the crossing', () => {
+  assert.equal(guidePosition({ ...base, crossingCenter: 1200 }).x, 1206);
+  assert.equal(guidePosition({ ...base, crossingCenter: 100 }).x, 2);
 });
-
-test('paused and reduced-motion guide remains stationary regardless of scroll', () => {
-  for (const p of [0, 0.25, 0.5, 0.75, 1]) {
-    assert.deepEqual(guidePosition(p, 390, 126, true), { x: 248, y: 0 });
+test('crossing follows the empty lane from right to left', () => {
+  for (const center of [600, 500, 400, 300, 200]) {
+    const position = guidePosition({ ...base, crossingCenter: center });
+    assert.equal(position.y + base.guideHeight / 2, center);
+    assert.ok(position.x >= 2 && position.x <= 1206);
+  }
+  assert.equal(guidePosition({ ...base, crossingCenter: 400 }).x, 604);
+});
+test('reduced motion stays docked and phone paths stay in bounds', () => {
+  for (const crossingCenter of [1000, 600, 400, 200, -100]) {
+    assert.deepEqual(guidePosition({ ...base, crossingCenter, still: true }), { x: 1206, y: 706 });
+    const phone = guidePosition({ ...base, crossingCenter, viewportWidth: 320, guideWidth: 48, guideHeight: 52 });
+    assert.ok(phone.x >= 0 && phone.x + 48 <= 320);
   }
 });
 
