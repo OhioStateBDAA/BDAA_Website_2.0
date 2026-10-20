@@ -1,11 +1,9 @@
-.traveler { position: absolute; inset: 0; z-index: 20; width: 96px; pointer-events: none; }
-.traveler[data-traveling=true] { position: fixed; inset: 0 auto auto 0; width: 72px; will-change: transform; }
-.launcher { width: 100%; height: 100px; display: flex; flex-direction: column; align-items: center; border: 0; background: transparent; color: #251c1b; cursor: pointer; pointer-events: auto; border-radius: 14px; padding: 0; position: relative; }
-.cue { position: absolute; top: -32px; right: 0; display: flex; align-items: center; gap: 6px; border: 1px solid #e8dcd7; background: #fffdf7; border-radius: 10px; box-shadow: 0 4px 20px #35241c12; padding: 8px; font: 600 10px/1.2 Arial,sans-serif; white-space: nowrap; opacity: 0; pointer-events: none; }
+.dockedGuide { position: absolute; inset: 7px auto auto 8px; z-index: 20; width: 80px; pointer-events: none; }
+.launcher { width: 100%; height: 86px; display: flex; flex-direction: column; align-items: center; border: 0; background: transparent; color: #251c1b; cursor: pointer; pointer-events: auto; border-radius: 14px; padding: 0; position: relative; }
+.cue { position: absolute; top: -32px; left: 0; display: flex; align-items: center; gap: 6px; border: 1px solid #e8dcd7; background: #fffdf7; border-radius: 10px; box-shadow: 0 4px 20px #35241c12; padding: 8px; font: 600 10px/1.2 Arial,sans-serif; white-space: nowrap; opacity: 0; pointer-events: none; }
 .launcher:hover .cue, .launcher:focus-visible .cue { opacity: 1; }
-.traveler[data-side=left] .cue { left: 0; right: auto; }
 .dot { height: 5px; width: 5px; background: #a42621; border-radius: 50%; }
-.model { display: block; width: 100%; height: 96px; position: relative; pointer-events: none; filter: drop-shadow(0 3px 2px #00000010); }
+.model { display: block; width: 100%; height: 80px; position: relative; pointer-events: none; filter: drop-shadow(0 3px 2px #00000010); }
 .model canvas { width: 100%; height: 100%; position: absolute; inset: 0; }
 .fallback { position: absolute; width: 32px; height: 32px; left: 20px; top: 20px; color: #ca2e2e; }
 .model[data-ready=true] .fallback { display: none; }
@@ -43,24 +41,5 @@
   .content { padding: 16px 20px 12px; }
   .content h2 { font-size: 25px; }
 }
-@media (prefers-reduced-motion: reduce) { .traveler { will-change: auto; } }
 
-.traveler[data-traveling=true] .model { height: 72px; }
-.traveler[data-traveling=true] .launcher { height: 78px; }
-.traveler:not([data-traveling=true]) .cue { left: 0; right: auto; }
 .launcher:focus-visible { outline: 2px solid #83291f; outline-offset: 3px; }
-
-/* Keep identical model dimensions throughout the journey: no resize on arrival. */
-.traveler { inset: 7px auto auto 8px; width: 80px; }
-.traveler[data-traveling=true] { inset: 0 auto auto 0; width: 80px; }
-.model, .traveler[data-traveling=true] .model { height: 80px; }
-.launcher, .traveler[data-traveling=true] .launcher { height: 86px; }
-.shadow { transition: width .25s ease, opacity .25s ease; }
-.traveler[data-motion=float] .shadow { width: 18px; opacity: .35; }
-.traveler[data-motion=run] .shadow { width: 30px; opacity: .7; }
-.traveler[data-motion=run] .model::after {
-  content: ''; position: absolute; right: -8px; top: 43px; width: 17px; height: 7px;
-  border-top: 1px solid #a52f2940; border-bottom: 1px solid #a52f2926;
-  opacity: var(--travel-speed,0); transform: skewX(-25deg); pointer-events: none;
-}
-@media (prefers-reduced-motion: reduce) { .shadow { transition: none; } }
