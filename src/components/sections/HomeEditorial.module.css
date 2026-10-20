@@ -19,10 +19,10 @@
 .sectionHeading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
 .sectionHeading h2 { color: #2e2924; font: 700 clamp(26px,3vw,40px)/1.1 var(--font-display),monospace; letter-spacing: -1.5px; margin-top: 10px; }
 .sectionHeading p { max-width: 290px; font-size: 16px; line-height: 1.6; color: #655e54; }
-.photos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-.photo { margin: 0; }
-.photoImage { position: relative; height: 240px; overflow: hidden; border-radius: 12px; }
-.photoImage img { object-fit: cover; }
+.photos { columns: 3; column-gap: 20px; }
+.photo { margin: 0 0 20px; break-inside: avoid; }
+.photoImage { overflow: hidden; border-radius: 12px; }
+.photoImage img { display: block; width: 100%; height: auto; }
 .feature { max-width: 1200px; margin: 0 auto; }
 .runway { height: 110px; position: relative; display: flex; align-items: center; gap: 14px; padding-left: 18px; }
 .runway::after { content: ''; height: 1px; background: linear-gradient(to right,#c8b5a1,transparent); flex: 1; margin-left: 20px; }
@@ -48,8 +48,6 @@
  .hero h1 { letter-spacing: -2px; }
  .collage { height: 350px; }
  .featureCopy { padding: 32px; }
- .photos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
- .photoImage { height: 190px; }
 }
 @media(max-width:767px) {
  .hero { grid-template-columns: 1fr; }
@@ -58,8 +56,8 @@
  .collage { height: 320px; }
  .sectionHeading { align-items: start; flex-direction: column; gap: 14px; }
  .sectionHeading p { max-width: none; }
- .photos { grid-template-columns: 1fr 1fr; gap: 12px; }
- .photoImage { height: 150px; }
+ .photos { columns: 2; column-gap: 12px; }
+ .photo { margin-bottom: 12px; }
  .featureCard { grid-template-columns: 1fr; }
  .featureCopy { padding: 30px 24px; }
  .featureVisual { min-height: 250px; }
@@ -71,3 +69,7 @@
 .runway:has([data-traveling=true]) .runwayNote { visibility: hidden; }
 
 .sectionHeading .eyebrow { max-width: none; font: 700 10px/1.5 Arial,sans-serif; color: #852c23; }
+
+@media(max-width:479px) {
+ .photos { columns: 1; }
+}
