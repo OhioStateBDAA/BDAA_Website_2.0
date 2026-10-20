@@ -1,11 +1,13 @@
+import { formatEventDate } from '@/lib/eventDates';
 import React, { useState } from 'react';
 import { Event } from '@/types/events';
 
 interface EventCardProps {
   event: Event;
+  isPast?: boolean;
 }
 
-export function EventCard({ event }: EventCardProps) {
+export function EventCard({ event, isPast = false }: EventCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const DESCRIPTION_LIMIT = 150; // Character limit for truncation
   
@@ -31,16 +33,6 @@ export function EventCard({ event }: EventCardProps) {
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
-
   const formatType = (type: Event['type']) => {
     return type.split('-').map(word => 
       word.charAt(0).toUpperCase() + word.slice(1)
@@ -48,7 +40,7 @@ export function EventCard({ event }: EventCardProps) {
   };
 
   return (
-    <div className={`bg-white border border-black rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 ${event.featured ? 'ring-2 ring-[var(--highlight)]' : ''}`}>
+    <div className={`surface-card bg-white border border-black rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200 ${event.featured ? 'ring-2 ring-[var(--highlight)]' : ''}`}>
       {/* Event Type Badge */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
@@ -75,6 +67,7 @@ export function EventCard({ event }: EventCardProps) {
         {shouldTruncate && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
             className="text-[var(--highlight)] hover:text-red-700 text-sm font-medium mt-1 transition-colors duration-200"
           >
             {isExpanded ? 'Read Less' : 'Read More'}
@@ -89,7 +82,7 @@ export function EventCard({ event }: EventCardProps) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
           <span className="text-sm text-black font-medium">
-            {formatDate(event.date)}
+            {formatEventDate(event.date)}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -112,7 +105,7 @@ export function EventCard({ event }: EventCardProps) {
       </div>
 
       {/* Registration Link */}
-      {event.registrationLink && (
+      {!isPast && event.registrationLink && (
         <a
           href={event.registrationLink}
           className="inline-flex items-center gap-2 bg-[var(--highlight)] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition-colors duration-200"

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useId } from 'react'
 import Image from 'next/image'
 import { X, ExternalLink, Mail } from 'lucide-react'
 import { TeamMember as TeamMemberType } from '@/types/events'
@@ -12,57 +12,47 @@ interface TeamMemberModalProps {
 }
 
 export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const titleId = useId()
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
+    const dialog = dialogRef.current
+    if (!isOpen || !member || !dialog) return
+    const trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const previousOverflow = document.body.style.overflow
+    dialog.showModal()
+    document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = 'unset'
+      dialog.close()
+      document.body.style.overflow = previousOverflow
+      if (trigger?.isConnected) trigger.focus()
     }
-  }, [isOpen])
+  }, [isOpen, member])
 
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose()
-      }
-    }
+  if (!member) return null
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape)
-      return () => document.removeEventListener('keydown', handleEscape)
-    }
-  }, [isOpen, onClose])
-
-  if (!isOpen || !member) return null
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
-  }
-
-  const handleLinkClick = (url: string) => {
-    window.open(url, '_blank', 'noopener,noreferrer')
-  }
+  const emailAddress = member.email?.replace(/^mailto:\s*/i, '').trim()
 
   return (
-    <div 
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-      onClick={handleBackdropClick}
+    <dialog
+      ref={dialogRef}
+      aria-labelledby={titleId}
+      className="m-auto w-[calc(100%-2rem)] max-w-lg max-h-[90vh] rounded-xl p-0 backdrop:bg-black/50"
+      onCancel={event => { event.preventDefault(); onClose() }}
+      onClick={event => {
+        if (event.target !== event.currentTarget) return
+        const rect = event.currentTarget.getBoundingClientRect()
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) onClose()
+      }}
     >
       <div className="bg-[var(--background-white)] rounded-xl border border-[var(--border-black)] max-w-lg w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-display font-bold text-black">
+          <h2 id={titleId} className="text-xl font-display font-bold text-black">
             {member.name}
           </h2>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="min-h-11 min-w-11 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5" />
@@ -78,6 +68,7 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
                 <Image
                   src={member.img}
                   alt={`${member.name} headshot`}
+                  sizes="128px"
                   fill
                   className="object-cover"
                 />
@@ -137,31 +128,33 @@ export function TeamMemberModal({ member, isOpen, onClose }: TeamMemberModalProp
           )}
 
           {/* Contact Links */}
-          {(member.linkedIn || member.email) && (
+          {(member.linkedIn || emailAddress) && (
             <div className="flex flex-wrap gap-3">
               {member.linkedIn && (
-                <button
-                  onClick={() => handleLinkClick(member.linkedIn)}
+                <a
+                  href={member.linkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-[var(--highlight)] text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity text-sm font-primary font-bold"
                 >
                   <ExternalLink className="w-4 h-4" />
                   LinkedIn
-                </button>
+                </a>
               )}
               
-              {member.email && (
-                <button
-                  onClick={() => handleLinkClick(member.email)}
+              {emailAddress && (
+                <a
+                  href={`mailto:${emailAddress}`}
                   className="flex items-center gap-2 border border-[var(--border-black)] text-black px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm font-primary font-bold"
                 >
                   <Mail className="w-4 h-4" />
                   Email
-                </button>
+                </a>
               )}
             </div>
           )}
         </div>
       </div>
-    </div>
+    </dialog>
   )
 }

@@ -17,8 +17,8 @@ const bgMap = {
 const padMap = {
   sm: 'py-4',
   md: 'py-8',
-  lg: 'py-16',
-  xl: 'py-24',
+  lg: 'py-12 md:py-16',
+  xl: 'py-16 md:py-20',
 };
 
 export function Section({ children, background = 'default', padding = 'md', className = '', id }: SectionProps) {

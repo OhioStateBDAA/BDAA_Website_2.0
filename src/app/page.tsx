@@ -1,5 +1,6 @@
 'use client';
 import React from 'react';
+import { DataIOFeature } from '@/components/sections/DataIOFeature';
 import { ActivitiesSection } from '@/components/sections/ActivitiesSection';
 import { AlumniSection } from '@/components/sections/AlumniSection';
 import { SocialFeedSection } from '@/components/sections/SocialFeedSection';
@@ -11,7 +12,7 @@ import { SponsorsCarousel as SponsorsCarouselComponent } from '@/components/sect
 
 export default function Home() {
   return (
-<main className="w-full max-w-full min-h-screen px-4 sm:px-6 lg:px-8 bg-bd-background overflow-x-hidden">
+<main id="main-content" tabIndex={-1} className="page-home w-full max-w-full min-h-screen    bg-bd-background overflow-x-hidden">
    <Navbar />
       {/* Hero Section */}
       <HeroSection />
@@ -21,6 +22,8 @@ export default function Home() {
 
       {/* Photo Gallery Section */}
       <PhotoGallerySection />
+
+      <DataIOFeature />
 
       {/* Activities Section */}
       <ActivitiesSection />

@@ -126,3 +126,44 @@ src/
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+## Public API security
+
+The deployed website exposes only read endpoints for events and officers:
+`/api/events` and `/api/officers`. Data deletion, migrations, and connection
+diagnostics must not be exposed as public route handlers. The former
+`/api/clear-airtable`, `/api/migrate`, `/api/migrate-historical`,
+`/api/migrate-with-photos`, and `/api/test-airtable` routes have been removed.
+
+Historical migration code is available in Git history; the existing scripts
+remain local maintenance utilities, not website endpoints. Review their data
+and target before use. Do not run maintenance operations as part of a build.
+Production should use `AIRTABLE_API_KEY_READ_ONLY` with read-only Airtable scopes;
+write credentials belong only in a maintainer's local environment.
+
+After building, verify that administration routes are absent from the actual
+production route manifest:
+
+```bash
+npm run build
+npm run test:security
+```
+
+The test intentionally checks the public API allowlist. Any new API route needs
+an explicit security review and a corresponding update to this test.
+
+## Local validation
+
+Run these checks before pushing changes:
+
+```bash
+npm run lint
+npm run build
+npm run test:security
+```
+
+Lint uses the Next.js ESLint flat presets and fails on warnings as well as
+errors. It covers application code, scripts, configuration, and tests; generated
+Next.js/build output is excluded. TypeScript-specific rules apply to TypeScript
+files so the existing CommonJS maintenance scripts remain supported.
+Next.js builds do not run lint automatically, so run both checks.

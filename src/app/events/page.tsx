@@ -6,50 +6,45 @@ import { Section } from '@/components/layout/Section';
 import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/Button';
 import { UpcomingEvents } from '@/components/events/UpcomingEvents';
-import { upcomingEvents, regularMeetings, projectTracks, notionHub } from '@/data/events';
-// Removed direct Airtable import to avoid client-side issues
+import { regularMeetings, projectTracks, notionHub } from '@/data/events';
+import { groupEvents } from '@/lib/eventDates';
 import { Event } from '@/types/events';
 
 export default function EventsPage() {
-  const [events, setEvents] = useState<Event[]>(upcomingEvents);
+  const [events, setEvents] = useState<ReturnType<typeof groupEvents>>({
+    upcoming: [], past: [], undated: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
+    const controller = new AbortController();
     const loadEvents = async () => {
       try {
-        setLoading(true);
-        console.log('🔄 Fetching events from API...');
-        
-        const response = await fetch('/api/events');
-        
-        if (!response.ok) {
-          throw new Error(`API error: ${response.status} ${response.statusText}`);
-        }
-        
+        const response = await fetch('/api/events', { signal: controller.signal });
+        if (!response.ok) throw new Error('Unable to load events. Please try again.');
         const airtableEvents: Event[] = await response.json();
-        
-        if (airtableEvents.length > 0) {
-          console.log(`✅ Loaded ${airtableEvents.length} events from Airtable`);
-          setEvents(airtableEvents);
-        } else {
-          console.log('⚠️ No events from Airtable, using static data');
-          setEvents(upcomingEvents);
-        }
-      } catch (err) {
-        console.error('Error loading events from API:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load events');
-        setEvents(upcomingEvents); // Fallback to static data
+        if (!Array.isArray(airtableEvents)) throw new Error('Invalid events response');
+        if (!controller.signal.aborted) setEvents(groupEvents(airtableEvents, new Date()));
+      } catch {
+        if (!controller.signal.aborted) setError('Unable to load events. Please try again.');
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     };
+    void loadEvents();
+    return () => controller.abort();
+  }, [attempt]);
 
-    loadEvents();
-  }, []);
+  const retry = () => {
+    setLoading(true);
+    setError(null);
+    setAttempt(value => value + 1);
+  };
 
   return (
-    <main className="min-h-screen w-full bg-bd-background">
+    <main id="main-content" tabIndex={-1} className="page-events min-h-screen w-full bg-bd-background">
       <Navbar />
       
       {/* Hero Section */}
@@ -76,7 +71,7 @@ export default function EventsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* General Meeting Card */}
-              <div className="bg-white border border-black rounded-xl p-6 shadow-sm">
+              <div className="surface-card bg-white border border-black rounded-xl p-6 shadow-sm">
                 <h3 className="text-2xl font-display font-bold text-black mb-4 text-center">
                   General Meetings
                 </h3>
@@ -111,7 +106,7 @@ export default function EventsPage() {
               </div>
 
               {/* Project Series Card */}
-              <div className="bg-white border border-black rounded-xl p-6 shadow-sm">
+              <div className="surface-card bg-white border border-black rounded-xl p-6 shadow-sm">
                 <h3 className="text-2xl font-display font-bold text-black mb-4 text-center">
                   Project Series
                 </h3>
@@ -158,39 +153,61 @@ export default function EventsPage() {
             </h2>
             
             {loading && (
-              <div className="text-center py-12">
+              <div className="text-center py-12" role="status">
                 <p className="text-lg text-gray-600">Loading events...</p>
               </div>
             )}
             
             {error && (
               <div className="text-center py-12">
-                <p className="text-lg text-red-600 mb-2">⚠️ {error}</p>
-                <p className="text-sm text-gray-600">Showing cached events instead</p>
+                <p role="alert" className="text-lg text-red-600 mb-2">{error}</p>
+                <button onClick={retry} className="text-black underline font-semibold">Try again</button>
               </div>
             )}
             
-            {!loading && <UpcomingEvents events={events} />}
+            {!loading && !error && <UpcomingEvents events={events.upcoming} />}
           </div>
         </Container>
       </Section>
+
+      {!loading && !error && events.undated.length > 0 && (
+        <Section padding="lg" background="default">
+          <Container>
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-display font-bold text-black mb-8 text-center">Dates to Be Announced</h2>
+              <UpcomingEvents events={events.undated} />
+            </div>
+          </Container>
+        </Section>
+      )}
+
+      {!loading && !error && events.past.length > 0 && (
+        <Section padding="lg" background="default">
+          <Container>
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-display font-bold text-black mb-8 text-center">Past Events</h2>
+              <UpcomingEvents events={events.past} isPast />
+            </div>
+          </Container>
+        </Section>
+      )}
 
       {/* Project Series Archive Section */}
       <Section padding="lg" background="alt">
         <Container>
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-black mb-6">
               Project Series Archive
             </h2>
 
-            <p className="text-lg text-white leading-relaxed mb-8">
+            <p className="text-lg text-black leading-relaxed mb-8">
               Explore our comprehensive collection of past project series, including student projects, 
               lecture materials, and resources from previous semesters.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               {projectTracks.map((track) => (
-                <div key={track.id} className="bg-white border border-black rounded-xl p-6">
+                <div key={track.id} className="surface-card bg-white border border-black rounded-xl p-6">
                   <div className="text-center mb-3">
                     <h3 className="text-xl font-display font-bold text-black">
                       {track.name}

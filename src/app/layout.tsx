@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Anaheim, Courier_Prime } from "next/font/google";
+import { Geist } from "next/font/google";
+import { Courier_Prime } from "next/font/google";
 import "./globals.css";
 import { Footer } from "@/components/layout/Footer";
 
@@ -10,17 +10,7 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
-const anaheim = Anaheim({
-  subsets: ["latin"],
-  variable: "--font-primary",
-  weight: ["400"],
-  display: "swap",
-});
 
 const courierPrime = Courier_Prime({
   subsets: ["latin"],
@@ -47,10 +37,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${anaheim.variable} ${courierPrime.variable} antialiased`}
+        className={`${geistSans.variable} ${courierPrime.variable} antialiased`}
       >
         {children}
-        <Footer />
+        <Footer currentYear={new Date().getFullYear()} />
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+import { officerImageUrl } from './officerImage';
 import { TeamMember, YearBoard, Event, EventType } from '@/types/events';
 import { 
   AirtableRecord, 
@@ -27,23 +28,29 @@ class AirtableClient {
       throw new Error('Base ID and Table ID are required');
     }
 
-    let url = `https://api.airtable.com/v0/${baseId}/${tableId}`;
-    if (viewId) url += `?view=${encodeURIComponent(viewId)}`;
-
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json'
+    const records: AirtableRecord<T>[] = [];
+    const seenOffsets = new Set<string>();
+    let offset: string | undefined;
+    const signal = AbortSignal.timeout(15000);
+    do {
+      const url = new URL(`https://api.airtable.com/v0/${baseId}/${tableId}`);
+      if (viewId) url.searchParams.set('view', viewId);
+      if (offset) url.searchParams.set('offset', offset);
+      const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${this.apiKey}` },
+        signal,
+      });
+      if (!response.ok) throw new Error(`Airtable API error (${response.status})`);
+      const data: AirtableResponse<T> = await response.json();
+      if (!Array.isArray(data.records)) throw new Error('Invalid Airtable response');
+      records.push(...data.records);
+      offset = data.offset;
+      if (offset) {
+        if (typeof offset !== 'string' || seenOffsets.has(offset)) throw new Error('Invalid Airtable pagination');
+        seenOffsets.add(offset);
       }
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Airtable API error (${response.status}): ${error}`);
-    }
-
-    const data: AirtableResponse<T> = await response.json();
-    return data.records || [];
+    } while (offset);
+    return records;
   }
 }
 
@@ -55,7 +62,7 @@ function getFieldValue(fields: Record<string, unknown>, possibleNames: readonly 
   return null;
 }
 
-function getImageUrl(imageField: unknown, fallback = '/img/default-headshot.png'): string {
+function getImageUrl(imageField: unknown, fallback = '/img/default-headshot.svg'): string {
   if (Array.isArray(imageField) && imageField[0]) {
     return (imageField[0] as AirtableImage).url;
   }
@@ -74,9 +81,6 @@ function mapEventType(type: string): EventType {
   return 'meeting';
 }
 
-// Initialize client
-const client = new AirtableClient();
-
 // Officer functions
 export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
   try {
@@ -86,7 +90,7 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
     const viewId = 'viwFMXms1c5yd2uEs';  
     
     // Use view if available for better filtering
-    const records = await client.fetch(baseId, tableId, viewId);
+    const records = await new AirtableClient().fetch(baseId, tableId, viewId);
     const groupedData: { [key: string]: TeamMember[] } = {};
 
     records.forEach((record) => {
@@ -98,7 +102,7 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
 
       const officer: TeamMember = {
         name: name as string,
-        img: getImageUrl(getFieldValue(fields, OFFICER_FIELD_MAP.image)),
+        img: officerImageUrl(getFieldValue(fields, OFFICER_FIELD_MAP.image)),
         role: getFieldValue(fields, OFFICER_FIELD_MAP.role) as string || '',
         linkedIn: getFieldValue(fields, OFFICER_FIELD_MAP.linkedIn) as string || '',
         school_year: getFieldValue(fields, OFFICER_FIELD_MAP.schoolYear) as string || '',
@@ -141,8 +145,8 @@ export async function fetchOfficersFromAirtable(): Promise<YearBoard[]> {
       })
       .sort((a, b) => {
         if (a.year !== b.year) return parseInt(b.year) - parseInt(a.year);
-        return a.semester === 'Spring' && b.semester === 'Fall' ? -1 : 
-               a.semester === 'Fall' && b.semester === 'Spring' ? 1 : 0;
+        return a.semester === 'Fall' && b.semester === 'Spring' ? -1 : 
+               a.semester === 'Spring' && b.semester === 'Fall' ? 1 : 0;
       });
 
     return boards;
@@ -170,11 +174,10 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
     const viewId = process.env.AIRTABLE_EVENTS_VIEW_ID;
     
     if (!baseId || !tableId) {
-      console.warn('Missing Airtable events configuration, returning empty array');
-      return [];
+      throw new Error('Missing Airtable events configuration');
     }
 
-    const records = await client.fetch(baseId, tableId, viewId);
+    const records = await new AirtableClient().fetch(baseId, tableId, viewId);
 
     return records.map((record): Event => {
       const { fields } = record;
@@ -196,6 +199,6 @@ export async function fetchEventsFromAirtable(): Promise<Event[]> {
     });
   } catch (error) {
     console.error('Failed to fetch events:', error);
-    return []; // Return empty array to prevent page crashes
+    throw error;
   }
 }

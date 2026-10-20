@@ -1,31 +1,51 @@
 @import "tailwindcss";
 
+@theme inline {
+  --color-bd-background: var(--background);
+  --color-bd-background-alt: var(--background-alt);
+  --color-bd-highlight: var(--highlight);
+  --color-bd-text-primary: var(--text-primary);
+  --color-bd-text-secondary: var(--text-secondary);
+  --color-bd-border: var(--border);
+}
+@utility font-primary { font-family: var(--font-primary); }
+@utility font-display { font-family: var(--font-display); }
+
+:focus-visible { outline: 2px solid #7A1400; outline-offset: 4px; }
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 100; padding: 12px; background: white; color: black; transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
 :root {
-  --text-primary: #BCB8B1;
+  color-scheme: light;
+  --text-primary: #1F2421;
   --text-secondary: #1F2421;
   --text-black: #000000;
   /* Universal black text */
   --background: #F4F3EE;
-  --highlight: #7A1400;
+  --highlight: #832d28;
   --background-alt: #FFFFFF;
   --background-white: #FFFFFF;
   /* Universal white background */
   --border: #1F2421;
-  --border-black: #000000;
+  --border-black: #ddd6cb;
   /* Universal black border */
   --shadow: rgba(31, 36, 33, 0.1);
 
-  --font-primary: 'Anaheim', 'Anaheim Fallback', sans-serif;
+  --font-primary: Arial, sans-serif;
   --font-display: 'Courier Prime', 'Courier', monospace;
 
   /* Hero Section Heights */
-  --hero-min-height: 520px;
   --hero-card-height: 400px;
   --hero-button-height: 80px;
-
-  /* Hero Section Responsive Max Width */
-  --hero-text-max-width: 600px;
-  --hero-image-flex: 1.5;
 
   /* Navbar Variables */
   --navbar-min-height: 56px;
@@ -41,16 +61,6 @@
   --activity-coffee: #87CEEB;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #F4F3EE;
-    --text-primary: #F4F3EE;
-    --text-secondary: #BCB8B1;
-    --background-alt: #232323;
-    --highlight: #E04A3F;
-    --border: #BCB8B1;
-  }
-}
 
 body {
   background: var(--background);
@@ -81,8 +91,14 @@ body {
   padding: 2rem;
   min-width: 0;
   margin-bottom: 1.5rem;
-  height: var(--hero-card-height);
+  flex: 1;
   justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+  .hero-card {
+    min-height: var(--hero-card-height);
+  }
 }
 
 .hero-button {
@@ -133,16 +149,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Team Member Styles */
-.team-member-photo {
-  filter: grayscale(100%);
-  transition: filter 0.3s ease, transform 0.3s ease;
-}
-
-.group:hover .team-member-photo {
-  filter: grayscale(0%);
-}
-
 /* Team Member Container Background */
 .team-member-container {
   background-color: var(--highlight) !important;
@@ -162,7 +168,7 @@ body {
 
 /* Activity Cards */
 .activity-card {
-  @apply bg-white border border-black rounded-xl overflow-hidden h-full flex flex-col min-h-[550px];
+  @apply bg-white border border-black rounded-xl overflow-hidden h-full flex flex-col min-h-[420px];
   transition: all 0.2s ease;
 }
 
@@ -171,7 +177,7 @@ body {
 }
 
 .activity-card-header {
-  @apply p-4 pb-2 mb-8;
+  @apply p-5 pb-2 mb-3;
 }
 
 .activity-card-title {
@@ -180,7 +186,7 @@ body {
 }
 
 .activity-card-description {
-  @apply text-xs text-gray-700 leading-relaxed;
+  @apply text-sm text-gray-700 leading-relaxed;
 }
 
 .activity-card-illustration {
@@ -297,7 +303,7 @@ main {
 }
 
 .footer-cta-card-blue {
-  @apply bg-blue-400 text-white;
+  @apply bg-blue-400 text-black;
 }
 
 .footer-cta-card-red {
@@ -319,15 +325,15 @@ main {
 }
 
 .instagram-section-preview {
-  @apply w-[900px] flex-shrink-0;
+  @apply w-full min-w-0 lg:w-1/2;
 }
 
 .instagram-section-info {
-  @apply flex-[1] flex flex-col justify-center px-8 py-4;
+  @apply flex-1 min-w-0 flex flex-col justify-center px-0 sm:px-4 py-4;
 }
 
 .instagram-preview-mockup {
-  @apply relative w-full h-full min-h-[600px] lg:min-h-[700px];
+  @apply relative w-full aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[400px];
 }
 
 .instagram-preview-container {
@@ -360,3 +366,52 @@ main {
   @apply bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 inline-flex items-center gap-2;
   font-family: var(--font-primary);
 }
+/* Shared visual system: warm surfaces, consistent gutters and quieter chrome. */
+body { --font-primary: var(--font-geist-sans), Arial, sans-serif; font-family: var(--font-primary); font-size: 15px; line-height: 1.65; }
+.site-container { width: 100%; padding-inline: clamp(20px, 4vw, 40px); }
+.navbar { margin-top: 20px; border: 1px solid #ded8ce; border-radius: 16px; padding: 14px 22px; box-shadow: 0 4px 20px #30251a04; }
+.navbar-links { gap: 30px; font-size: 14px; font-weight: 500; }
+.navbar-links a { padding-block: 10px; text-decoration: none; border-bottom: 2px solid transparent; }
+.navbar-links a:hover, .navbar-links a[aria-current=page] { color: var(--highlight); border-bottom-color: var(--highlight); }
+.site-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 46px; padding: 12px 20px; border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none; transition: filter .2s, box-shadow .2s; cursor: pointer; }
+.site-button:hover { filter: brightness(1.1); box-shadow: 0 4px 14px #30251a12; }
+.site-button:disabled { opacity: .5; cursor: not-allowed; }
+.navbar .hero-button { height: 46px; font-size: 14px; }
+.surface-card, .activity-card { border: 1px solid #ddd6cb; border-radius: 16px; box-shadow: 0 4px 20px #30251a04; }
+.page-about h1, .page-events h1, .page-partners h1, .page-blog h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,48px); letter-spacing: -1.5px; line-height: 1.15; }
+.page-about > section:first-of-type, .page-events > section:first-of-type, .page-partners > section:first-of-type { padding-top: 64px; padding-bottom: 32px; }
+.page-events > section:nth-of-type(2) { padding-top: 24px; }
+.page-about .about-panel { text-align: left; padding: 28px; }
+.page-about .about-panel h2 { font-size: 24px; }
+.page-about .about-panel > div { margin-top: 24px; gap: 20px; }
+.page-about > section:nth-of-type(2) { padding-top: 32px; }
+.page-partners > section:first-of-type p { font-size: 16px; line-height: 1.85; max-width: 760px; margin-inline: auto; }
+.page-partners h2 { font-family: var(--font-display); font-size: clamp(26px,3vw,36px); }
+.blog-card { display: flex; flex-direction: column; padding: 28px; }
+.blog-card h2 { font-size: 22px; line-height: 1.4; letter-spacing: -.4px; }
+.blog-card > div:last-child { margin-top: auto; padding-top: 18px; gap: 16px; }
+.blog-card time { flex-shrink: 0; font-size: 12px; }
+.blog-card a:hover { color: var(--highlight); }
+.activity-card { min-height: 0; }
+.activity-card-header { padding: 24px 24px 12px; margin: 0; }
+.activity-card-title { font-size: 23px; }
+.activity-card-description { font-size: 14px; line-height: 1.75; }
+.activity-card-illustration { flex: none; height: 220px; margin: auto 16px 16px; margin-top: 20px; }
+.instagram-section-card { box-shadow: none; border-radius: 20px; }
+.instagram-section-description { line-height: 1.8; }
+.footer-action { border-color: #ddd6cb; border-radius: 14px; }
+footer > section:first-child { border-top: 1px solid #ddd6cb; }
+footer h2 { font-family: var(--font-display); letter-spacing: -1px; }
+footer a:hover { transform: none; }
+footer .footer-action { transition: border-color .2s; }
+footer a:hover .footer-action { border-color: #9e7167; }
+@media (max-width: 639px) {
+ .navbar { margin-top: 12px; padding: 12px 14px; }
+ .page-about > section:first-of-type, .page-events > section:first-of-type, .page-partners > section:first-of-type { padding-top: 40px; }
+ .blog-card { padding: 22px; }
+ .blog-card > div:last-child { flex-wrap: wrap; }
+ .page-about .about-panel { padding: 24px; }
+}
+
+footer h2 { font-size: clamp(28px,3vw,36px); line-height: 1.25; }
+.footer-action p { font-weight: 400; line-height: 1.65; }

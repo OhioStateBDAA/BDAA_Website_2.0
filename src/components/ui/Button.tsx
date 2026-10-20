@@ -19,42 +19,9 @@ export const Button: React.FC<ButtonProps> = ({
   disabled,
   ...rest
 }) => {
-  const content = (
-    <div className={`relative group ${className}`}>
-      {/* Shadow copy - always visible black background */}
-      <div
-        className={`absolute top-0 left-0 w-full h-full rounded-2xl bg-black z-0`}
-      />
-
-      {/* Main button - lifts up and to the right on hover */}
-      <div
-        className={`relative z-10 w-full h-full rounded-2xl font-semibold transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:-translate-y-1 flex items-center justify-center border border-black px-6 py-3 min-h-[48px]`}
-        style={{ backgroundColor: color, color: '#fff' }}
-      >
-        <div className="flex items-center justify-center">
-          <span className="leading-tight">{label}</span>
-          {sublabel && <span className="leading-tight text-sm ml-2">{sublabel}</span>}
-          {showArrow && (
-            <div className="ml-4 p-1 rounded-lg" style={{ backgroundColor: color }}>
-              <ArrowUpRight className="text-white w-5 h-5" />
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-
-  if (href) {
-    return (
-      <a href={href} style={{ textDecoration: 'none' }}>
-        {content}
-      </a>
-    );
-  }
-  
-  return (
-    <button type={type} disabled={disabled} {...rest} className="w-full">
-      {content}
-    </button>
-  );
+  const content = <><span>{label}</span>{sublabel && <span className="text-sm">{sublabel}</span>}{showArrow && <ArrowUpRight size={18} aria-hidden="true" />}</>;
+  const classes = `site-button ${className}`;
+  const style = { backgroundColor: color, color: '#fff' };
+  if (href) return <a href={href} className={classes} style={style}>{content}</a>;
+  return <button type={type ?? 'button'} disabled={disabled} {...rest} className={classes} style={style}>{content}</button>;
 };

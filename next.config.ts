@@ -2,8 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // Disable image optimization for external images to avoid Airtable URL issues
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -24,8 +22,6 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       }
     ],
-    // Disable caching for external images due to Airtable's URL refresh issue
-    minimumCacheTTL: 0,
   },
 };
 

@@ -48,7 +48,7 @@ export default function AboutPage() {
   // Show loading state
   if (loading) {
     return (
-      <main className="min-h-screen w-full w-full max-w-full overflow-hidden px-4 sm:px-6 lg:px-8  bg-bd-background">
+      <main id="main-content" tabIndex={-1} className="page-about min-h-screen w-full w-full max-w-full overflow-hidden     bg-bd-background">
         <Navbar />
         <Section padding="lg" background="default">
           <Container>
@@ -67,7 +67,7 @@ export default function AboutPage() {
   // Show error state
   if (error) {
     return (
-      <main className="min-h-screen w-full bg-bd-background">
+      <main id="main-content" tabIndex={-1} className="page-about min-h-screen w-full bg-bd-background">
         <Navbar />
         <Section padding="lg" background="default">
           <Container>
@@ -91,7 +91,7 @@ export default function AboutPage() {
   }
 
   return (
-    <main className="min-h-screen w-full bg-bd-background">
+    <main id="main-content" tabIndex={-1} className="page-about min-h-screen w-full bg-bd-background">
       <Navbar />
       
       {/* Mission Section */}
@@ -107,7 +107,7 @@ export default function AboutPage() {
   The Big Data Analytics Association at The Ohio State University
 </p>
             <div className="grid md:grid-cols-2 gap-8 mt-12">
-              <div className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
+              <div className="surface-card about-panel bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
                 <h2 className="text-2xl font-display font-bold text-black mb-4">Our Mission</h2>
                 <p className="text-black leading-relaxed">
                   BDAA aims to inspire students to think analytically, empower them through hands-on training, 
@@ -117,7 +117,7 @@ export default function AboutPage() {
                 </p>
               </div>
               
-              <div className="bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
+              <div className="surface-card about-panel bg-[var(--background-white)] p-8 rounded-xl border border-[var(--border-black)]">
                 <h2 className="text-2xl font-display font-bold text-black mb-4">What We Offer</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mt-8 sm:mt-12 text-black">                  
                   

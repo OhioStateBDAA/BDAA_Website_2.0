@@ -50,10 +50,10 @@ export function ActivitiesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
 
           {/* Text section - takes first grid position */}
-          <div className="p-6 flex flex-col justify-center h-full min-h-[550px]">
-            <div className="font-display text-4xl font-bold text-black leading-tight mb-4">
+          <div className="p-4 flex flex-col justify-center h-full min-h-[240px]">
+            <h2 className="font-display text-3xl font-bold text-black leading-tight mb-4">
               Activities
-            </div>
+            </h2>
             <div className="text-sm text-gray-600 leading-relaxed mb-6">
               Read about all the activities we offer.
             </div>

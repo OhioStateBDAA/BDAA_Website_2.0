@@ -4,9 +4,10 @@ import { EventCard } from './EventCard';
 
 interface UpcomingEventsProps {
   events: Event[];
+  isPast?: boolean;
 }
 
-export function UpcomingEvents({ events }: UpcomingEventsProps) {
+export function UpcomingEvents({ events, isPast = false }: UpcomingEventsProps) {
   if (events.length === 0) {
     return (
       <div className="text-center py-12">
@@ -20,7 +21,7 @@ export function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {events.map((event) => (
-        <EventCard key={event.id} event={event} />
+        <EventCard key={event.id} event={event} isPast={isPast} />
       ))}
     </div>
   );

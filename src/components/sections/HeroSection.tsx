@@ -1,72 +1,35 @@
-import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
-import Image from 'next/image';
-import { Button } from '../ui/Button';
-import Link from 'next/link';
-
+import styles from './HomeEditorial.module.css';
 import heroImage from '../../../public/group-photo.jpg';
 import guysImage from '../../../public/img/group-guys.jpg';
 import girlsImage from '../../../public/img/group-girls.jpg';
 
 export function HeroSection() {
   return (
-    <Section padding="lg" background="default">
-      <Container>
-        <div className="flex flex-col md:flex-row gap-10 items-stretch" style={{ minHeight: 'var(--hero-min-height)' }}>
-          {/* Left: Text Card */}
-          <div className="flex-1 flex flex-col min-w-0 max-w-full h-full justify-start font-primary" style={{ maxWidth: 'var(--hero-text-max-width)' }}>
-            {/* White card with dashed border - fixed height to match image with padding */}
-            <div className="hero-card">
-              <div className="flex flex-col">
-                <div className="hero-title text-black">Welcome to BDAA</div>
-                <div className="text-base text-black leading-relaxed">
-                  BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s central hub for involvement in data analytics.
-                </div>
-              </div>
-              <div className="flex-1"></div>
-            </div>
-            {/* Buttons outside the card - big rectangular buttons like wireframe */}
-            <div className="flex gap-4 w-full">
-              <div className="flex-1">
-                <Button
-                  label="Join Event"
-                  color="var(--highlight)"
-                  showArrow={false}
-                  className="hero-button w-full"
-                  href="/events"
-                />
-              </div>
-              <div className="flex-1">
-                <Link href="/partners#sponsorship-application">
-                  <Button
-                    label="Partner With Us"
-                    color="var(--text-secondary)"
-                    showArrow={false}
-                    className="hero-button w-full"
-                  />
-                </Link>
-              </div>
-            </div>
+    <Section padding="lg"><Container>
+      <div className={styles.hero}>
+        <div>
+          
+          <h1>Welcome to <em>BDAA</em></h1>
+          <p className={styles.intro}>BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s central hub for involvement in data analytics.</p>
+          <div className={styles.actions}>
+            <Link href="/events" className={styles.primary}>Join Event <ArrowUpRight size={17} /></Link>
+            <Link href="/partners#sponsorship-application" className={styles.secondary}>Partner With Us <ArrowUpRight size={17} /></Link>
           </div>
-          {/* Right: Photo collage — vertical portrait left, guys top-right, girls bottom-right */}
-          <div className="flex gap-3 min-w-[200px] max-w-full" style={{ flex: 'var(--hero-image-flex)' }}>
-            {/* Vertical group photo */}
-            <div className="relative rounded-xl overflow-hidden flex-shrink-0" style={{ width: '42%' }}>
-              <Image src={heroImage} alt="Group photo of BDAA members" fill style={{ objectFit: 'cover', objectPosition: 'center top' }} priority />
-            </div>
-            {/* Right column: guys on top, girls on bottom */}
-            <div className="flex flex-col gap-3 flex-1">
-              <div className="relative rounded-xl overflow-hidden flex-1">
-                <Image src={guysImage} alt="BDAA guys group photo" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
-              </div>
-              <div className="relative rounded-xl overflow-hidden flex-1">
-                <Image src={girlsImage} alt="BDAA girls group photo" fill style={{ objectFit: 'cover', objectPosition: 'center' }} />
-              </div>
-            </div>
+          
+        </div>
+        <div className={styles.collage}>
+          <div className={styles.portrait}><Image src={heroImage} alt="BDAA members together on campus" fill sizes="(max-width: 767px) 45vw, 24vw" className="object-top" priority /></div>
+          <div className={styles.pair}>
+            <div><Image src={guysImage} alt="BDAA members at a campus gathering" fill sizes="(max-width: 767px) 45vw, 24vw" /></div>
+            <div><Image src={girlsImage} alt="BDAA members at an organization event" fill sizes="(max-width: 767px) 45vw, 24vw" /></div>
           </div>
         </div>
-      </Container>
-    </Section>
+      </div>
+    </Container></Section>
   );
 }
