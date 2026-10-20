@@ -20,7 +20,7 @@ import Image from "next/image";
     { name: 'IBM', logo: 'https://img.logo.dev/ibm.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' }, 
     { name: 'Oracle', logo: 'https://img.logo.dev/oracle.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' },
     { name: 'Cisco', logo: 'https://img.logo.dev/cisco.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' }, 
-    { name: 'Dropbox', logo: 'https://img.logo.dev/dropbox.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' },
+    { name: 'Dropbox', logo: '/img/logos/dropbox.svg' },
     { name: 'Huntington Bank', logo: 'https://img.logo.dev/huntington.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' },
     { name: 'Nationwide', logo: 'https://img.logo.dev/nationwide.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' },
     { name: 'JPMorgan Chase', logo: 'https://img.logo.dev/jpmorganchase.com?token=pk_V44kw7KDSY-9AnxSTCIH7g' },

@@ -2,10 +2,11 @@ import React from 'react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
 import { AnimatedCompanyGrid } from '../cards/AnimatedCompanyGrid';
+import styles from './HomeEditorial.module.css';
 
 export function AlumniSection() {
   return (
-    <Section background="highlight" padding="md">
+    <Section padding="lg" className={styles.alumniSection} id="alumni">
       <Container>
         {/* Header Section */}
         <div className="mb-6">

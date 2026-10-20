@@ -16,12 +16,11 @@ const photos = [
 
 export function PhotoGallerySection() {
   return (
-    <Section padding="md"><Container>
+    <Section padding="lg" className={styles.gallerySection} id="photo-gallery"><Container>
       <div className={styles.gallery}>
-        <div className={styles.sectionHeading}>
-          <div><h2>Photo Gallery</h2></div>
-          <p>Moments from our events, workshops, and community gatherings that showcase the vibrant BDAA experience.</p>
-          
+        <div className={styles.galleryHeading}>
+          <h2>Photo Gallery</h2>
+          <span aria-hidden="true" />
         </div>
         <div className={styles.photos}>
           {photos.map(photo => <figure key={photo.src} className={styles.photo}>

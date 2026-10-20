@@ -8,7 +8,6 @@ import { notionHub } from '@/data/events';
 import { socialLinks } from '@/data/socialLinks';
 import type { createMascotScene } from './mascotScene';
 import styles from './MascotGuide.module.css';
-import { crossingPosition, crossingDuration, followPosition } from './guideMotion';
 
 const highlights = [
   {
@@ -77,14 +76,9 @@ export function MascotGuide() {
   const [ready, setReady] = useState(false);
   const [selected, setSelected] = useState(0);
   const host = useRef<HTMLSpanElement>(null);
-  const traveler = useRef<HTMLDivElement>(null);
   const launcher = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const scene = useRef<Awaited<ReturnType<typeof createMascotScene>> | null>(null);
-  const arrived = useRef(false);
-  const greeted = useRef(false);
-  const restPose = useRef<'Idle' | 'Arrive'>('Idle');
-  const journey = useRef({ elapsed: 0, x: 0, y: 100, startY: 100, started: false, initialized: false });
   const titleId = useId();
   const still = reducedMotion || paused;
   const highlight = highlights[selected];
@@ -105,91 +99,8 @@ export function MascotGuide() {
   }, [hidden]);
 
   useEffect(() => {
-    const element = traveler.current;
-    if (!element || hidden) return;
-    let frame = 0;
-    let previousTime = 0;
-    let lastSpeed = 0;
-    const path = journey.current;
-    const dock = element.parentElement!;
-    const settle = (complete = true) => {
-      element.dataset.traveling = 'false';
-      element.dataset.motion = 'idle';
-      element.style.transform = '';
-      const justArrived = complete && !arrived.current && path.started;
-      if (complete) arrived.current = true;
-      const bounds = dock.getBoundingClientRect();
-      const firstGreeting = !greeted.current && bounds.top >= 0 && bounds.bottom <= window.innerHeight && ready;
-      if ((justArrived || firstGreeting) && !still) { restPose.current = 'Arrive'; greeted.current = true; }
-      if (engaged || still || open) restPose.current = 'Idle';
-      scene.current?.setMotion(still || open ? 'Idle' : engaged ? 'Wave' : restPose.current, 0, 1, !still && !open);
-    };
-    const update = (time: number) => {
-      frame = 0;
-      if (document.hidden) { previousTime = 0; return; }
-      const dt = previousTime ? Math.min(.04, (time - previousTime) / 1000) : 1 / 60;
-      previousTime = time;
-      const rect = dock.getBoundingClientRect();
-      if (still || window.innerWidth < 1360) { settle(false); return; }
-      if (arrived.current || rect.bottom < 80 || (path.started && rect.top > window.innerHeight)) { settle(); return; }
-      const right = window.innerWidth - 88;
-      if (!path.initialized) { path.x = right; path.initialized = true; }
-      element.dataset.traveling = 'true';
-      const center = rect.top + rect.height / 2;
-      if (!path.started && center <= window.innerHeight * .72) {
-        path.started = true;
-        path.startY = path.y;
-      }
-      if (engaged || open) {
-        scene.current?.setMotion(engaged && !open ? 'Wave' : 'Idle', 0, 1, !open);
-        return;
-      }
-      const oldX = path.x;
-      const oldY = path.y;
-      let complete = false;
-      if (path.started) {
-        path.elapsed += dt;
-        const progress = Math.min(1, path.elapsed / crossingDuration(right - rect.left - 8));
-        const position = crossingPosition(right, rect.left + 8, center, progress, path.startY);
-        path.x = position.x;
-        path.y = position.y;
-        complete = progress >= 1;
-      } else {
-        const targetY = Math.max(100, Math.min(window.innerHeight * .72 - 43, 100 + window.scrollY * .22));
-        path.x = followPosition(path.x, right, dt);
-        path.y = followPosition(path.y, targetY, dt);
-      }
-      const horizontalSpeed = Math.abs(path.x - oldX) / dt;
-      const verticalSpeed = Math.abs(path.y - oldY) / dt;
-      const running = path.started && horizontalSpeed > 12;
-      const speed = running ? horizontalSpeed : verticalSpeed;
-      lastSpeed = followPosition(lastSpeed, speed, dt);
-      element.dataset.motion = running ? 'run' : lastSpeed > 2 ? 'float' : 'idle';
-      element.dataset.side = path.x < window.innerWidth / 2 ? 'left' : 'right';
-      element.style.transform = `translate3d(${path.x}px, ${path.y}px, 0)`;
-      element.style.setProperty('--travel-speed', String(Math.min(1, lastSpeed / 260)));
-      scene.current?.setMotion(running ? 'Run' : lastSpeed > 2 ? 'Float' : 'Idle', lastSpeed, -1);
-      if (complete) { settle(); return; }
-      if (path.started || lastSpeed > .5 || Math.abs(path.x - right) > .2) frame = requestAnimationFrame(update);
-    };
-    const schedule = () => { if (!frame) { previousTime = 0; frame = requestAnimationFrame(update); } };
-    const visibility = () => {
-      cancelAnimationFrame(frame); frame = 0; previousTime = 0;
-      if (!document.hidden) schedule();
-    };
-    schedule();
-    const observer = new ResizeObserver(schedule);
-    observer.observe(document.body);
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    document.addEventListener('visibilitychange', visibility);
-    return () => {
-      cancelAnimationFrame(frame);
-      observer.disconnect();
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
-      document.removeEventListener('visibilitychange', visibility);
-    };
+    if (hidden || !ready) return;
+    scene.current?.setMotion(engaged && !still && !open ? 'Wave' : 'Idle', 0, 1, !still && !open);
   }, [hidden, still, engaged, open, ready]);
 
   useEffect(() => {
@@ -208,7 +119,7 @@ export function MascotGuide() {
       {hidden ? (
         <button className={styles.restore} onClick={() => { setReady(false); setHidden(false); }} aria-label="Show BDAA mascot guide"><Bot size={18} /> Show guide</button>
       ) : (
-        <div ref={traveler} className={styles.traveler} data-paused={still}>
+        <div className={styles.dockedGuide}>
           <button ref={launcher} className={styles.launcher} aria-label="Explore BDAA with our mascot" aria-haspopup="dialog"
             onClick={() => { setOpen(true); }}
             onPointerEnter={() => { setEngaged(true); }}
