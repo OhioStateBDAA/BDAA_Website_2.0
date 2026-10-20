@@ -10,10 +10,10 @@
 .secondary { color: #3e3831; border: 1px solid #c9c5ba; }
 .secondary:hover { background: #eae7df; }
 .footnote { margin-top: 22px; color: #736b60; font: 11px/1.5 Arial,sans-serif; }
-.collage { display: grid; grid-template-columns: .95fr 1fr; gap: 12px; height: 430px; }
-.portrait { position: relative; overflow: hidden; border-radius: 100px 100px 16px 16px; }
-.pair { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; padding-top: 36px; padding-bottom: 24px; }
-.pair > div { position: relative; overflow: hidden; border-radius: 14px; }
+.collage { display: grid; grid-template-columns: 42% minmax(0, 1fr); gap: 12px; height: 430px; }
+.portrait { position: relative; overflow: hidden; border-radius: 12px; }
+.pair { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; }
+.pair > div { position: relative; overflow: hidden; border-radius: 12px; }
 .collage img { object-fit: cover; }
 .gallery { max-width: 1200px; margin: auto; border-top: 1px solid #d6d1c6; padding-top: 32px; }
 .sectionHeading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
