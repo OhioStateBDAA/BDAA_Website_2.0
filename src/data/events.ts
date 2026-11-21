@@ -7,10 +7,16 @@ export const projectTracks: ProjectTrack[] = [
     description: 'Master data preparation, EDA, feature engineering, and modeling with hands-on projects and storytelling.',
     color: '#3B82F6', // blue
   },
-  {
+  /*{
     id: 'full-stack',
     name: 'Full Stack',
     description: 'Build complete web applications covering APIs, databases, and backend development with practical workshops.',
+    color: '#10B981', // green
+  },*/
+  {
+    id: 'prod-development',
+    name: 'Product Development',
+    description: 'Learn the fundamentals of product management and development, including user research, prototyping, and agile methodologies.',
     color: '#10B981', // green
   },
   {
