@@ -84,7 +84,7 @@ export function HeroSection() {
                   alt={half === 0 && i < photos.length ? photo.alt : ''}
                   sizes="600px"
                   className="h-[220px] w-auto rounded-[20px] md:h-[300px]"
-                  priority={half === 0 && i < photos.length}
+                  loading={half === 0 && i < photos.length ? "eager" : "lazy"}
                 />
               ))}
             </div>
