@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { Section } from '../layout/Section';
+import { AnimatedTagline } from '../ui/AnimatedTagline';
 import styles from './HomeEditorial.module.css';
 import heroImage from '../../../public/group-photo.jpg';
 import guysImage from '../../../public/img/group-guys.jpg';
@@ -14,7 +15,7 @@ export function HeroSection() {
       <div className={styles.hero}>
         <div>
           
-          <h1>Welcome to <em>BDAA</em></h1>
+          <h1><AnimatedTagline /></h1>
           <p className={styles.intro}>BDAA aims to inspire students to think analytically, empower them through hands on training, and connect them to potential employers. Winner of the Outstanding Overall Organization Award two years running (2017-2018) and the Partnership in Industry Award, BDAA is truly Ohio State&apos;s central hub for involvement in data analytics.</p>
           <div className={styles.actions}>
             <Link href="/events" className={styles.primary}>Join Event <ArrowUpRight size={17} /></Link>
