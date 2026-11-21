@@ -1,5 +1,5 @@
 .photo {
-  filter: grayscale(100%);
+  filter: none;
   transition: filter 300ms ease;
 }
 
