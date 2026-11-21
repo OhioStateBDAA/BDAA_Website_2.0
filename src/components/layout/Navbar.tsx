@@ -27,7 +27,7 @@ export function Navbar() {
   return (
     <Container size="contained">
       <nav
-        className="navbar flex-wrap gap-y-4"
+        className="navbar relative z-10 flex-wrap gap-y-4"
         aria-label="Main navigation"
         onKeyDown={event => {
           if (event.key === 'Escape' && isOpen) {
