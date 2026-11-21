@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { socialLinks } from '../../data/socialLinks';
 
 const links = [
   { href: '/about', label: 'About Us' },
@@ -14,6 +15,8 @@ const links = [
   { href: '/blog', label: 'Blog' },
   { href: '/events', label: 'All Events' },
 ];
+
+const JOIN_URL = socialLinks.groupMe;
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,7 +59,15 @@ export function Navbar() {
             </Link>
           ))}
         </div>
-        <div className="hidden md:block">
+        <div className="hidden md:flex items-center gap-3">
+          <a
+            href={JOIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center rounded-lg border-2 border-[var(--highlight)] px-5 font-bold text-[var(--highlight)] transition-colors hover:bg-[var(--highlight)] hover:text-white"
+          >
+            Join BDAA
+          </a>
           <Button
             label="All Events"
             color="var(--highlight)"
@@ -91,6 +102,15 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          <a
+            href={JOIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 flex min-h-11 items-center justify-center rounded-lg bg-[var(--highlight)] px-3 py-2 font-bold text-white"
+            onClick={() => setIsOpen(false)}
+          >
+            Join BDAA
+          </a>
         </div>
       </nav>
     </Container>
